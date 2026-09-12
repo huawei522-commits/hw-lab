@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HW Lab</title>
+<link rel="icon" href="data:,">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Noto+Serif+TC:wght@400;600&family=Space+Mono&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#1B1A17;--paper:#EDE7DB;--slate:#6E7B8B;--hair:rgba(27,26,23,.18);--c2:#8A6F4E;}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{min-height:100vh;background:var(--paper);color:var(--ink);
+     font-family:'Noto Serif TC',serif;display:flex;align-items:center;justify-content:center;padding:8vw 6vw;}
+main{max-width:720px;width:100%;}
+.kicker{font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.22em;
+        text-transform:uppercase;color:var(--slate);margin-bottom:14px;}
+h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,7vw,3.6rem);font-weight:500;line-height:1.1;}
+h1 em{font-style:italic;color:var(--c2);}
+.lede{margin-top:14px;color:var(--slate);font-size:.95rem;line-height:1.9;}
+ul{list-style:none;margin-top:40px;border-top:1px solid var(--hair);}
+li a{display:flex;flex-wrap:wrap;align-items:baseline;gap:12px;padding:20px 4px;
+     border-bottom:1px solid var(--hair);text-decoration:none;color:inherit;transition:padding-left .25s ease;}
+li a:hover{padding-left:14px;}
+li a:hover .name{color:var(--c2);}
+.name{font-size:1.12rem;font-weight:600;transition:color .25s ease;}
+.en{font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.12em;color:var(--slate);}
+.desc{flex-basis:100%;font-size:.86rem;color:var(--slate);line-height:1.8;}
+footer{margin-top:44px;font-family:'Space Mono',monospace;font-size:.68rem;
+       letter-spacing:.1em;color:var(--slate);opacity:.8;}
+</style>
+</head>
+<body>
+<main>
+  <div class="kicker">HW Lab</div>
+  <h1>做出來，<em>才看得懂</em></h1>
+  <p class="lede">哲學、景觀、教學。把想清楚的事情，做成可以動手走一遍的東西。</p>
+
+  <ul>
+    <li>
+      <a href="philo/">
+        <span class="name">哲學探索地圖</span>
+        <span class="en">The Map of Philosophy</span>
+        <span class="desc">從古希臘到當代 AI 倫理，把哲學家、學派、爭論放進同一張可以走動的地圖。時間軸、關聯圖譜、思想交鋒、人我測、情境配對五種讀法。</span>
+      </a>
+    </li>
+  </ul>
+
+  <footer>HW LAB · 2026</footer>
+</main>
+</body>
+</html>

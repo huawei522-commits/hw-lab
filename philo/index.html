@@ -1,0 +1,1692 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HW 哲學探索地圖 · 串聯文明與知識的底層邏輯</title>
+<style>
+:root{
+color-scheme: light;
+--bg:#efe6cf; --bg2:#f7f0dd; --panel:#e7dabb; --line:#c9b487; --line2:#b09a68;
+--txt:#33281a; --muted:#7a6a4d; --accent:#8a5e22; --accent-d:#6e4a18; --accent2:#3a4d68;
+--ink:#2c2317;
+--c-meta:#6b4f8a; --c-epist:#3d5d8a; --c-ethics:#4c7a48; --c-poli:#9c5a2e;
+--c-logic:#a9842a; --c-mind:#9c4a63; --c-relig:#7a6850; --c-sci:#2f7a72;
+--radius:6px;
+--sans:"EB Garamond","Noto Serif TC","Songti TC","PMingLiU",Georgia,serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{height:100%}
+body{font-family:var(--sans);background:var(--bg);color:var(--txt);line-height:1.75;overflow:hidden;
+font-size:16px;-webkit-font-smoothing:antialiased}
+/* 紙張紋理 */
+body::before{content:"";position:fixed;inset:0;pointer-events:none;z-index:1;mix-blend-mode:multiply;opacity:.5;
+background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/></svg>")}
+/* 邊角暈影,像舊紙 */
+body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:1;
+background:radial-gradient(120% 120% at 50% 40%,transparent 60%,rgba(80,55,20,.10) 100%)}
+a{color:var(--accent2)}
+
+#app{display:flex;flex-direction:column;height:100vh;position:relative;z-index:2}
+header.top{padding:14px 24px;border-bottom:3px double var(--line2);
+background:linear-gradient(180deg,#f9f2df,#efe6cf);display:flex;align-items:center;gap:20px;flex-wrap:wrap;position:relative}
+header.top::after{content:"";position:absolute;left:0;right:0;bottom:-7px;height:1px;background:var(--line)}
+header.top h1{font-size:21px;font-weight:700;letter-spacing:.5px;white-space:nowrap;font-style:italic;color:var(--ink);position:relative;padding-left:30px}
+header.top h1::before{content:"❦";position:absolute;left:0;top:-2px;font-size:20px;color:var(--accent);font-style:normal}
+header.top h1 .sub{display:block;font-size:10px;color:var(--muted);font-weight:400;letter-spacing:3px;padding-left:1px}
+.views{display:flex;gap:1px;padding:0 6px;border-left:1px solid var(--line);border-right:1px solid var(--line)}
+.views button{background:none;border:none;border-bottom:2px solid transparent;color:var(--muted);padding:7px 14px;
+cursor:pointer;font-family:var(--sans);font-size:15px;letter-spacing:.5px;transition:.15s;font-style:italic}
+.views button.active{border-bottom-color:var(--accent);color:var(--accent);font-weight:600;font-style:normal}
+.views button:hover:not(.active){color:var(--txt)}
+.toolbar{margin-left:auto;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.ghost-btn{background:var(--bg2);border:1px solid var(--line);color:var(--accent);padding:8px 13px;border-radius:8px;
+cursor:pointer;font-family:inherit;font-size:13px;font-style:italic;transition:.15s;white-space:nowrap}
+.ghost-btn:hover{border-color:var(--accent);background:var(--panel)}
+#search{background:var(--bg2);border:1px solid var(--line);color:var(--txt);padding:8px 12px;
+border-radius:9px;font-family:inherit;font-size:14px;width:190px;outline:none}
+#search:focus{border-color:var(--accent2)}
+
+main{flex:1;position:relative;overflow:hidden}
+.view{position:absolute;inset:0;overflow:auto;padding:26px 32px 90px;display:none}
+.view.active{display:block}
+
+/* 裝飾分隔 */
+.fleuron{text-align:center;color:var(--line2);font-size:16px;letter-spacing:8px;margin:26px 0 6px;user-select:none}
+.fleuron::before{content:"❧ · ❧"}
+
+/* 手繪版畫插圖 */
+.scene-banner{max-width:760px;margin:4px auto 0;color:var(--accent-d);opacity:.9}
+.scene-banner svg{width:100%;height:auto;display:block}
+.scene-fill{fill:#efe6cf}
+.scene-soft{opacity:.5}
+.tn-scene{max-width:400px;margin:0 auto 16px;opacity:.96}
+.tn-scene svg{width:100%;height:auto;display:block}
+.scene-banner img,.tn-scene img{width:100%;height:auto;display:block;border-radius:8px;
+border:1px solid var(--line);box-shadow:0 3px 14px rgba(80,55,20,.16)}
+
+.legend{display:flex;flex-wrap:wrap;gap:7px;align-items:center}
+.chip{display:inline-flex;align-items:center;gap:6px;background:var(--bg2);border:1px solid var(--line);
+padding:5px 11px;border-radius:20px;font-size:12.5px;cursor:pointer;color:var(--muted);transition:.15s;user-select:none}
+.chip .dot{width:9px;height:9px;border-radius:50%}
+.chip.off{opacity:.35}
+.chip:hover{border-color:var(--muted)}
+
+/* 今日一問 hero */
+.hero{max-width:920px;margin:0 auto 8px;background:linear-gradient(180deg,#f9f2de,#f1e8d2);
+border:1px solid var(--line);border-radius:8px;padding:22px 26px;position:relative;overflow:hidden;
+box-shadow:0 3px 16px rgba(80,55,20,.08)}
+.hero::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;
+background:linear-gradient(180deg,var(--accent),var(--accent2))}
+.hero .label{font-size:11px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;font-weight:600}
+.hero h2{font-size:23px;margin:6px 0 4px;color:var(--ink);font-weight:700;line-height:1.35}
+.hero .hsub{font-size:13px;color:var(--muted);font-style:italic;margin-bottom:14px}
+.hero .voices{display:flex;flex-wrap:wrap;gap:9px}
+.hero .voice{background:var(--bg2);border:1px solid var(--line);border-radius:8px;padding:9px 13px;cursor:pointer;
+font-size:13.5px;transition:.15s;max-width:300px}
+.hero .voice:hover{border-color:var(--accent2);transform:translateY(-2px);box-shadow:0 5px 14px rgba(0,0,0,.08)}
+.hero .voice b{color:var(--accent2);font-size:14px}
+.hero .voice span{color:var(--muted);display:block;font-size:12.5px;margin-top:2px}
+.hero .hero-cta{position:absolute;right:18px;bottom:16px;font-size:12px;color:var(--muted);font-style:italic}
+
+.era{margin-bottom:14px;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--bg2)}
+.era-head{padding:16px 20px;cursor:pointer;display:flex;align-items:center;gap:16px;transition:.15s}
+.era-head:hover{background:var(--panel)}
+.era-yr{font-size:12px;color:var(--accent);font-weight:700;min-width:120px;letter-spacing:.5px;font-variant-numeric:tabular-nums}
+.era-title{font-size:18px;font-weight:600;color:var(--ink)}
+.era-desc{color:var(--muted);font-size:13.5px;flex:1;min-width:200px;font-style:italic}
+.era-toggle{color:var(--muted);transition:.2s;font-size:13px}
+.era.open .era-toggle{transform:rotate(90deg)}
+.era-body{display:none;padding:6px 18px 20px}
+.era.open .era-body{display:block}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,262px),1fr));gap:13px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:5px;padding:15px 16px;cursor:pointer;
+transition:.16s;border-left:3px solid var(--accent);position:relative;overflow:hidden;
+display:flex;flex-direction:column;min-height:0}
+.card::after{content:"";position:absolute;top:0;right:0;width:0;height:0;
+border-style:solid;border-width:0 18px 18px 0;border-color:transparent var(--line) transparent transparent;opacity:.55}
+.card:hover{transform:translateY(-3px);border-color:var(--accent2);box-shadow:0 8px 22px rgba(53,42,28,.20)}
+.card h4{font-size:16px;margin-bottom:2px;color:var(--ink)}
+.card .yr{font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.card .sch{font-size:11.5px;color:var(--accent);margin-top:4px;font-style:italic}
+.card .quote{font-size:12.5px;color:var(--ink);margin-top:9px;font-style:italic;
+border-left:2px solid var(--line2);padding-left:9px;line-height:1.55;
+overflow-wrap:anywhere;word-break:break-word}
+.card .one{font-size:12.5px;color:var(--muted);margin-top:7px;line-height:1.6;
+overflow-wrap:anywhere;word-break:break-word}
+.card .doms{display:flex;gap:4px;margin-top:10px;flex-wrap:wrap}
+.card .doms .dot{width:8px;height:8px;border-radius:50%}
+
+#graphView{padding:0}
+#graphWrap{position:absolute;inset:0}
+svg#graph{width:100%;height:100%;display:block;cursor:grab;background:transparent}
+svg#graph.drag{cursor:grabbing}
+/* deterministic-domain-layout-v20260712 */
+.gnode{transition:opacity .16s}
+.gnode circle{cursor:pointer;transition:r .12s,stroke-width .12s}
+.gnode text{font-size:11.5px;fill:var(--txt);pointer-events:none;text-anchor:middle;paint-order:stroke;stroke:var(--bg2);stroke-width:4px;stroke-linejoin:round;opacity:.14;transition:opacity .14s}
+.gnode.dom text{font-size:13px;font-weight:700;opacity:1;stroke-width:5px}
+.gnode.key text,.gnode:hover text,.gnode.focus text,.gnode.near text{opacity:1}
+.gnode.focus circle{r:9px;stroke:var(--accent2);stroke-width:3px}
+.gnode.near circle{stroke-width:3px}
+.glink{stroke:var(--line2);stroke-width:1;opacity:.08;transition:opacity .14s,stroke-width .14s}
+.glink.dom{opacity:.025}.glink.infl{opacity:.10}
+.glink.hl{stroke:var(--accent);stroke-width:2;opacity:.78}
+.gnode.dim{opacity:.10}.glink.dim{opacity:.012}
+.graph-help{position:absolute;left:18px;bottom:16px;font-size:12.5px;color:var(--muted);
+background:#f7f0ddee;padding:9px 14px;border-radius:7px;border:1px solid var(--line);max-width:310px;font-style:italic}
+
+/* 思想交鋒 */
+.tn-intro{max-width:900px;margin:0 auto 18px;text-align:center}
+.tn-intro p{color:var(--muted);font-size:14.5px;font-style:italic}
+.tn-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(360px,1fr));gap:18px;max-width:1240px;margin:0 auto}
+.tn-card{background:var(--bg2);border:1px solid var(--line);border-radius:8px;overflow:hidden;
+box-shadow:0 2px 10px rgba(80,55,20,.06);transition:.16s}
+.tn-card:hover{box-shadow:0 8px 22px rgba(80,55,20,.13)}
+.tn-axis{padding:14px 18px 12px;text-align:center;border-bottom:1px solid var(--line);
+background:linear-gradient(180deg,#f6eed8,#f1e8d2)}
+.tn-axis .spark{font-size:16.5px;font-weight:700;color:var(--ink);line-height:1.4}
+.tn-axis .sub{font-size:12px;color:var(--accent);letter-spacing:1.5px;margin-top:4px;text-transform:uppercase}
+.tn-body{display:grid;grid-template-columns:1fr auto 1fr}
+.tn-side{padding:15px 16px;cursor:pointer;transition:.15s}
+.tn-side:hover{background:var(--panel)}
+.tn-side.left{border-right:none}
+.tn-side h5{font-size:15px;color:var(--accent2);margin-bottom:6px;display:flex;align-items:center;gap:6px}
+.tn-side .stance{font-size:13px;color:var(--txt);line-height:1.6}
+.tn-vs{display:flex;align-items:center;justify-content:center;padding:0 4px;
+font-style:italic;font-size:13px;color:var(--line2);font-weight:700;position:relative;background:var(--bg2)}
+.tn-vs::before{content:"";position:absolute;top:14px;bottom:14px;width:1px;left:50%;background:var(--line)}
+.tn-vs span{background:var(--bg2);padding:4px 0;z-index:1}
+
+.qgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:17px;max-width:1240px;margin:0 auto}
+.qcard{background:var(--bg2);border:1px solid var(--line);border-radius:var(--radius);padding:20px 22px;
+box-shadow:0 2px 10px rgba(80,55,20,.05)}
+.qcard h3{font-size:17px;color:var(--ink);margin-bottom:3px}
+.qcard .q-sub{font-size:12px;color:var(--accent);margin-bottom:12px;font-style:italic;letter-spacing:.5px}
+.qcard ul{list-style:none}
+.qcard li{padding:8px 0;border-top:1px solid var(--line);font-size:14px;cursor:pointer;color:var(--txt);transition:.12s}
+.qcard li:hover{color:var(--accent2);padding-left:6px}
+.qcard li span{color:var(--muted);font-size:12px}
+
+#panel{position:fixed;top:0;right:0;height:100%;width:454px;max-width:93vw;background:var(--bg2);
+border-left:1px solid var(--line2);transform:translateX(105%);transition:transform .3s cubic-bezier(.4,0,.2,1);
+z-index:60;overflow-y:auto;box-shadow:-14px 0 44px rgba(0,0,0,.18)}
+#panel.open{transform:translateX(0)}
+.p-head{padding:26px 28px 18px;border-bottom:2px solid var(--line);position:sticky;top:0;
+background:linear-gradient(180deg,#f7f0dd,#f3ebd6);z-index:2}
+.p-close{position:absolute;top:18px;right:20px;background:none;border:none;color:var(--muted);font-size:26px;cursor:pointer;line-height:1}
+.p-close:hover{color:var(--txt)}
+.p-head h2{font-size:25px;margin-bottom:4px;padding-right:30px;color:var(--ink)}
+.p-head .meta{font-size:12.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.p-head .sch-tag{display:inline-block;margin-top:10px;background:var(--accent);color:#f7f0dd;
+padding:3px 12px;border-radius:14px;font-size:11.5px;font-weight:600;letter-spacing:.5px}
+.p-quote{margin:18px 28px 0;padding:14px 18px;background:var(--panel);border-radius:7px;position:relative;
+border:1px solid var(--line);font-style:italic;font-size:15px;color:var(--ink);line-height:1.65}
+.p-quote::before{content:"\201C";position:absolute;left:8px;top:-6px;font-size:40px;color:var(--line2);font-family:Georgia,serif}
+.p-quote .pq-text{padding-left:18px}
+.p-portrait{display:block;width:100%;max-width:286px;margin:18px auto 0;border-radius:6px;
+box-shadow:0 4px 16px rgba(80,55,20,.22);border:1px solid var(--line)}
+.era-banner{display:block;width:100%;margin:2px 0 14px;border-radius:7px;
+border:1px solid var(--line);box-shadow:0 2px 10px rgba(80,55,20,.10)}
+.card-portrait{display:block;width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:5px;
+margin-bottom:10px;border:1px solid var(--line)}
+.p-body{padding:18px 28px 70px}
+.p-body h3{font-size:12.5px;color:var(--accent);text-transform:uppercase;letter-spacing:1.5px;
+margin:24px 0 10px;display:flex;align-items:center;gap:8px}
+.p-body h3::after{content:"";flex:1;height:1px;background:var(--line)}
+.p-body h3:first-child{margin-top:4px}
+.p-body p{font-size:14.5px;margin-bottom:10px}
+.p-body h3:first-child+p{font-style:italic;border-left:3px double var(--accent);padding-left:14px;color:var(--txt)}
+.p-body p.deep{font-size:14.5px;line-height:1.85;color:var(--ink);text-align:justify}
+.p-body p.deep.why{background:var(--panel);border-left:3px solid var(--accent);border-radius:0 7px 7px 0;padding:12px 15px}
+.p-body .ideas li{font-size:14px;margin:0 0 9px 0;list-style:none;padding-left:18px;position:relative}
+.p-body .ideas li:before{content:"\273B";position:absolute;left:0;color:var(--accent);font-size:11px;top:3px}
+.link-row{display:flex;flex-wrap:wrap;gap:7px}
+.link-row .lk{background:var(--panel);border:1px solid var(--line);padding:6px 12px;border-radius:8px;
+font-size:12.5px;cursor:pointer;transition:.13s}
+.link-row .lk:hover{border-color:var(--accent2);color:var(--accent2)}
+.link-row .lk small{color:var(--muted);display:block;font-size:10.5px}
+.dom-row{display:flex;flex-wrap:wrap;gap:8px}
+.dom-tag{display:inline-flex;align-items:center;gap:7px;background:var(--panel);border:1px solid var(--line);
+padding:7px 13px;border-radius:9px;font-size:12.5px}
+.dom-tag .dot{width:10px;height:10px;border-radius:50%}
+.xdom{background:var(--panel);border-radius:9px;padding:11px 14px;margin-bottom:9px;border-left:3px solid var(--accent2)}
+.xdom b{font-size:13px;color:var(--ink)}
+.xdom p{font-size:12.5px;color:var(--muted);margin:4px 0 0}
+.p-foe{background:var(--panel);border-radius:9px;padding:11px 14px;margin-bottom:9px;border-left:3px solid var(--c-poli);cursor:pointer;transition:.13s}
+.p-foe:hover{box-shadow:0 4px 12px rgba(0,0,0,.08)}
+.p-foe b{font-size:13px;color:var(--c-poli)}
+.p-foe p{font-size:12.5px;color:var(--muted);margin:4px 0 0}
+#backdrop{position:fixed;inset:0;background:rgba(44,35,23,.42);opacity:0;pointer-events:none;transition:.3s;z-index:55}
+#backdrop.show{opacity:1;pointer-events:auto}
+
+.intro{max-width:860px;margin:18px auto 18px;text-align:center;padding:4px 0}
+.intro p{color:var(--muted);font-size:14.5px;font-style:italic}
+.intro.dropcap p{text-align:left}
+.intro.dropcap p::first-letter{float:left;font-size:54px;line-height:.82;padding:6px 12px 0 0;color:var(--accent);font-style:normal;font-weight:700}
+::-webkit-scrollbar{width:11px;height:11px}
+::-webkit-scrollbar-thumb{background:#c2ab78;border-radius:6px;border:2px solid var(--bg)}
+::-webkit-scrollbar-track{background:transparent}
+.count{font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+
+/* ===== 情境配對 ===== */
+.match-wrap{max-width:800px;margin:0 auto}
+.match-box{background:var(--bg2);border:1px solid var(--line);border-radius:var(--radius);padding:22px;margin-bottom:24px;
+box-shadow:0 2px 10px rgba(80,55,20,.05)}
+.match-box textarea{width:100%;min-height:92px;background:var(--panel);border:1px solid var(--line);
+border-radius:9px;color:var(--txt);font-family:inherit;font-size:15px;padding:13px;resize:vertical;outline:none;line-height:1.7}
+.match-box textarea:focus{border-color:var(--accent2)}
+.match-actions{display:flex;justify-content:flex-end;margin-top:12px;gap:10px;flex-wrap:wrap}
+.match-btn{background:var(--accent);color:#f7f0dd;border:none;padding:10px 22px;border-radius:5px;
+font-size:14px;font-weight:600;cursor:pointer;transition:.15s;letter-spacing:.5px}
+.match-btn:hover{opacity:.88}
+.match-btn:disabled{opacity:.55;cursor:default}
+.match-clear{background:none;border:1px solid var(--line);color:var(--muted);padding:10px 16px;
+border-radius:5px;font-size:13px;cursor:pointer;font-style:italic}
+.match-clear:hover{color:var(--txt);border-color:var(--muted)}
+.match-result{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed var(--line2)}
+.match-q{font-size:14px;color:var(--muted);margin-bottom:12px}
+.match-q b{color:var(--txt)}
+.match-card{background:var(--bg2);border:1px solid var(--line);border-left:3px solid var(--accent2);
+border-radius:5px;padding:14px 16px;margin-bottom:10px;transition:.15s}
+.match-card.clickable{cursor:pointer}
+.match-card.clickable:hover{border-color:var(--accent2);box-shadow:0 4px 14px rgba(0,0,0,.08)}
+.match-card.external{border-left-color:var(--c-relig)}
+.match-card h4{font-size:15.5px;margin-bottom:6px;display:flex;align-items:center;gap:8px;color:var(--ink)}
+.match-card p{font-size:14px;color:var(--txt)}
+.ext-tag{font-size:10.5px;background:var(--panel);color:var(--muted);padding:2px 8px;border-radius:10px;font-weight:400}
+.match-empty{color:var(--muted);font-size:13.5px;text-align:center;padding:30px 0}
+.match-history-title{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin:30px 0 14px}
+.match-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.match-chips .mc{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:6px 13px;
+font-size:12.5px;cursor:pointer;color:var(--muted);font-style:italic;transition:.13s}
+.match-chips .mc:hover{border-color:var(--accent2);color:var(--accent2)}
+/* responsive-boundary-v20260712 */
+img,svg{max-width:100%}
+button,input,textarea{min-width:0}
+header.top h1,.hero,.hero .voice,.era,.era-head>*,.card,.card>*,.tn-card,.tn-card>*,.tn-side,.qcard,.qcard>*,.match-card>*{min-width:0}
+.cards{grid-template-columns:repeat(auto-fill,minmax(min(100%,262px),1fr));align-items:stretch}
+.card{display:flex;flex-direction:column;height:auto;min-height:0;overflow:hidden}
+.card .quote,.card .one{display:block;position:static;max-height:none;overflow:visible;white-space:normal;overflow-wrap:anywhere;word-break:normal}
+.era-title,.hero h2,.hero .voice,.tn-side .stance,.qcard,.qcard li,.match-card h4,.match-card p,.p-body p,.xdom,.p-foe{overflow-wrap:anywhere}
+.tn-grid{grid-template-columns:repeat(auto-fill,minmax(min(100%,360px),1fr))}
+.qgrid{grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr))}
+.era-toggle,.era-head .count{flex:0 0 auto}
+button:focus-visible,input:focus-visible,textarea:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent2);outline-offset:2px}
+@media (max-width:1100px){header.top{align-items:flex-start;gap:12px}.toolbar{width:100%;margin-left:0}#search{flex:1 1 180px;width:auto}}
+@media (max-width:720px){
+body{font-size:15px}header.top{padding:11px 14px 10px;gap:9px}header.top h1{width:100%;font-size:19px;white-space:normal;padding-left:26px;line-height:1.3}header.top h1 .sub{font-size:9px;letter-spacing:2px;margin-top:2px}
+.views{order:3;width:100%;padding:0;overflow-x:auto;scrollbar-width:thin;border-left:0;border-right:0;border-top:1px solid var(--line)}.views button{flex:0 0 auto;padding:7px 10px;font-size:14px;white-space:nowrap}
+.toolbar{order:2;gap:7px}.toolbar .legend{order:3;width:100%;flex-wrap:nowrap;overflow-x:auto;padding-bottom:3px;scrollbar-width:thin}.chip{flex:0 0 auto}.ghost-btn{padding:7px 10px}#search{min-width:140px;padding:7px 10px}
+.view{padding:18px 14px 72px}.hero{padding:18px 17px 16px}.hero h2{font-size:20px}.hero .voice{flex:1 1 210px;max-width:none}.hero .hero-cta{position:static;margin-top:12px;text-align:right}.intro{margin:14px auto}
+.era-head{padding:13px 14px;align-items:flex-start;gap:5px 10px;flex-wrap:wrap}.era-yr{min-width:0;flex:1 1 100%}.era-title{flex:1 1 calc(100% - 76px);font-size:17px}.era-desc{min-width:0;flex:1 1 100%;order:4;line-height:1.55}.era-head .count{margin-left:auto}.era-body{padding:5px 10px 14px}
+.cards,.tn-grid,.qgrid{grid-template-columns:minmax(0,1fr);gap:10px}.card{padding:14px}.tn-body{grid-template-columns:minmax(0,1fr)}.tn-vs{height:32px;padding:0 14px}.tn-vs::before{top:50%;bottom:auto;left:14px;right:14px;width:auto;height:1px}.tn-vs span{padding:0 8px}.qcard{padding:17px 16px}
+.graph-help{left:10px;right:10px;bottom:10px;max-width:none;padding:8px 10px}#panel{width:100%;max-width:none}.p-head{padding:20px 18px 15px}.p-head h2{font-size:22px}.p-quote{margin:14px 18px 0;padding:12px 14px}.p-body{padding:15px 18px 60px}
+.match-box{padding:16px}.match-actions{justify-content:stretch}.match-actions>button{flex:1 1 145px;padding-left:12px;padding-right:12px}}
+@media (max-width:420px){.toolbar .legend{display:none}.ghost-btn{flex:0 0 auto}#search{flex:1 1 120px}.hero .voices{display:grid;grid-template-columns:minmax(0,1fr)}.match-actions>button{flex-basis:100%}}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}}
+
+</style>
+</head>
+<body>
+<div id="app">
+<header class="top">
+<h1>HW 哲學探索地圖<span class="sub">HW · THE MAP OF PHILOSOPHY</span></h1>
+<div class="views">
+<button data-view="timeline" class="active">時間軸</button>
+<button data-view="graph">關聯圖譜</button>
+<button data-view="tensions">思想交鋒</button>
+<button data-view="questions">大哉問</button>
+<button data-view="match">情境配對</button>
+</div>
+<div class="toolbar">
+<div class="legend" id="legend"></div>
+<button class="ghost-btn" id="randomBtn" title="隨機開啟一位思想家">🎲 隨機漫遊</button>
+<input id="search" placeholder="搜尋思想家 / 概念…" autocomplete="off">
+</div>
+</header>
+<main>
+<section class="view active" id="timelineView">
+<div class="scene-banner" aria-hidden="true">
+<img src="img/scene_dialogue.webp" alt="哲人對話" loading="lazy" onerror="this.closest('.scene-banner').style.display='none'">
+</div>
+<div id="hero"></div>
+<div class="fleuron"></div>
+<div class="intro dropcap">
+<p>哲學是串聯文明與知識的底層邏輯。沿著時間軸往下，看每個時代的人如何回應前人、又如何把問題交給後世。點開任一思想家，讀他的一句話、追蹤他與科學、政治、心理、藝術、科技的連結，也看看誰曾與他針鋒相對。</p>
+</div>
+<div id="timeline"></div>
+</section>
+<section class="view" id="graphView">
+<div id="graphWrap">
+<svg id="graph"></svg>
+<div class="graph-help">八個知識領域 · 75 位思想家<br>關係線於聚焦節點時清楚顯示。</div>
+</div>
+</section>
+<section class="view" id="tensionsView">
+<div class="tn-scene" aria-hidden="true">
+<img src="img/scene_debate.webp" alt="思想交鋒" loading="lazy" onerror="this.closest('.tn-scene').style.display='none'">
+</div>
+<div class="tn-intro"><p>哲學的生命力，藏在分歧裡。每一張卡片是一道千年未決的爭論——兩位思想家站在對立的兩端，問題本身比答案更值得停留。點任一方，走進他的世界。</p></div>
+<div class="tn-grid" id="tnGrid"></div>
+</section>
+<section class="view" id="questionsView">
+<div class="intro"><p>哲學的另一種讀法：不從年代，而從千百年來反覆追問的核心問題切入。點任一答案看是誰、在何時如何回應。</p></div>
+<div class="qgrid" id="qgrid"></div>
+</section>
+<section class="view" id="matchView">
+<div class="match-wrap">
+<div class="intro"><p>描述一個讓你困惑的現象、矛盾或情境，AI 會從哲學史裡找出最對應的思想家或理論，並說明為什麼。（此功能需在 Cowork 裡開啟才會運作；直接用瀏覽器開啟本檔時，前四個視圖完整可用，AI 配對與雲端同步則無法運作。）</p></div>
+<div class="match-box">
+<textarea id="matchInput" placeholder="例如：景觀設計公司老闆壓榨員工，卻標榜設計對社會、民眾、生態友善……"></textarea>
+<div class="match-chips" id="matchChips"></div>
+<div class="match-actions">
+<button class="match-clear" id="matchSyncBtn" type="button">同步到雲端</button>
+<button class="match-clear" id="matchClearBtn" type="button">清除紀錄</button>
+<button class="match-btn" id="matchSubmitBtn" type="button">尋找對應的哲學家</button>
+</div>
+<div id="syncStatus" style="font-size:11.5px;color:var(--muted);text-align:right;margin-top:8px;font-style:italic"></div>
+</div>
+<div id="matchResults"></div>
+<div class="match-history-title" id="matchHistoryTitle" style="display:none">過去的配對紀錄</div>
+<div id="matchHistory"></div>
+</div>
+</section>
+</main>
+</div>
+
+<div id="backdrop"></div>
+<aside id="panel"></aside>
+
+<script>
+/* =========================================================
+資料層：時代、思想家、跨領域連結、大哉問、金句、思想交鋒
+========================================================= */
+const DOMAINS = {
+meta: {name:"形上學", color:"var(--c-meta)"},
+epist: {name:"知識論", color:"var(--c-epist)"},
+ethics:{name:"倫理學", color:"var(--c-ethics)"},
+poli: {name:"政治社會", color:"var(--c-poli)"},
+logic: {name:"邏輯數學", color:"var(--c-logic)"},
+mind: {name:"心靈心理", color:"var(--c-mind)"},
+relig: {name:"宗教神學", color:"var(--c-relig)"},
+sci: {name:"科學科技", color:"var(--c-sci)"},
+};
+
+const ERAS = [
+{id:"ancient", yr:"前600 – 後500", title:"古代哲學", desc:"從神話走向理性，奠定西方與東方思想的源頭。"},
+{id:"medieval",yr:"500 – 1400", title:"中世紀哲學", desc:"信仰與理性的對話，希臘遺產經伊斯蘭世界回到歐洲。"},
+{id:"early", yr:"1400 – 1700", title:"近代早期", desc:"科學革命與理性主義崛起，知識的基礎被重新追問。"},
+{id:"enlight", yr:"1700 – 1800", title:"啟蒙時代", desc:"理性、經驗與自由，現代政治與道德的藍圖成形。"},
+{id:"c19", yr:"1800 – 1900", title:"十九世紀", desc:"歷史、辯證、懷疑與意志，對理性主義的反動與深化。"},
+{id:"c20", yr:"1900 – 1970", title:"二十世紀", desc:"語言、現象、存在——哲學分裂為分析與歐陸兩大潮流。"},
+{id:"contemp", yr:"1970 – 今", title:"當代議題", desc:"正義、心靈、資訊與人工智慧，哲學回到生活與科技現場。"},
+];
+
+const T = [
+{id:"thales",era:"ancient",name:"泰利斯",dates:"約前624–546",region:"古希臘",school:"米利都學派",
+doms:["meta","sci"],
+one:"被視為第一位哲學家，主張萬物本原是水，用自然而非神話解釋世界。",
+ideas:["以單一自然元素解釋萬物起源","把『為什麼』從神話轉向可推理的原因","預測日食，連結哲學與天文"],
+conn:["heraclitus","aristotle"],
+tags:["自然主義"],
+xdom:[{d:"sci",t:"自然科學的胚胎",p:"『用自然解釋自然』的態度，是日後物理學與宇宙論的方法論起點。"}]},
+{id:"heraclitus",era:"ancient",name:"赫拉克利特",dates:"約前535–475",region:"古希臘",school:"變動哲學",
+doms:["meta","logic"],
+one:"『萬物流轉』，沒有人能踏進同一條河兩次；以邏各斯（Logos）為宇宙秩序。",
+ideas:["變化是世界的本質","對立面的統一與張力","邏各斯：隱藏的理性秩序"],
+conn:["parmenides","hegel"],
+tags:["變動","過程哲學"],
+xdom:[{d:"sci",t:"過程思維",p:"『實在即過程』影響了後世的演化、熱力學與懷海德的歷程哲學。"}]},
+{id:"parmenides",era:"ancient",name:"巴門尼德",dates:"約前515–450",region:"古希臘",school:"伊利亞學派",
+doms:["meta","logic"],
+one:"『存在者存在，不存在者不存在』——以純粹邏輯論證變化是幻覺。",
+ideas:["存在是唯一、不變、不可分的","感官與理性的對立","用演繹推理而非觀察立論"],
+conn:["heraclitus","plato"],
+tags:["演繹"],
+xdom:[{d:"logic",t:"演繹論證的範本",p:"首次以嚴格推理而非觀察建立形上學主張，是邏輯論證的早期典範。"}]},
+{id:"confucius",era:"ancient",name:"孔子",dates:"前551–479",region:"中國",school:"儒家",
+doms:["ethics","poli"],
+one:"以『仁』與『禮』為核心，主張透過修身與教育達成人倫與社會秩序。",
+ideas:["仁：推己及人的道德核心","禮：維繫社會的規範與儀節","為政以德，修身齊家治國"],
+conn:["laozi","aristotle"],
+tags:["德治","教育"],
+xdom:[{d:"poli",t:"德治傳統",p:"以道德教化而非純法律治理，塑造東亞兩千年的政治與教育制度。"}]},
+{id:"laozi",era:"ancient",name:"老子",dates:"約前6世紀",region:"中國",school:"道家",
+doms:["meta","ethics"],
+one:"『道可道，非常道』，主張順應自然、無為而治，與儒家形成互補張力。",
+ideas:["道：先於萬物、不可名狀的本原","無為：不強求、順勢而行","物極必反的辯證觀"],
+conn:["confucius","heraclitus"],
+tags:["自然","系統觀"],
+xdom:[{d:"sci",t:"自然與系統觀",p:"順應自然、整體平衡的思路，與現代生態學、系統論有遙遠呼應。"}]},
+{id:"socrates",era:"ancient",name:"蘇格拉底",dates:"前470–399",region:"古希臘",school:"古典希臘",
+doms:["ethics","epist"],
+one:"『未經審視的人生不值得過』——以詰問法逼出定義，把哲學轉向人與德性。",
+ideas:["蘇格拉底反詰法：以問題揭露無知","德性即知識","關注『該如何生活』而非自然"],
+conn:["plato","confucius"],
+tags:["詰問","德性"],
+xdom:[{d:"poli",t:"言論與良心",p:"寧死不違背良心受審，成為公民不服從與思想自由的原型。"}]},
+{id:"plato",era:"ancient",name:"柏拉圖",dates:"前428–348",region:"古希臘",school:"柏拉圖主義",
+doms:["meta","epist","poli"],
+one:"以『理型論』區分可變現象與永恆真實，並在《理想國》設計正義的城邦。",
+ideas:["理型：超越感官的永恆真實","洞穴寓言：從幻象走向真知","哲學家王與正義的城邦","靈魂三分說"],
+conn:["socrates","parmenides","aristotle","augustine"],
+tags:["理型","烏托邦"],
+xdom:[{d:"logic",t:"數學柏拉圖主義",p:"『數學對象真實存在』的立場，至今仍是數學哲學的主流之一。"},
+{d:"poli",t:"烏托邦設計",p:"《理想國》是政治哲學中『理想社會』設計的源頭。"}]},
+{id:"aristotle",era:"ancient",name:"亞里斯多德",dates:"前384–322",region:"古希臘",school:"逍遙學派",
+doms:["meta","logic","ethics","sci"],
+one:"百科全書式的奠基者：建立形式邏輯、四因說與『中庸』德性倫理學。",
+ideas:["三段論：形式邏輯的開端","四因說解釋事物的存在","中庸與幸福（eudaimonia）","以觀察分類自然世界"],
+conn:["plato","aquinas","confucius"],
+tags:["德性統一","中庸","表裡一致"],
+xdom:[{d:"sci",t:"生物學與分類學",p:"系統觀察與分類生物，是經驗科學方法的遠祖。"},
+{d:"logic",t:"邏輯學奠基",p:"三段論主導邏輯學兩千年，直到十九世紀符號邏輯出現。"}]},
+{id:"epicurus",era:"ancient",name:"伊比鳩魯",dates:"前341–270",region:"古希臘",school:"伊比鳩魯學派",
+doms:["ethics","sci"],
+one:"以原子論為基礎，主張追求心靈的寧靜（ataraxia）才是真正的快樂。",
+ideas:["快樂＝沒有痛苦與煩擾","原子論的唯物世界觀","不必畏懼神與死亡"],
+conn:["aristotle","hume"],
+tags:["快樂主義"],
+xdom:[{d:"sci",t:"原子論",p:"繼承德謨克利特的原子論，預示了近代唯物與物理的微觀世界圖像。"}]},
+{id:"stoa",era:"ancient",name:"斯多噶學派",dates:"前300起",region:"古希臘羅馬",school:"斯多噶主義",
+doms:["ethics","logic"],
+one:"芝諾、塞內卡、馬可·奧理略：順應理性與自然，分辨能控制與不能控制之事。",
+ideas:["美德是唯一的善","區分『我能掌控』與『不能掌控』","宇宙由理性（邏各斯）貫穿"],
+conn:["epicurus","kant"],
+tags:["自制","CBT"],
+xdom:[{d:"mind",t:"認知行為療法",p:"『困擾我們的是看法而非事物本身』直接啟發了現代 CBT 心理治療。"}]},
+{id:"augustine",era:"medieval",name:"奧古斯丁",dates:"354–430",region:"北非／羅馬",school:"教父哲學",
+doms:["relig","meta","mind"],
+one:"融合柏拉圖主義與基督教，探討時間、記憶、自由意志與原罪。",
+ideas:["時間存在於心靈之中","內省作為通往真理的路","信仰尋求理解"],
+conn:["plato","aquinas"],
+tags:["內省","自由意志"],
+xdom:[{d:"mind",t:"內省與自我",p:"《懺悔錄》對內在經驗的細膩剖析，是自傳與心理自我反思的先驅。"}]},
+{id:"averroes",era:"medieval",name:"阿威羅伊",dates:"1126–1198",region:"安達魯斯（伊斯蘭）",school:"伊斯蘭亞里斯多德主義",
+doms:["meta","relig","sci"],
+one:"註解亞里斯多德，主張哲學與宗教真理可並行，把希臘思想傳回歐洲。",
+ideas:["理性與信仰的雙重真理","捍衛哲學探究的正當性","保存並闡釋亞里斯多德"],
+conn:["aristotle","aquinas"],
+tags:["雙重真理"],
+xdom:[{d:"sci",t:"知識的橋樑",p:"伊斯蘭世界保存與發展的希臘科學與哲學，是歐洲文藝復興的關鍵養分。"}]},
+{id:"aquinas",era:"medieval",name:"阿奎那",dates:"1225–1274",region:"義大利",school:"經院哲學",
+doms:["relig","meta","ethics"],
+one:"以亞里斯多德重建神學，提出上帝存在的五路論證與自然法理論。",
+ideas:["五路論證：從世界推向上帝","自然法：理性可知的道德秩序","信仰與理性互不矛盾"],
+conn:["aristotle","augustine","averroes"],
+tags:["自然法"],
+xdom:[{d:"poli",t:"自然法傳統",p:"自然法理論影響了人權、法律哲學與西方的正義觀念。"}]},
+{id:"bacon",era:"early",name:"法蘭西斯·培根",dates:"1561–1626",region:"英格蘭",school:"經驗論先驅",
+doms:["sci","epist"],
+one:"『知識就是力量』，倡導以歸納與實驗取代純思辨，奠定科學方法。",
+ideas:["歸納法：從觀察到通則","破除『偶像』（成見）","知識應服務於改善人類生活"],
+conn:["locke","descartes"],
+tags:["歸納","實證"],
+xdom:[{d:"sci",t:"科學方法",p:"系統化的實驗與歸納，是現代科學研究方法的直接源頭。"}]},
+{id:"descartes",era:"early",name:"笛卡兒",dates:"1596–1650",region:"法國",school:"理性主義",
+doms:["epist","meta","mind","logic"],
+one:"『我思故我在』——以普遍懷疑尋找確定的知識起點，開啟近代哲學。",
+ideas:["方法論的懷疑","我思故我在（cogito）","心物二元論","清晰明確的觀念為真"],
+conn:["bacon","spinoza","locke","kant"],
+tags:["懷疑","心物二元"],
+xdom:[{d:"mind",t:"心物問題",p:"心物二元論至今仍是心靈哲學與神經科學爭論的核心難題。"},
+{d:"logic",t:"解析幾何",p:"笛卡兒座標把代數與幾何結合，是數學史的轉捩點。"}]},
+{id:"spinoza",era:"early",name:"斯賓諾莎",dates:"1632–1677",region:"荷蘭",school:"理性主義",
+doms:["meta","ethics","relig"],
+one:"以幾何方法論證『神即自然』，一切皆為唯一實體的不同樣態。",
+ideas:["一元論：神即自然（泛神論）","以幾何方式推演倫理學","自由來自理解必然"],
+conn:["descartes","leibniz","nietzsche"],
+tags:["一元論","決定論"],
+xdom:[{d:"sci",t:"決定論宇宙",p:"萬物依必然法則展開的圖像，與愛因斯坦所認同的『宇宙的神』相呼應。"}]},
+{id:"leibniz",era:"early",name:"萊布尼茲",dates:"1646–1716",region:"德意志",school:"理性主義",
+doms:["meta","logic","sci"],
+one:"單子論與『可能世界中最好的一個』，並與牛頓各自發明微積分。",
+ideas:["單子：無窗的精神原子","充足理由律","可能世界與最佳化"],
+conn:["spinoza","descartes"],
+tags:["可能世界"],
+xdom:[{d:"logic",t:"符號邏輯與計算",p:"夢想一套『通用演算』來解決爭論，預示了形式邏輯與電腦運算。"},
+{d:"sci",t:"微積分",p:"與牛頓獨立發明微積分，其符號系統沿用至今。"}]},
+{id:"locke",era:"enlight",name:"洛克",dates:"1632–1704",region:"英格蘭",school:"經驗論",
+doms:["epist","poli","mind"],
+one:"心靈如白板，知識來自經驗；政府的正當性來自被治理者的同意。",
+ideas:["白板說：知識源於經驗","自然權利：生命、自由、財產","政府基於社會契約與同意"],
+conn:["bacon","hume","rousseau","descartes"],
+tags:["社會契約","自然權利"],
+xdom:[{d:"poli",t:"自由主義與美國憲法",p:"自然權利與有限政府的主張，直接影響了美國《獨立宣言》。"}]},
+{id:"hume",era:"enlight",name:"休謨",dates:"1711–1776",region:"蘇格蘭",school:"經驗論／懷疑論",
+doms:["epist","ethics","mind"],
+one:"把經驗論推到底：因果只是習慣性聯想，理性是激情的奴隸。",
+ideas:["因果關係無法被理性證明","『是』推不出『應該』（休謨問題）","自我只是知覺的束流"],
+conn:["locke","kant","epicurus"],
+tags:["懷疑論","休謨問題"],
+xdom:[{d:"sci",t:"歸納問題",p:"指出歸納法無法被嚴格證成，至今仍是科學哲學的核心難題。"},
+{d:"mind",t:"自我的解構",p:"否認固定不變的自我，與佛教無我觀及現代認知科學遙相呼應。"}]},
+{id:"rousseau",era:"enlight",name:"盧梭",dates:"1712–1778",region:"日內瓦／法國",school:"啟蒙／浪漫先驅",
+doms:["poli","ethics"],
+one:"『人生而自由，卻無處不在枷鎖中』——以公意與社會契約重構政治正當性。",
+ideas:["自然狀態與文明的墮落","公意（general will）","社會契約與人民主權"],
+conn:["locke","kant","marx"],
+tags:["公意","人民主權"],
+xdom:[{d:"poli",t:"法國大革命",p:"人民主權與公意的思想，是法國大革命與現代民主的精神燃料。"}]},
+{id:"kant",era:"enlight",name:"康德",dates:"1724–1804",region:"普魯士",school:"德國觀念論／批判哲學",
+doms:["epist","ethics","meta"],
+one:"調和理性論與經驗論：心靈以先天範疇建構經驗；道德源於普遍的定言令式。",
+ideas:["哥白尼式革命：對象符合認知","現象與物自身的區分","定言令式與義務論","人是目的而非手段"],
+conn:["hume","descartes","hegel","rawls","stoa"],
+tags:["定言令式","工具化","人是目的"],
+xdom:[{d:"sci",t:"認知的框架",p:"『心智主動建構經驗』的觀點，預示了認知科學與感知研究。"},
+{d:"poli",t:"永久和平與人權",p:"《論永久和平》構想國際聯邦，影響了聯合國與普世人權。"}]},
+{id:"hegel",era:"c19",name:"黑格爾",dates:"1770–1831",region:"德意志",school:"德國觀念論",
+doms:["meta","poli","logic"],
+one:"以辯證法描繪精神（Geist）在歷史中自我展開，追求自由的實現。",
+ideas:["辯證法：正—反—合","歷史是自由意識的進展","主奴辯證與承認"],
+conn:["kant","marx","heraclitus"],
+tags:["辯證法","承認"],
+xdom:[{d:"poli",t:"歷史哲學",p:"『歷史有方向』的觀念，深刻形塑了現代的進步觀與意識形態。"}]},
+{id:"marx",era:"c19",name:"馬克思",dates:"1818–1883",region:"德意志",school:"歷史唯物論",
+doms:["poli","ethics"],
+one:"翻轉黑格爾辯證：物質生產與階級鬥爭才是歷史的動力。",
+ideas:["歷史唯物論","異化勞動","階級鬥爭與資本批判"],
+conn:["hegel","rousseau"],
+tags:["意識形態","異化","剝削","偽善","商品拜物教"],
+xdom:[{d:"poli",t:"二十世紀的革命",p:"其思想塑造了社會主義、共產主義運動與整個二十世紀的政治版圖。"},
+{d:"sci",t:"社會科學",p:"對社會學、經濟學與歷史學的批判方法影響深遠。"}]},
+{id:"kierkegaard",era:"c19",name:"齊克果",dates:"1813–1855",region:"丹麥",school:"存在主義先驅",
+doms:["ethics","relig","mind"],
+one:"反抗體系哲學，強調個人的抉擇、焦慮與『信仰的跳躍』。",
+ideas:["主體性即真理","存在的三階段：審美—倫理—宗教","焦慮與絕望的分析"],
+conn:["hegel","sartre","heidegger"],
+tags:["焦慮","信仰跳躍"],
+xdom:[{d:"mind",t:"焦慮心理學",p:"對焦慮與絕望的剖析，影響了存在主義心理治療與現代心理學。"}]},
+{id:"nietzsche",era:"c19",name:"尼采",dates:"1844–1900",region:"德意志",school:"生命哲學",
+doms:["ethics","meta","mind"],
+one:"『上帝已死』，呼籲重估一切價值，以權力意志與超人面對虛無。",
+ideas:["上帝已死與虛無主義","權力意志","主人道德 vs 奴隸道德","永恆回歸"],
+conn:["spinoza","sartre","foucault"],
+tags:["權力意志","重估價值"],
+xdom:[{d:"mind",t:"深層心理學",p:"對潛意識動機與自我欺騙的洞見，啟發了佛洛伊德與榮格。"}]},
+{id:"mill",era:"c19",name:"彌爾",dates:"1806–1873",region:"英格蘭",school:"效益主義",
+doms:["ethics","poli"],
+one:"發展效益主義並捍衛個人自由：傷害原則劃定社會干預的界線。",
+ideas:["最大多數人的最大幸福","傷害原則與言論自由","質性高低的快樂之分"],
+conn:["hume","rawls"],
+tags:["效益主義"],
+xdom:[{d:"poli",t:"自由與民主",p:"《論自由》是言論自由、少數權利與現代自由民主的經典辯護。"}]},
+{id:"russell",era:"c20",name:"羅素",dates:"1872–1970",region:"英國",school:"分析哲學",
+doms:["logic","epist","poli"],
+one:"與弗雷格共建現代邏輯，嘗試把數學化約為邏輯，開創分析哲學。",
+ideas:["邏輯主義：數學奠基於邏輯","描述詞理論","清晰分析語言以解決哲學問題"],
+conn:["wittgenstein","leibniz"],
+tags:["分析哲學"],
+xdom:[{d:"sci",t:"電腦與人工智慧",p:"形式邏輯與《數學原理》是計算理論與 AI 推理的基礎。"},
+{d:"logic",t:"集合論悖論",p:"『羅素悖論』撼動數學基礎，逼出二十世紀的邏輯革命。"}]},
+{id:"wittgenstein",era:"c20",name:"維根斯坦",dates:"1889–1951",region:"奧地利／英國",school:"語言哲學",
+doms:["logic","epist","mind"],
+one:"前後期判若兩人：從『語言界限即世界界限』到『意義即用法』。",
+ideas:["凡不可說的應保持沉默","語言遊戲與生活形式","意義來自使用而非指稱"],
+conn:["russell"],
+tags:["語言遊戲"],
+xdom:[{d:"mind",t:"語言與思維",p:"『私人語言不可能』的論證，深刻影響語言學與認知科學。"}]},
+{id:"husserl",era:"c20",name:"胡塞爾",dates:"1859–1938",region:"德意志",school:"現象學",
+doms:["epist","mind","meta"],
+one:"創立現象學：『回到事物本身』，描述意識經驗的結構。",
+ideas:["意向性：意識總是關於某物","現象學還原（懸置）","回到事物本身"],
+conn:["heidegger","descartes"],
+tags:["現象學"],
+xdom:[{d:"mind",t:"意識研究",p:"對第一人稱經驗的描述，成為當代意識科學與認知現象學的方法。"}]},
+{id:"heidegger",era:"c20",name:"海德格",dates:"1889–1976",region:"德意志",school:"存在主義／現象學",
+doms:["meta","mind"],
+one:"追問『存在的意義』，以『此在』（Dasein）分析人作為向死而生的存在。",
+ideas:["存在與存在者的區分","此在：被拋入世界的存在","向死而生與本真性"],
+conn:["husserl","kierkegaard","sartre"],
+tags:["存在","技術批判"],
+xdom:[{d:"sci",t:"科技哲學",p:"對技術『座架』本質的批判，是當代科技哲學的奠基文本。"}]},
+{id:"sartre",era:"c20",name:"沙特",dates:"1905–1980",region:"法國",school:"存在主義",
+doms:["ethics","meta","mind","poli"],
+one:"『存在先於本質』，人被判處自由，必須為自己的選擇負全責。",
+ideas:["存在先於本質","絕對自由與責任","自欺（bad faith）","他人即地獄"],
+conn:["heidegger","kierkegaard","nietzsche","beauvoir"],
+tags:["自欺","責任","自由"],
+xdom:[{d:"poli",t:"介入與解放",p:"自由與責任的哲學，連結了反殖民、左翼運動與公共知識分子角色。"}]},
+{id:"beauvoir",era:"c20",name:"波娃",dates:"1908–1986",region:"法國",school:"存在主義／女性主義",
+doms:["ethics","poli"],
+one:"『女人不是生成的，而是被塑造的』——奠定現代女性主義哲學。",
+ideas:["性別作為社會建構","他者與第二性","自由處境中的倫理"],
+conn:["sartre"],
+tags:["社會建構","他者"],
+xdom:[{d:"poli",t:"女性主義運動",p:"《第二性》是第二波女性主義與性別研究的理論基石。"}]},
+{id:"rawls",era:"contemp",name:"羅爾斯",dates:"1921–2002",region:"美國",school:"政治哲學",
+doms:["poli","ethics"],
+one:"以『無知之幕』下的原初狀態，論證作為公平的正義原則。",
+ideas:["無知之幕與原初狀態","正義二原則","作為公平的正義"],
+conn:["kant","mill"],
+tags:["分配正義"],
+xdom:[{d:"poli",t:"當代正義論",p:"重啟規範性政治哲學，主導了分配正義、福利與制度設計的辯論。"}]},
+{id:"foucault",era:"contemp",name:"傅柯",dates:"1926–1984",region:"法國",school:"後結構主義",
+doms:["poli","epist","mind"],
+one:"分析知識與權力如何交織，塑造瘋癲、規訓與性等『正常』的範疇。",
+ideas:["權力／知識","規訓社會與全景監獄","話語建構真理"],
+conn:["nietzsche"],
+tags:["權力知識","規訓","話語"],
+xdom:[{d:"poli",t:"監控與治理",p:"對規訓與監控的分析，是理解數位時代隱私與權力的關鍵框架。"}]},
+{id:"turing",era:"contemp",name:"圖靈",dates:"1912–1954",region:"英國",school:"計算理論／心靈哲學",
+doms:["logic","mind","sci"],
+one:"以圖靈機定義『可計算』，並以『模仿遊戲』提出機器能否思考的問題。",
+ideas:["圖靈機與可計算性","圖靈測試：機器能思考嗎？","計算作為心智的模型"],
+conn:["russell","wittgenstein","chalmers"],
+tags:["AI","可計算性"],
+xdom:[{d:"sci",t:"人工智慧",p:"奠定電腦科學與 AI，把『心靈是否就是運算』推上哲學前台。"}]},
+{id:"chalmers",era:"contemp",name:"查爾默斯",dates:"1966–",region:"澳洲／美國",school:"心靈哲學",
+doms:["mind","meta","sci"],
+one:"提出意識的『困難問題』：為何物理過程會伴隨主觀經驗？",
+ideas:["意識的困難問題","哲學殭屍思想實驗","延伸心靈與模擬假說"],
+conn:["turing","descartes","husserl"],
+tags:["意識難題"],
+xdom:[{d:"sci",t:"AI 與意識",p:"在神經科學與大型 AI 時代，重新點燃『主觀經驗從何而來』的爭論。"}]},
+{id:"searle",era:"contemp",name:"瑟爾",dates:"1932–",region:"美國",school:"心靈／語言哲學",
+doms:["mind","logic","epist"],
+one:"以『中文房間』論證：照規則操弄符號，並不等於真正理解意義。",
+ideas:["中文房間思想實驗","語言行動理論（speech acts）","生物自然主義：意識是大腦的生物現象"],
+conn:["turing","chalmers","wittgenstein"],
+tags:["中文房間","理解","語意"],
+xdom:[{d:"sci",t:"AI 的語意難題",p:"區分『語法』與『語意』，點出 AI 可能操弄符號卻不具理解。"}]},
+{id:"nagel",era:"contemp",name:"內格爾",dates:"1937–",region:"美國",school:"心靈哲學",
+doms:["mind","meta","ethics"],
+one:"『當一隻蝙蝠是什麼感覺？』——主觀經驗無法被客觀物理描述窮盡。",
+ideas:["主觀觀點不可化約","《從無何之地的觀看》","對純物理主義的質疑"],
+conn:["chalmers","descartes","dennett"],
+tags:["主觀性","感質"],
+xdom:[{d:"sci",t:"意識的鴻溝",p:"指出再完整的神經科學，也說不出『感覺起來像什麼』。"}]},
+{id:"dennett",era:"contemp",name:"丹尼特",dates:"1942–2024",region:"美國",school:"心靈哲學／認知科學",
+doms:["mind","sci","meta"],
+one:"意識沒有神祕劇場；以『意向立場』與演化解釋心智，消解所謂難題。",
+ideas:["意識的多重草稿模型","意向立場","達爾文式的『危險思想』"],
+conn:["nagel","chalmers","turing"],
+tags:["自然主義","意向立場"],
+xdom:[{d:"sci",t:"心智即過程",p:"把意識當成大腦運算的湧現，而非額外的神祕實體。"}]},
+{id:"bostrom",era:"contemp",name:"博斯特倫",dates:"1973–",region:"瑞典／英國",school:"科技哲學／未來研究",
+doms:["sci","ethics","mind"],
+one:"分析超智慧的風險與『模擬論證』：我們甚至可能活在電腦模擬之中。",
+ideas:["超智慧與控制問題","存在風險（existential risk）","模擬論證"],
+conn:["turing","chalmers","jonas"],
+tags:["AI風險","存在風險"],
+xdom:[{d:"sci",t:"AI 安全",p:"把『如何讓超越人類的 AI 仍服務人類』變成迫切的哲學與工程課題。"}]},
+{id:"zuboff",era:"contemp",name:"祖博夫",dates:"1951–",region:"美國",school:"社會理論",
+doms:["poli","sci","ethics"],
+one:"提出『監控資本主義』：把人類經驗變成可預測、可販售的行為數據。",
+ideas:["監控資本主義","行為剩餘與預測產品","工具型權力"],
+conn:["foucault","marx","floridi"],
+tags:["監控","數據","平台"],
+xdom:[{d:"poli",t:"數位時代的權力",p:"揭示平台如何把注意力與行為私有化、商品化。"}]},
+{id:"dreyfus",era:"contemp",name:"德雷福斯",dates:"1929–2017",region:"美國",school:"現象學／AI 批判",
+doms:["mind","sci","epist"],
+one:"借海德格與梅洛龐蒂批判 AI：人的智能根植於身體與處境，無法化為規則。",
+ideas:["《電腦不能做什麼》","身體化的認知","反對純符號主義 AI"],
+conn:["heidegger","husserl","searle"],
+tags:["身體化","反符號AI"],
+xdom:[{d:"sci",t:"AI 的限度",p:"預言純規則式 AI 的瓶頸，啟發了具身與情境化的認知科學。"}]},
+{id:"floridi",era:"contemp",name:"弗洛里迪",dates:"1964–",region:"義大利／英國",school:"資訊哲學",
+doms:["sci","epist","ethics"],
+one:"建立『資訊哲學』與資訊倫理：在資訊圈（infosphere）中重思隱私與責任。",
+ideas:["資訊哲學","資訊圈與資訊有機體","資訊倫理"],
+conn:["zuboff","turing","bostrom"],
+tags:["資訊倫理","隱私"],
+xdom:[{d:"sci",t:"資訊時代的倫理",p:"把隱私、身分與責任放進『人人都是資訊有機體』的框架重新思考。"}]},
+{id:"nozick",era:"contemp",name:"諾齊克",dates:"1938–2002",region:"美國",school:"自由至上主義",
+doms:["poli","ethics"],
+one:"以個人權利為絕對前提，論證只有『最小國家』正當——直接挑戰羅爾斯。",
+ideas:["權利作為邊際約束","最小國家（守夜人國家）","持有正義：獲取、轉讓、矯正"],
+conn:["rawls","locke","mill"],
+tags:["自由至上","權利"],
+xdom:[{d:"poli",t:"自由至上主義",p:"為小政府、自由市場與財產權提供了最系統的哲學辯護。"}]},
+{id:"sen",era:"contemp",name:"沈恩",dates:"1933–",region:"印度",school:"福利經濟學／政治哲學",
+doms:["poli","ethics"],
+one:"以『能力取向』重定義發展：重點不是擁有多少，而是能實際做什麼、成為什麼。",
+ideas:["能力（capabilities）與功能","發展即自由","飢荒源於分配與權利而非缺糧"],
+conn:["rawls","nussbaum","mill"],
+tags:["能力取向","發展"],
+xdom:[{d:"poli",t:"人類發展指標",p:"其思想催生了聯合國人類發展指數，改寫了『進步』的衡量方式。"}]},
+{id:"nussbaum",era:"contemp",name:"納思邦",dates:"1947–",region:"美國",school:"倫理／政治哲學",
+doms:["ethics","poli"],
+one:"發展能力清單與『脆弱的善』：好生活需要的是讓人得以蓬勃發展的條件。",
+ideas:["中心能力清單","情感在倫理中的角色","善的脆弱性"],
+conn:["sen","aristotle","rawls"],
+tags:["能力清單","情感倫理"],
+xdom:[{d:"ethics",t:"情感與正義",p:"把同情、脆弱與文學想像帶回理性主導的正義論。"}]},
+{id:"sandel",era:"contemp",name:"桑德爾",dates:"1953–",region:"美國",school:"社群主義／政治哲學",
+doms:["poli","ethics"],
+one:"社群主義地批判中立自由主義：正義離不開善，也質疑市場的道德界限。",
+ideas:["對『無拘束自我』的批判","市場不該觸及的領域","功績的傲慢"],
+conn:["rawls","nozick","aristotle"],
+tags:["社群主義","功績"],
+xdom:[{d:"poli",t:"市場的道德界限",p:"追問哪些東西（器官、選票、關懷）不該被買賣。"}]},
+{id:"arendt",era:"c20",name:"鄂蘭",dates:"1906–1975",region:"德國／美國",school:"政治哲學",
+doms:["poli","ethics"],
+one:"分析極權主義與『平庸之惡』：最大的惡，可能來自不思考的平凡人。",
+ideas:["極權主義的起源","平庸之惡","行動、勞動與工作的區分"],
+conn:["heidegger","kant","habermas"],
+tags:["平庸之惡","極權"],
+xdom:[{d:"poli",t:"公共領域與行動",p:"重申政治是人們共同行動、開創新局的空間，而非僅是管理。"}]},
+{id:"habermas",era:"contemp",name:"哈伯馬斯",dates:"1929–",region:"德國",school:"批判理論（法蘭克福學派）",
+doms:["poli","epist","ethics"],
+one:"以『溝通理性』與理想言談情境，為民主審議與共識奠定理性基礎。",
+ideas:["溝通行動理論","公共領域的結構轉型","商談倫理"],
+conn:["kant","adorno","foucault"],
+tags:["溝通理性","公共領域"],
+xdom:[{d:"poli",t:"審議民主",p:"主張正當性來自自由平等的公共討論，影響了當代民主理論。"}]},
+{id:"adorno",era:"c20",name:"阿多諾",dates:"1903–1969",region:"德國",school:"法蘭克福學派",
+doms:["poli","ethics","meta"],
+one:"以『啟蒙的辯證』批判工具理性，並揭示『文化工業』如何馴化大眾。",
+ideas:["啟蒙的辯證","文化工業","否定辯證法"],
+conn:["marx","nietzsche","habermas"],
+tags:["文化工業","工具理性"],
+xdom:[{d:"poli",t:"大眾文化批判",p:"揭示娛樂與消費如何成為新型態的支配與順從。"}]},
+{id:"singer",era:"contemp",name:"辛格",dates:"1946–",region:"澳洲",school:"應用倫理（效益主義）",
+doms:["ethics","poli"],
+one:"以效益主義主張平等考量一切能感受苦樂者，開創動物解放與效益利他。",
+ideas:["物種歧視（speciesism）","利益的平等考量","效益利他主義"],
+conn:["mill","aristotle","jonas"],
+tags:["動物解放","效益利他"],
+xdom:[{d:"ethics",t:"道德圈的擴張",p:"把道德關懷從人類擴展到一切有感受的生命。"}]},
+{id:"jonas",era:"contemp",name:"約納斯",dates:"1903–1993",region:"德國／美國",school:"倫理／科技哲學",
+doms:["ethics","sci","relig"],
+one:"提出『責任原理』：科技力量空前，倫理必須涵蓋對未來世代與自然的責任。",
+ideas:["責任的命令","恐懼的啟發法","科技時代的倫理真空"],
+conn:["heidegger","kant","naess"],
+tags:["未來世代","責任"],
+xdom:[{d:"sci",t:"科技倫理",p:"主張行動時要確保『地球上仍有真正人類生活的延續』。"}]},
+{id:"naess",era:"contemp",name:"奈斯",dates:"1912–2009",region:"挪威",school:"環境哲學",
+doms:["ethics","sci"],
+one:"創立『深層生態學』：萬物有其內在價值，人只是生命之網的一部分。",
+ideas:["深層 vs 淺層生態學","生態自我的擴展","生命中心的平等"],
+conn:["spinoza","laozi","jonas"],
+tags:["深層生態","內在價值"],
+xdom:[{d:"sci",t:"生態哲學",p:"為環境運動提供了超越『為人類保育』的倫理根據。"}]},
+{id:"popper",era:"c20",name:"波普爾",dates:"1902–1994",region:"奧地利／英國",school:"科學哲學",
+doms:["epist","sci","poli"],
+one:"以『可否證性』劃分科學與非科學：科學的精神在於勇於被反駁。",
+ideas:["否證論（falsifiability）","猜想與反駁","開放社會及其敵人"],
+conn:["hume","kuhn","kant"],
+tags:["否證論","開放社會"],
+xdom:[{d:"sci",t:"科學的判準",p:"回應休謨的歸納問題：科學不靠證實，而靠不斷接受嚴格檢驗。"}]},
+{id:"kuhn",era:"c20",name:"孔恩",dates:"1922–1996",region:"美國",school:"科學哲學／科學史",
+doms:["epist","sci"],
+one:"科學不是線性累積，而是常態科學與『典範轉移』革命交替前進。",
+ideas:["典範（paradigm）","常態科學與科學革命","不可共量性"],
+conn:["popper","hume","foucault"],
+tags:["典範轉移","科學革命"],
+xdom:[{d:"sci",t:"科學如何變遷",p:"揭示科學受社群與世界觀左右，挑戰了『純客觀累進』的迷思。"}]},
+{id:"butler",era:"contemp",name:"巴特勒",dates:"1956–",region:"美國",school:"性別理論／後結構主義",
+doms:["ethics","poli","mind"],
+one:"性別不是本質而是『操演』：在反覆的言行中被生產出來。",
+ideas:["性別操演（performativity）","《性別惑亂》","脆弱性與可哀悼的生命"],
+conn:["beauvoir","foucault","nietzsche"],
+tags:["性別操演","建構"],
+xdom:[{d:"poli",t:"酷兒理論",p:"鬆動『男／女』的自然化二分，成為性別與酷兒研究的奠基。"}]},
+{id:"fanon",era:"c20",name:"法農",dates:"1925–1961",region:"馬丁尼克／阿爾及利亞",school:"後殖民主義",
+doms:["poli","ethics","mind"],
+one:"剖析殖民如何內化為心理創傷，並論證去殖民的解放與暴力。",
+ideas:["《黑皮膚，白面具》","殖民的心理病理","去殖民與民族意識"],
+conn:["sartre","beauvoir","said"],
+tags:["後殖民","種族"],
+xdom:[{d:"mind",t:"殖民與心理",p:"把種族壓迫的精神創傷帶入哲學與精神醫學的視野。"}]},
+{id:"said",era:"contemp",name:"薩依德",dates:"1935–2003",region:"巴勒斯坦／美國",school:"後殖民／文化理論",
+doms:["poli","epist"],
+one:"以『東方主義』揭示西方如何建構、支配它想像出來的『東方』。",
+ideas:["東方主義","知識與帝國的共謀","流亡與對位閱讀"],
+conn:["foucault","fanon","nietzsche"],
+tags:["東方主義","再現"],
+xdom:[{d:"poli",t:"再現的政治",p:"指出『描述他者』從來不中立，總與權力交織。"}]},
+{id:"nishida",era:"c20",name:"西田幾多郎",dates:"1870–1945",region:"日本",school:"京都學派",
+doms:["meta","mind","relig"],
+one:"融合禪與西方哲學，以『純粹經驗』與『絕對無』重構東方形上學。",
+ideas:["純粹經驗","場所（basho）的邏輯","絕對無"],
+conn:["husserl","laozi","nagarjuna"],
+tags:["京都學派","絕對無"],
+xdom:[{d:"mind",t:"東西會通",p:"以嚴謹哲學語言表達禪的體驗，開啟跨文化哲學對話。"}]},
+{id:"mou",era:"c20",name:"牟宗三",dates:"1909–1995",region:"中國／台灣",school:"當代新儒家",
+doms:["meta","ethics","relig"],
+one:"會通康德與儒釋道，主張人能體現『智的直覺』，挺立道德主體。",
+ideas:["良知坎陷以開出科學與民主","智的直覺","判教與會通中西"],
+conn:["confucius","kant","nishida"],
+tags:["當代新儒家","道德主體"],
+xdom:[{d:"ethics",t:"儒學的現代轉化",p:"嘗試讓傳統心性之學接上現代的科學與民主。"}]},
+{id:"zhuangzi",era:"ancient",name:"莊子",dates:"約前369–286",region:"中國",school:"道家",
+doms:["meta","ethics","mind"],
+one:"以『齊物』與『逍遙』泯除是非對立，追求精神的自由與物化。",
+ideas:["齊物論：是非乃觀點之別","逍遙遊","莊周夢蝶與物化"],
+conn:["laozi","heraclitus","nagarjuna"],
+tags:["齊物","逍遙"],
+xdom:[{d:"mind",t:"觀點與自由",p:"打破固執的分別心，與現代視角主義與心理自由相通。"}]},
+{id:"nagarjuna",era:"medieval",name:"龍樹",dates:"約150–250",region:"印度",school:"中觀（佛教）",
+doms:["meta","epist","relig"],
+one:"以『空』與『緣起』論證萬法無自性，以中道破除一切極端見。",
+ideas:["空（śūnyatā）","緣起與二諦","四句否定的辯證"],
+conn:["parmenides","zhuangzi","nishida"],
+tags:["空","中觀"],
+xdom:[{d:"logic",t:"否定的辯證",p:"以拆解概念的方式逼近真實，與西方懷疑論與辯證法遙相呼應。"}]},
+{id:"crenshaw",era:"contemp",name:"克倫肖",dates:"1959–",region:"美國",school:"批判種族理論／法學",
+doms:["poli","ethics"],
+one:"提出『交織性』：種族、性別等壓迫並非相加，而是交錯產生獨特處境。",
+ideas:["交織性（intersectionality）","批判種族理論","結構性歧視"],
+conn:["butler","beauvoir","fanon"],
+tags:["交織性","結構歧視"],
+xdom:[{d:"poli",t:"多重壓迫",p:"讓法律與政策看見『同時是黑人又是女性』被忽略的處境。"}]},
+{id:"srussell",era:"contemp",name:"史都華·羅素",dates:"1962–",region:"英國／美國",school:"人工智慧／AI 安全",
+doms:["sci","mind","ethics"],
+one:"重寫 AI 的目標：別造『更聰明』的機器，要造『對人類有益、且知道自己可能弄錯』的機器。",
+ideas:["價值對齊與控制問題","可證明有益的 AI","關掉開關難題"],
+conn:["turing","bostrom","lecun"],
+tags:["AI對齊","控制問題"],
+xdom:[{d:"sci",t:"AI 安全工程",p:"把『讓 AI 對不確定的人類偏好保持謙遜』變成可設計的技術原則。"}]},
+{id:"hinton",era:"contemp",name:"辛頓",dates:"1947–",region:"英國／加拿大",school:"深度學習",
+doms:["sci","mind"],
+one:"深度學習之父，晚年卻轉為警告者：我們造出了可能比自己更聰明的東西。",
+ideas:["反向傳播與神經網路","學習表徵","對 AI 失控的公開警告"],
+conn:["turing","lecun","bostrom"],
+tags:["深度學習","AI風險"],
+xdom:[{d:"sci",t:"深度學習革命",p:"讓神經網路從邊緣翻身成主流，點燃了當代 AI 浪潮。"}]},
+{id:"lecun",era:"contemp",name:"楊立昆",dates:"1960–",region:"法國／美國",school:"深度學習",
+doms:["sci","mind","epist"],
+one:"同為深度學習奠基者，卻看衰近期 AGI 與末日論，力主開放研究與世界模型。",
+ideas:["卷積神經網路","世界模型與自監督學習","反對 AGI 恐慌"],
+conn:["hinton","pearl","turing"],
+tags:["開放AI","AGI懷疑"],
+xdom:[{d:"sci",t:"樂觀的工程觀",p:"主張今日 AI 連貓的常識都不如，真正智能還要靠新架構而非更大模型。"}]},
+{id:"pearl",era:"contemp",name:"珀爾",dates:"1936–",region:"以色列／美國",school:"因果推論／AI",
+doms:["sci","logic","epist"],
+one:"光會看資料的機器只停在『關聯』；真正的智能要能問『如果……會怎樣』。",
+ideas:["因果之梯：關聯—介入—反事實","貝氏網路","《因果革命》"],
+conn:["hume","lecun","kuhn"],
+tags:["因果","反事實"],
+xdom:[{d:"sci",t:"因果推論",p:"替休謨的因果難題給出可計算的框架，挑戰純資料驅動的 AI。"}]},
+{id:"bender",era:"contemp",name:"班德",dates:"當代",region:"美國",school:"計算語言學",
+doms:["epist","logic","mind"],
+one:"大型語言模型只是『隨機鸚鵡』：把語料縫成像話的句子，卻不理解任何意義。",
+ideas:["隨機鸚鵡","形式 vs 意義的區分","對 AI 炒作的批判"],
+conn:["searle","wittgenstein","hinton"],
+tags:["隨機鸚鵡","語言模型"],
+xdom:[{d:"mind",t:"語言與理解",p:"延續瑟爾的問題到 LLM 時代：流暢產生文字，不等於懂得意義。"}]},
+{id:"gebru",era:"contemp",name:"蓋布魯",dates:"當代",region:"衣索比亞裔美籍",school:"AI 倫理",
+doms:["poli","ethics","sci"],
+one:"AI 不是中立的：它把歷史的偏見學進去，再規模化地放大出來。",
+ideas:["演算法偏見與公平","資料集的權力問題","大模型的環境與勞動代價"],
+conn:["crawford","zuboff","crenshaw"],
+tags:["演算法偏見","AI公平"],
+xdom:[{d:"poli",t:"AI 的不正義",p:"揭示臉部辨識、招聘與信用演算法如何複製種族與性別歧視。"}]},
+{id:"crawford",era:"contemp",name:"克勞福",dates:"當代",region:"澳洲／美國",school:"AI 的政治經濟",
+doms:["poli","ethics","sci"],
+one:"AI 既不是人工的，也不是智慧——它是用地球資源、人力與資料堆出來的權力。",
+ideas:["《AI 地圖集》","萃取主義與基礎設施","分類即權力"],
+conn:["zuboff","foucault","gebru"],
+tags:["AI即權力","萃取"],
+xdom:[{d:"poli",t:"AI 的物質與政治",p:"把雲端、礦產、血汗標註與能源耗用，攤開在『智慧』的光環背後。"}]},
+{id:"harari",era:"contemp",name:"哈拉瑞",dates:"1976–",region:"以色列",school:"歷史／未來學",
+doms:["poli","ethics","sci"],
+one:"以『數據主義』警示：當人被當成資料處理系統，我們正把權威交給演算法。",
+ideas:["《人類大命運》與數據主義","虛構故事凝聚人類","自由意志在大數據前的失效"],
+conn:["zuboff","nietzsche","kurzweil"],
+tags:["數據主義","後人類"],
+xdom:[{d:"poli",t:"演算法與權威",p:"追問當機器比你更懂你，民主、自由與個人主義還站得住嗎。"}]},
+{id:"kurzweil",era:"contemp",name:"庫茲威爾",dates:"1948–",region:"美國",school:"未來學／超人類主義",
+doms:["sci","mind","meta"],
+one:"預言『奇點』：人類終將與自己創造的智能融合，超越生物的極限。",
+ideas:["加速回報定律","技術奇點","心智上傳與長生"],
+conn:["turing","harari","bostrom"],
+tags:["奇點","超人類主義"],
+xdom:[{d:"sci",t:"指數型未來",p:"以指數成長論證人機融合將近，是科技樂觀主義最鮮明的代言。"}]},
+{id:"yudkowsky",era:"contemp",name:"尤考斯基",dates:"1979–",region:"美國",school:"AI 對齊／理性主義",
+doms:["sci","ethics","logic"],
+one:"超人類 AI 不必恨你，才會要你的命——你只是擋在它目標前面的原子。",
+ideas:["友善 AI 與對齊難題","理性主義方法論","對超智慧的悲觀警告"],
+conn:["bostrom","srussell","kurzweil"],
+tags:["對齊","末日警告"],
+xdom:[{d:"sci",t:"存在風險",p:"把『一旦造出失控的超智慧就無法挽回』推上公共議程，與庫茲威爾的樂觀對峙。"}]},
+{id:"tononi",era:"contemp",name:"托諾尼",dates:"1960–",region:"義大利／美國",school:"意識科學",
+doms:["mind","sci","meta"],
+one:"提出『整合資訊理論』：意識的多寡，可用系統整合資訊的量（Φ）來衡量。",
+ideas:["整合資訊理論（IIT）","Φ 與意識的測量","意識是內在、基本的"],
+conn:["chalmers","dennett","seth"],
+tags:["IIT","意識測量"],
+xdom:[{d:"sci",t:"意識的科學",p:"嘗試把『難題』變成可量化的科學，連植物人診斷與 AI 意識都想回答。"}]},
+{id:"seth",era:"contemp",name:"賽斯",dates:"當代",region:"英國",school:"認知神經科學",
+doms:["mind","sci","epist"],
+one:"你經驗到的世界，是大腦對外界最佳猜測的『受控幻覺』。",
+ideas:["預測加工與主動推論","受控的幻覺","作為『野獸機器』的自我"],
+conn:["chalmers","dennett","tononi"],
+tags:["預測加工","受控幻覺"],
+xdom:[{d:"mind",t:"知覺即預測",p:"以『大腦不斷預測、修正』解釋知覺與自我，把現象學接上神經科學。"}]},
+];
+
+/* 代表金句 */
+const QUOTES = {
+thales:"萬物皆充滿神明。",
+heraclitus:"人不能兩次踏進同一條河流。",
+parmenides:"存在者存在，不存在者不存在。",
+confucius:"己所不欲，勿施於人。",
+laozi:"道可道，非常道；名可名，非常名。",
+socrates:"未經審視的人生，不值得過。",
+plato:"我們是被囚禁在洞穴中、把影子當作真實的人。",
+aristotle:"幸福，是靈魂合乎德性的活動。",
+epicurus:"死亡與我們無關：我們在時死亡未到，死亡來時我們已不在。",
+stoa:"困擾人們的不是事物本身，而是他們對事物的看法。",
+augustine:"你為自己造了我們，我們的心若不安息於你，便不得安寧。",
+averroes:"真理不會與真理相違背。",
+aquinas:"信仰與理性，是通往同一真理的兩條路。",
+bacon:"知識就是力量。",
+descartes:"我思，故我在。",
+spinoza:"不嘲笑、不悲嘆、不詛咒，只求理解。",
+leibniz:"我們所在的，是一切可能世界中最好的一個。",
+locke:"心靈起初是一塊白板，一切知識皆來自經驗。",
+hume:"理性是、且應當只是激情的奴隸。",
+rousseau:"人生而自由，卻無處不在枷鎖之中。",
+kant:"位我上者，燦爛星空；道德律令，在我心中。",
+hegel:"凡是合乎理性的就是現實的，凡是現實的就是合乎理性的。",
+marx:"哲學家們只是用不同方式解釋世界，問題在於改變世界。",
+kierkegaard:"焦慮，是自由的暈眩。",
+nietzsche:"那殺不死我的，使我更強大。",
+mill:"做一個不滿足的人，勝過做一頭滿足的豬。",
+russell:"世界的麻煩在於：愚者信心滿滿，智者疑慮重重。",
+wittgenstein:"凡不可言說之事，應當保持沉默。",
+husserl:"回到事物本身！",
+heidegger:"人，是向死的存在。",
+sartre:"人是被判處自由的——一旦被拋入世界，便要為所做的一切負責。",
+beauvoir:"女人不是生成的，而是被塑造的。",
+rawls:"正義，是社會制度的首要美德。",
+foucault:"哪裡有權力，哪裡就有抵抗。",
+turing:"我們只能看到不遠的前方，卻能看到許多有待完成的事。",
+chalmers:"為什麼物理過程會伴隨主觀經驗？這是意識的困難問題。",
+searle:"程式即使通過圖靈測試，也只是操弄符號，並不理解任何意義。",
+nagel:"再完整的物理知識，也說不出『當一隻蝙蝠是什麼感覺』。",
+dennett:"意識不是腦中的一座劇場，而是大腦敘事出來的結果。",
+bostrom:"我們這個世代，或許正決定著智慧生命的長遠命運。",
+zuboff:"我們不再是產品的顧客，我們自己就是被開採的原料。",
+dreyfus:"人的智能長在身體與處境裡，不是一堆可寫成規則的事實。",
+floridi:"我們已經住進資訊圈裡，成為彼此相連的資訊有機體。",
+nozick:"個人擁有權利；有些事，是任何人、任何國家都不可對他做的。",
+sen:"發展，就是擴展人們真正享有的自由。",
+nussbaum:"美好的人生是脆弱的——它需要我們無法完全掌控的條件。",
+sandel:"不是所有東西都該拿來買賣；有些價值，市場會腐蝕。",
+arendt:"最大的惡，往往出自那些從不下決心當好人或壞人的平凡人。",
+habermas:"唯有在沒有宰制的對話中達成的共識，才具有正當性。",
+adorno:"奧斯威辛之後，文化的每一道光輝都帶著共謀的陰影。",
+singer:"問題不在牠們能否推理或說話，而在牠們能否感受痛苦。",
+jonas:"行動吧，但要讓你行為的後果，與地球上真正人類生活的延續相容。",
+naess:"每一個生命都有它自身的價值，不因對人有沒有用而定。",
+popper:"一個理論若無法被任何可能的觀察推翻，它就不是科學。",
+kuhn:"科學革命之後，科學家彷彿在一個不同的世界裡工作。",
+butler:"性別不是你『是』什麼，而是你反覆在『做』什麼。",
+fanon:"我來到世上，本想在萬物中尋找意義，卻發現自己只是眾多客體中的一個。",
+said:"所謂東方，幾乎是被歐洲憑空發明出來的一個概念。",
+nishida:"在純粹經驗裡，能知與所知尚未分裂，主客還是一體。",
+mou:"良知須暫時自我坎陷，才能開出知識與民主的客觀世界。",
+zhuangzi:"不知周之夢為蝴蝶與？蝴蝶之夢為周與？",
+nagarjuna:"凡因緣所生之法，我說即是空。",
+crenshaw:"當壓迫沿著多條軸線交會，單一視角就會把人遺漏在十字路口。",
+srussell:"我們該打造的，不是更聰明的機器，而是對人類有益、且知道自己可能弄錯的機器。",
+hinton:"我們第一次造出了可能比自己更聰明的東西——我不確定我們能否一直控制它。",
+lecun:"今天最強的 AI，連一隻貓的常識都不如；談超越人類，還太早。",
+pearl:"只會看資料的機器停在『關聯』；真正的智能，要能想像『如果當初不一樣，會怎樣』。",
+bender:"語言模型是隨機鸚鵡：它把見過的文字縫成像話的句子，卻不懂任何一個字的意思。",
+gebru:"演算法不是中立的——它把我們歷史裡的偏見，學了進去再放大出來。",
+crawford:"所謂人工智慧，既不人工、也不智慧：它是用礦產、人力與資料堆出來的權力。",
+harari:"在數據主義眼中，人類只是資料處理系統；而我們，正一步步把權威交給演算法。",
+kurzweil:"在奇點來臨時，人類將與自己創造的智能融合，超越生物的極限。",
+yudkowsky:"超人類 AI 不需要恨你，才會要你的命——你只是擋在它目標前面的一堆原子。",
+tononi:"意識的多寡，可以用一個系統整合資訊的量（Φ）來衡量。",
+seth:"你所經驗的現實，是大腦對外界最佳猜測的一場『受控的幻覺』。",
+};
+
+/* 深入：脈絡與生平 + 為何今天仍重要 */
+const DEEP = {
+thales:{bio:"米利都的泰利斯被亞里斯多德追認為西方第一位哲學家。在他之前，人們用神祇的喜怒解釋洪水、地震與星象；泰利斯卻主張萬物的本原是『水』，第一次嘗試用單一的自然元素、而非神話，來說明世界為何如此。他同時是天文學家與幾何學家，相傳曾預測一次日食，也用影子比例量出金字塔的高度。",why:"他真正的革命不在於『答案是水』，而在於相信世界有一套可被理性追問的秩序——這個信念，是後來一切科學與哲學的起點。"},
+heraclitus:{bio:"赫拉克利特出身以弗所貴族，文字晦澀，被稱為『晦澀者』。他主張萬物處於永恆流變之中——你不能兩次踏進同一條河，因為河水與你都已不同。但流變之下並非混亂，而由『邏各斯』（Logos，隱藏的理性秩序）支配，並透過對立面的張力（弓與弦、冷與熱）維持動態的平衡。",why:"『實在即過程』的洞見，遙遙呼應了演化論、熱力學與現代系統思維：世界不是一堆靜止的東西，而是不斷生成的關係。"},
+parmenides:{bio:"伊利亞的巴門尼德以一首哲學長詩立論，與赫拉克利特針鋒相對。他用純粹邏輯推演主張：『存在者存在，不存在者不存在』，因此真正的存在必然是唯一、不可分、不生不滅且不動的；我們感官所見的生滅變化，只是不可靠的『意見之路』。",why:"他是第一個把『論證』本身當作通往真理之路的人——即使結論違反常識，只要推理正確就得接受。這種對邏輯的信任，定義了往後兩千年的哲學方法。"},
+confucius:{bio:"孔子身處禮崩樂壞的春秋末期，周遊列國卻不得重用，晚年返魯講學、整理典籍，弟子相傳三千。他不空談形上玄理，而把焦點放在『人該如何相處、社會該如何安頓』：以『仁』為內在的道德核心，以『禮』為外在的行為規範，主張為政者應以德化民、以身作則。",why:"儒家把道德教化置於律法之上，塑造了東亞兩千年的政治、家庭與教育制度；『己所不欲，勿施於人』至今仍是跨文化倫理的黃金法則。"},
+laozi:{bio:"老子其人撲朔迷離，《道德經》五千言卻影響深遠。他提出先於萬物、不可名狀的『道』，主張『無為』——不是什麼都不做，而是不強求、不逆勢，讓事物依其本性自然開展。他善用『柔弱勝剛強』『物極必反』等辯證意象，與儒家的積極有為形成互補的張力。",why:"順應自然、整體平衡的思路，與現代生態學、系統論與『少即是多』的設計哲學遙相呼應，也是面對過勞與內捲時的一帖清涼劑。"},
+socrates:{bio:"蘇格拉底沒有留下任何著作，我們對他的認識主要來自柏拉圖的對話錄。他在雅典街頭以連續詰問逼人定義『正義』『勇敢』『虔誠』，揭露對方其實並不真懂，因而樹敵。最終他被控『敗壞青年、不敬城邦神祇』，卻拒絕逃亡，從容受死，以生命實踐了自己的信念。",why:"他把哲學從『世界由什麼構成』轉向『人該如何生活』，並示範了一種至今仍珍貴的態度：承認無知，才是求知的開始。"},
+plato:{bio:"柏拉圖是蘇格拉底的弟子、亞里斯多德的老師，創辦了西方第一所學院『Academy』。他以『理型論』區分變動的感官世界與永恆的真實：我們看到的萬物只是理型的摹本。著名的『洞穴寓言』描繪囚徒誤把牆上影子當作真實，唯有掙脫枷鎖走向陽光才見真知。在《理想國》中，他更設計了由哲學家王治理的正義城邦。",why:"從數學柏拉圖主義到烏托邦設計，他設定了西方哲學兩千年反覆辯論的議題——難怪懷海德說，整部西方哲學史不過是『對柏拉圖的一系列註腳』。"},
+aristotle:{bio:"亞里斯多德師承柏拉圖卻走上不同道路：他不認為真實在彼岸的理型，而內在於具體事物之中，因此格外重視觀察與分類。他幾乎為每個領域奠基——邏輯（三段論）、物理、生物、倫理、政治、修辭學。在倫理上，他主張幸福（eudaimonia）來自合乎德性的活動，而德性是過與不及之間的『中庸』。",why:"他的形式邏輯主宰學界兩千年，他的經驗觀察是科學方法的遠祖，而『實踐智慧』與『中庸』至今仍是品格教育的核心。"},
+epicurus:{bio:"伊比鳩魯在雅典創辦『花園』學派，接納女性與奴隸入學，在當時極為前衛。他繼承原子論的唯物世界觀，主張靈魂也由原子構成、會隨死亡消散，因此『死亡與我們無關』。他所說的快樂並非縱慾，而是身體無痛、心靈無擾的寧靜（ataraxia），靠的是節制慾望與真摯友誼。",why:"在焦慮與消費主義盛行的今天，他『分辨必要與不必要的慾望、追求心靈寧靜』的處方，重新成為簡樸生活與正念思潮的源頭。"},
+stoa:{bio:"斯多噶學派橫跨希臘與羅馬，代表人物有奴隸出身的愛比克泰德、劇作家塞內卡與羅馬皇帝馬可·奧理略。他們的核心功夫是『控制二分法』：分辨什麼操之在我（我的判斷與選擇）、什麼不操之在我（他人、名聲、命運），把心力只投注在前者，對後者坦然接受。",why:"『困擾我們的不是事物本身，而是我們對事物的看法』直接啟發了現代認知行為療法（CBT），也讓斯多噶成為當代最受歡迎的生活哲學之一。"},
+augustine:{bio:"奧古斯丁年輕時放浪而才氣縱橫，歷經摩尼教與懷疑論後皈依基督教，成為影響整個西方的教父。他在《懺悔錄》中以驚人的內省剖白自己的慾望與掙扎，並融合柏拉圖主義探討時間（『時間存在於心靈之中』）、記憶、自由意志與原罪。",why:"他對『內在自我』的細膩描寫，是自傳文體與心理自省的先驅；他關於恩典與意志的思考，更深刻形塑了往後的基督教神學與西方的罪責觀念。"},
+averroes:{bio:"阿威羅伊（Ibn Rushd）是安達魯斯的法官、醫生與哲學家，畢生為亞里斯多德作詳盡註解，在中世紀歐洲被尊稱為『註釋者』。他主張哲學與宗教是通往同一真理的不同路徑，捍衛理性探究的正當性，因而與保守神學家衝突。",why:"正是伊斯蘭世界保存並發展的希臘科學與哲學，經由他的註解傳回歐洲，點燃了士林哲學與文藝復興——他是橫跨文明的知識橋樑。"},
+aquinas:{bio:"阿奎那是中世紀經院哲學的集大成者。當亞里斯多德的著作經阿拉伯世界重返歐洲、令教會深感威脅時，他著手把亞里斯多德哲學與基督教神學調和，巨著《神學大全》系統論證信仰與理性並不矛盾。他提出上帝存在的『五路論證』，並發展出理性可知的『自然法』道德秩序。",why:"自然法理論影響了人權觀念、法律哲學與正義思想；他『信仰尋求理解』的立場，至今仍是宗教與理性對話的典範。"},
+bacon:{bio:"法蘭西斯·培根是英格蘭的政治家與哲學家，科學革命的吹哨人。他批評純粹的演繹思辨無法產生新知，倡導以系統化的觀察、實驗與『歸納法』從事實逐步上升到通則。他還提出著名的『四種偶像』，提醒人們留意成見如何扭曲認知。",why:"『知識就是力量』成為現代的座右銘；他描繪的實驗歸納方法，是日後皇家學會與整個現代科學研究範式的直接藍圖。"},
+descartes:{bio:"笛卡兒被譽為近代哲學之父。他決心為知識尋找絕對確定的地基，於是展開『方法論的懷疑』：凡可被懷疑的一律暫時擱置，連感官與數學都不放過。最後他發現有一件事無法被懷疑——正在懷疑的『我』必然存在，於是得出『我思故我在』，並由此重建知識。他也提出心物二元論，並發明了解析幾何。",why:"他把哲學的起點從世界轉向『主體的意識』，開啟了近代知識論；心物二元的難題與解析幾何，至今仍活在心靈哲學與數學之中。"},
+spinoza:{bio:"斯賓諾莎是荷蘭的猶太裔哲學家，因思想激進而被猶太社群革除教籍，靠磨鏡片維生，過著清貧而獨立的生活。他在《倫理學》中以幾何學的公理演繹方式論證：宇宙只有唯一實體，就是『神即自然』，萬物都是這唯一實體的不同樣態；人的自由不在於擺脫必然，而在於『理解』必然。",why:"他的泛神論與決定論宇宙觀，與愛因斯坦所信仰的『宇宙的神』一脈相承；他『以理解代替怨懟』的人生姿態，也成為現代世俗靈性的重要源頭。"},
+leibniz:{bio:"萊布尼茲是百科全書式的天才，身兼數學家、邏輯學家、外交官與發明家。他提出『單子論』——宇宙由無數無窗的精神原子（單子）構成；又以『充足理由律』主張凡事必有其所以然，並樂觀地論證我們身處『一切可能世界中最好的一個』。他與牛頓各自獨立發明了微積分。",why:"他夢想一套能化解一切爭論的『通用演算』，預示了形式邏輯與電腦運算；他的微積分符號至今仍是全球通用的數學語言。"},
+locke:{bio:"洛克是英國經驗論的奠基者，也是政治自由主義之父。他主張心靈起初是一塊『白板』，一切知識都來自經驗與反省，沒有與生俱來的觀念。在政治上，他提出人擁有生命、自由與財產的『自然權利』，政府的正當性來自被治理者的同意，若政府背棄託付，人民有權反抗。",why:"他的自然權利與有限政府理論，直接寫進了美國《獨立宣言》，是現代立憲民主與人權思想的基石。"},
+hume:{bio:"休謨是蘇格蘭啟蒙運動的核心人物，把經驗論推到極致。他指出我們從未真正『看見』因果，只是反覆觀察到兩件事相隨而生，便養成了期待的習慣；他更區分『是』與『應該』，指出從事實描述推不出道德規範（休謨問題）。他甚至主張『自我』不過是一束不斷流轉的知覺。",why:"他的懷疑論喚醒了康德，他的歸納問題仍是科學哲學的未解難題，而他對固定自我的否定，與佛教無我觀及現代認知科學意外呼應。"},
+rousseau:{bio:"盧梭是日內瓦出身、命運坎坷的啟蒙思想家，文字充滿激情。他主張人在自然狀態本是自由善良的，是文明與私有財產帶來了不平等與枷鎖。在《社會契約論》中，他提出『公意』（general will）的概念：政治正當性來自全體人民共同意志的自我立法，而非少數人的統治。",why:"『人生而自由，卻無處不在枷鎖中』成為法國大革命與現代民主的精神號角；他對情感與本真的歌頌，也開啟了浪漫主義。"},
+kant:{bio:"康德一生未離開故鄉柯尼斯堡，作息規律到鄰居能據此對時，思想卻掀起哲學的『哥白尼式革命』。他調和理性論與經驗論，主張並非心智去符合對象，而是對象必須通過心智的先天範疇（時間、空間、因果）才能被經驗；我們只能認識『現象』，無法觸及『物自身』。在倫理上，他提出『定言令式』：只依你願其成為普遍法則的準則行事，並務必把人當目的、而非僅僅當工具。",why:"他重劃了知識的界限、為道德奠定了不依賴神的理性基礎；『人是目的』與《論永久和平》的構想，至今仍是人權與國際秩序的思想根源。"},
+hegel:{bio:"黑格爾是德國觀念論的巔峰，體系恢宏而艱深。他以『辯證法』描繪精神（Geist）如何透過正—反—合的矛盾運動，在歷史長河中逐步自我認識、邁向自由的實現。他著名的『主奴辯證』揭示自我意識必須透過他人的『承認』才得以成立。",why:"『歷史有方向、朝自由前進』的觀念，深刻形塑了現代的進步觀與各種意識形態；他的辯證法更直接被馬克思繼承並倒轉。"},
+marx:{bio:"馬克思是哲學家、經濟學家與革命者，一生顛沛流亡，在大英博物館苦讀寫成《資本論》。他把黑格爾的辯證法『倒過來』：推動歷史的不是精神，而是物質生產方式與階級鬥爭。他分析資本主義如何使勞動者與其勞動成果、與自身本質『異化』，並批判主流意識形態如何粉飾剝削的真相。",why:"他的思想塑造了二十世紀的社會主義運動與整個政治版圖；即使在後冷戰時代，他對異化、不平等與資本邏輯的批判，仍是理解當代經濟的利器。"},
+kierkegaard:{bio:"齊克果是丹麥的孤獨天才，被視為存在主義之父。他猛烈反抗黑格爾包羅萬象的體系，認為真理不是客觀的系統，而是個人如何全心投入地『存在』。他剖析人生的三個階段（審美—倫理—宗教），並深入描寫焦慮與絕望——焦慮正是面對無限可能性（即自由）時的暈眩。",why:"他對個體抉擇、焦慮與信仰之躍的分析，直接催生了二十世紀的存在主義，也深刻影響了存在主義心理治療與現代心理學。"},
+nietzsche:{bio:"尼采是語言如詩、思想如雷的德國哲學家，盛年因精神崩潰而沉默。他宣告『上帝已死』——並非歡呼，而是警告：當傳統價值的根基崩塌，人類將墜入虛無，必須勇敢『重估一切價值』。他區分主動進取的『主人道德』與出於怨恨的『奴隸道德』，並以『權力意志』與『超人』召喚人為自己創造意義。",why:"他對潛意識動機與自我欺騙的洞見啟發了佛洛伊德與榮格；他逼問『沒有上帝，價值從何而來』，至今仍是世俗時代每個人的切身課題。"},
+mill:{bio:"彌爾自幼接受父親嚴苛的天才教育，青年時一度精神崩潰，後在詩與情感中重獲生機，這段經歷讓他修正了效益主義。他主張行為的對錯取決於能否帶來『最大多數人的最大幸福』，但快樂有質的高低之分。在《論自由》中，他提出『傷害原則』：只要不傷害他人，個人自由就不容干涉。",why:"他對言論自由、少數權利與個體自主的捍衛，是現代自由民主社會最有力的經典辯護之一。"},
+russell:{bio:"羅素是二十世紀的思想巨人，集邏輯學家、哲學家、和平運動者與諾貝爾文學獎得主於一身。他與懷海德合著《數學原理》，試圖把全部數學奠基於邏輯；途中發現的『羅素悖論』撼動了集合論的根基。他開創了清晰分析語言、以解決哲學問題的分析哲學傳統。",why:"他的形式邏輯是計算理論與人工智慧推理的基礎；而他終身對和平、自由與理性的公開倡議，樹立了公共知識分子的典範。"},
+wittgenstein:{bio:"維根斯坦是奧地利富商之子，散盡家財、性格激烈，一生兩度改寫哲學。前期《邏輯哲學論》主張語言是世界的圖像，『凡不可說的應保持沉默』；後期他卻推翻自己，提出『語言遊戲』——詞語的意義不在於指稱某物，而在於它在生活形式中『如何被使用』。",why:"他『意義即用法』的轉向重塑了語言哲學，『私人語言不可能』的論證更深刻影響了語言學、心理學與認知科學。"},
+husserl:{bio:"胡塞爾原是數學家，後轉向哲學，創立了『現象學』。他主張哲學應『回到事物本身』，懸置（epoché）一切既有的理論預設，純粹地描述意識經驗如何呈現。他的核心概念是『意向性』：意識永遠是『關於某物』的意識。",why:"他對第一人稱經驗的嚴格描述，成為當代意識科學與認知現象學的方法源頭，也直接培育了海德格、沙特等一代歐陸哲學家。"},
+heidegger:{bio:"海德格是二十世紀最具影響也最具爭議的哲學家。他認為整個西方哲學遺忘了最根本的問題——『存在』本身的意義。在《存在與時間》中，他以『此在』（Dasein）分析人這種特殊的存在者：我們被『拋入』世界、與他人共在，並在『向死而生』的覺悟中，才可能活出本真的自己。（他與納粹的牽連，至今仍是無法迴避的污點。）",why:"他對技術『座架』本質的批判，是當代科技哲學的奠基文本；他對時間、死亡與本真的思考，也深刻影響了存在主義、詮釋學與後現代思潮。"},
+sartre:{bio:"沙特是法國存在主義的旗手，也是拒領諾貝爾獎的公共知識分子。他的名言『存在先於本質』意指：人沒有預先寫好的本質，是被『拋入』世界後，透過一次次選擇造就自己。這份絕對的自由也是沉重的責任——把選擇推給處境或天性，是一種『自欺』（bad faith）。",why:"他把自由與責任推到極致，連結了反殖民、左翼運動與公共參與；在一個一切都可被歸因於基因、環境或演算法的時代，他對『你仍要為自己負責』的堅持格外刺耳而珍貴。"},
+beauvoir:{bio:"波娃是哲學家、小說家，也是現代女性主義的奠基者。她以存在主義為底，在《第二性》中提出震撼世界的命題：『女人不是生成的，而是被塑造的』——女性氣質並非天生本質，而是社會與歷史把女性建構成相對於男性的『他者』。",why:"《第二性》是第二波女性主義與性別研究的理論基石；她對『他者』與社會建構的分析，至今仍是理解性別、種族與各種壓迫結構的核心工具。"},
+rawls:{bio:"羅爾斯是二十世紀最重要的政治哲學家，以一部《正義論》重新點燃了規範性政治哲學。他設計了一個思想實驗：想像人們在『無知之幕』後協商社會規則——不知道自己將生為貧富、男女、何種族裔。他論證理性的人會選出兩條正義原則，其中最特別的是：不平等只有在能讓最弱勢者也受益時才被允許。",why:"他把『公平』放回正義的核心，主導了往後半世紀關於分配正義、福利制度與機會平等的全球辯論。"},
+foucault:{bio:"傅柯是法國後結構主義的代表，以歷史考掘的方式分析瘋癲、監獄、醫學與性如何被建構。他提出『權力／知識』：權力不只是壓制，更生產出『何謂正常、何謂真理』的知識，並透過學校、醫院、監獄等機構，把人訓練成自我規訓的『馴順身體』（如『全景監獄』的隱喻）。",why:"在演算法推薦、人臉辨識與大數據監控的時代，他對規訓、監控與『正常化』的分析，成了理解數位權力與隱私最鋒利的框架。"},
+turing:{bio:"圖靈是英國數學家，理論電腦科學與人工智慧之父，二戰期間於布萊切利園破解德軍 Enigma 密碼，扭轉戰局。他以『圖靈機』精確定義了什麼是『可計算』，並提出『模仿遊戲』（圖靈測試）：若機器的回應與人無從分辨，我們便沒有理由否認它在思考。他因同性戀身分遭受迫害，英年早逝。",why:"他奠定了電腦科學的理論根基，並把『心靈是否就是一種運算』推上哲學前台——在大型 AI 時代，這個問題比以往任何時候都更迫切。"},
+chalmers:{bio:"查爾默斯是澳洲哲學家，當代心靈哲學的關鍵人物。他區分意識的『簡單問題』（解釋大腦如何處理資訊、控制行為）與『困難問題』：為什麼這些物理過程會『伴隨』主觀的感受——看見紅色、嚐到苦味的那種第一人稱經驗？他以『哲學殭屍』思想實驗（一個行為與你完全相同、卻毫無內在體驗的存在）凸顯這道鴻溝。",why:"在神經科學突飛猛進、AI 看似愈來愈『像人』的今天，他重新點燃了『主觀經驗究竟從何而來、機器是否可能擁有』的根本爭論。"},
+searle:{bio:"瑟爾是美國語言與心靈哲學家。他延續奧斯丁的語言行動理論，主張說話就是在做事；更以『中文房間』思想實驗反駁強人工智慧：一個不懂中文的人，只要照規則表操作中文字卡，就能對外裝出懂中文的樣子——可他其實什麼都不懂。電腦也是如此，只有語法、沒有語意。",why:"在大型語言模型能流暢對答的今天，他的『語法不等於語意、運算不等於理解』成了判斷『AI 到底懂不懂』最鋒利的一把刀。"},
+nagel:{bio:"內格爾是美國哲學家。他在名文〈當一隻蝙蝠是什麼感覺？〉中指出：就算我們完全掌握蝙蝠用聲納感知世界的全部物理事實，仍無法知道『身為一隻蝙蝠、從內部感覺起來是什麼樣子』。主觀的觀點，是客觀科學語言抓不到的剩餘。",why:"他替意識的『難題』立了標竿：任何號稱解釋了心靈的理論，都得先回答這個蝙蝠之問——這也是當代意識科學與 AI 意識爭論的起點。"},
+dennett:{bio:"丹尼特是美國哲學家、認知科學家，立場與內格爾、查爾默斯針鋒相對。他認為意識沒有什麼神祕的『內在劇場』，而是大腦多條訊息流競爭、編織出來的敘事（多重草稿模型）；要理解心智，採取『意向立場』把系統當成有信念慾望的行動者來預測就夠了。",why:"他代表了用演化與計算『把意識解魅』的一方；在 AI 時代，他提醒我們：覺得意識有不可解的神祕，可能只是直覺在騙我們。"},
+bostrom:{bio:"博斯特倫是瑞典裔哲學家，牛津『人類未來研究所』創辦人。他系統地分析『超智慧』一旦出現可能帶來的控制問題與『存在風險』（足以毀滅人類未來的風險），並提出著名的『模擬論證』：若先進文明能跑大量祖先模擬，我們身處模擬中的機率就不低。",why:"他把『AI 安全』『長期主義』從科幻變成嚴肅的哲學與政策議題，深刻影響了當代對人工智慧治理的討論。"},
+zuboff:{bio:"祖博夫是美國學者、哈佛商學院榮譽教授。她在《監控資本主義時代》中指出，Google、臉書等平台發現了一門新生意：免費服務換取你的行為數據，把這些『行為剩餘』加工成預測你下一步的產品，再賣給廣告商——你不是顧客，你是被開採的原料。",why:"在演算法推薦與注意力經濟主宰生活的今天，她替我們命名了一種看不見卻無所不在的新型權力。"},
+dreyfus:{bio:"德雷福斯是美國哲學家，最早從現象學立場批判人工智慧。他借海德格、梅洛龐蒂指出：人的智能不是一堆可明文化的規則與事實，而是長在身體、技能與處境之中的『默會理解』；因此純符號規則式的 AI 注定撞牆。早年他被 AI 圈嘲笑，後來許多預言成真。",why:"他的批判推動 AI 從硬規則轉向具身、情境與學習，對今天強調『身體化認知』的研究是重要的先聲。"},
+floridi:{bio:"弗洛里迪是義大利裔哲學家，『資訊哲學』的奠基者。他主張當代最根本的轉變，是我們整體遷入了由資料與運算構成的『資訊圈』，每個人都成了相互連結的『資訊有機體』；隱私、身分、責任都必須在這個新環境裡重新定義。",why:"當生活愈來愈由資料流構成，他提供了一套把倫理直接架在『資訊』之上的框架，影響了歐盟的數位倫理與 AI 政策。"},
+nozick:{bio:"諾齊克是美國哲學家，與同事羅爾斯隔空對辯。他在《無政府、國家與烏托邦》中以個人權利為不可逾越的底線，論證：只有保護人身與財產的『最小國家』是正當的，任何為了平等而重分配的大政府，都等於強迫一部分人為另一部分人服務。",why:"他為自由至上主義、小政府與自由市場提供了最嚴謹的哲學辯護，至今仍是與羅爾斯式福利國家對峙的另一極。"},
+sen:{bio:"沈恩是印度裔經濟學家、哲學家，諾貝爾經濟學獎得主。他研究飢荒時發現：大饑荒往往不是因為沒有糧食，而是分配與權利出了問題。由此他發展出『能力取向』——衡量一個人過得好不好，要看他實際『能做什麼、能成為什麼』，而非只看收入或資源。",why:"他把『發展即自由』寫進了聯合國人類發展指數，徹底改寫了我們衡量進步、貧窮與正義的方式。"},
+nussbaum:{bio:"納思邦是美國哲學家，與沈恩合作發展能力取向，並列出一份人類蓬勃發展所需的『中心能力清單』（生命、健康、情感、遊戲、參與政治等）。她同時主張：情感、脆弱與文學想像不是理性的敵人，而是道德判斷不可或缺的一部分。",why:"她讓正義理論重新長出血肉——關注尊嚴、同情與『人需要什麼才能活得像人』，廣泛影響了發展、教育與人權實務。"},
+sandel:{bio:"桑德爾是美國政治哲學家，以哈佛公開課《正義》聞名。他從社群主義立場批評羅爾斯式『中立、不預設善』的自由主義：人不是與一切歸屬切割的『無拘束自我』，正義也離不開對『何謂好生活』的共同討論。他並追問市場的道德界限。",why:"從代理孕母到買賣選票、從功績主義到『該不該什麼都用錢解決』，他把抽象的正義論帶回每個人切身的公共爭論。"},
+arendt:{bio:"鄂蘭是猶太裔政治思想家，逃離納粹後流亡美國。她在《極權主義的起源》剖析極權如何運作；又在報導艾希曼受審時提出震撼世界的『平庸之惡』——這個送無數人進毒氣室的官僚，並非青面獠牙的惡魔，而是個不思考、只想把工作做好的平凡人。",why:"她警告我們：最可怕的惡不一定來自壞人，而來自放棄思考與判斷的尋常人；這個洞見在每個服從體制的時代都歷久彌新。"},
+habermas:{bio:"哈伯馬斯是德國哲學家，法蘭克福學派第二代的核心。不同於前輩對理性的悲觀，他試圖搶救理性中解放的一面：提出『溝通理性』，主張在一個沒有權力宰制、人人平等發言的『理想言談情境』裡，我們能透過論理達成真正正當的共識。",why:"他為審議式民主奠基——正當性不來自多數暴力或強人，而來自自由公開的公共討論；這對假訊息橫行、公共領域碎裂的今天格外重要。"},
+adorno:{bio:"阿多諾是德國哲學家、法蘭克福學派代表。他與霍克海默在《啟蒙的辯證》中提出黑暗的診斷：本應解放人類的理性，墮落成只問效率的『工具理性』，反過來支配人；而流行音樂、電影等『文化工業』則把大眾的反抗力消磨成順從的消費。",why:"在串流、演算法與娛樂至上的時代，他對『文化如何讓人心甘情願被馴化』的批判，讀來幾乎像是預言。"},
+singer:{bio:"辛格是澳洲倫理學家，當代應用倫理最具影響力也最具爭議的人物。他以效益主義為基礎主張：道德上該被考量的，是一個存在能否『感受苦樂』，而不是牠是不是人；把界線畫在物種，就像種族歧視一樣是『物種歧視』。他也是『效益利他主義』的推手。",why:"他把道德關懷的圈子向外推到動物與全球貧窮，直接催生了當代動物權利運動與有效利他思潮。"},
+jonas:{bio:"約納斯是德裔哲學家，海德格的學生。他指出傳統倫理只管當下、眼前的人，但現代科技的力量已大到能毀掉整個地球與後代；因此需要一條新的『責任原理』：我們對那些還沒出生、無法為自己發聲的未來世代與自然，負有照管的義務。",why:"在氣候變遷與生物科技的時代，他『行動時要確保人類還能延續』的命令，成了環境與科技倫理的奠基思想。"},
+naess:{bio:"奈斯是挪威哲學家、登山家。他區分只為人類利益保育的『淺層』環保，與主張萬物各有內在價值的『深層生態學』：人不是自然的主宰，只是生命之網的一個結點，我們的『自我』應擴展到認同整個生態。",why:"他為環境運動提供了超越功利計算的倫理根基，深刻影響了生態哲學與環保行動。"},
+popper:{bio:"波普爾是奧地利裔英國哲學家。他主張科學的標誌不是『能被證實』，而是『能被否證』——一個真正的科學理論必須勇於說出『若觀察到某結果，我就錯了』。他並把這套精神延伸到政治，在《開放社會及其敵人》中捍衛可被批評、可被修正的開放社會。",why:"他替休謨的歸納難題找到出路（科學靠汰錯而非證實），也提供了識破偽科學與封閉意識形態的判準。"},
+kuhn:{bio:"孔恩是美國科學史家、哲學家。他在《科學革命的結構》中顛覆了『科學穩定累積』的圖像：科學多數時候是在既有『典範』下解謎的『常態科學』，但累積的異常終會引爆『科學革命』，整個世界觀被新典範取代——而新舊典範之間往往難以共量、難以對話。",why:"『典範轉移』成了跨越學界的日常用語；他讓我們看見科學也受社群、信念與歷史左右，與波普爾的理性圖像形成張力。"},
+butler:{bio:"巴特勒是美國哲學家、性別理論奠基者。在《性別惑亂》中，他們主張：性別不是一個人內在固定的本質，而是透過日復一日的言語、姿態、穿著被反覆『操演』出來的；正是這些重複，製造了『男人』『女人』看似自然的假象。",why:"『性別操演』鬆動了性別的二元與自然化，是酷兒理論與當代性別運動的理論核心。"},
+fanon:{bio:"法農出身加勒比海的馬丁尼克，是精神科醫師、革命者。他在《黑皮膚，白面具》剖析殖民如何讓被殖民者內化白人的目光、自我厭棄；後投身阿爾及利亞獨立運動，在《大地上的受苦者》中分析去殖民的心理與暴力。",why:"他把種族壓迫的精神創傷帶進哲學，是後殖民理論與全球反種族、反殖民思想的奠基者。"},
+said:{bio:"薩依德是巴勒斯坦裔美國學者。他在《東方主義》中借傅柯的權力／知識分析，揭示西方學術、文學與媒體如何長期把『東方』再現成神祕、落後、需要被治理的他者——而這套想像，正服務於帝國的支配。",why:"他讓我們對一切『關於他者的描述』保持警覺：再現從不中立，總與權力交織；這是後殖民與文化研究的起點。"},
+nishida:{bio:"西田幾多郎是日本京都學派的開創者。他試圖用西方哲學的嚴謹語言，表達禪與東方的體驗：在《善的研究》中提出『純粹經驗』——在經驗最原初的當下，能知與所知、主體與客體尚未分裂；後更發展出以『絕對無』為底的『場所』邏輯。",why:"他是東西方哲學深度對話的典範，證明非西方傳統也能生出系統而原創的形上學。"},
+mou:{bio:"牟宗三是當代新儒家的代表，畢生會通中西。他深研康德，卻主張康德說人辦不到的『智的直覺』，儒釋道的聖賢恰恰能體現；並提出『良知坎陷』——道德主體須暫時退讓，才能開出科學與民主這類客觀知識的領域。",why:"他為傳統心性之學如何接上現代科學與民主，提供了最具系統的當代答案，是理解華語世界哲學的關鍵。"},
+zhuangzi:{bio:"莊子承老子而更恣肆汪洋。他以寓言與反詰拆解人們執著的是非、大小、生死之分：〈齊物論〉指出一切判斷都繫於觀點，並無絕對標準；〈逍遙遊〉嚮往不受外物羈絆的精神自由；『莊周夢蝶』更追問：醒與夢、我與物的界線，真有那麼確定嗎？",why:"他對觀點相對、心靈自由與『物化』的洞見，與當代視角主義、心理彈性乃至生態整體觀都遙相呼應。"},
+nagarjuna:{bio:"龍樹是公元二、三世紀的印度佛教哲學家，中觀學派創始人。他以犀利的辯證（常用四句否定）論證：萬法皆因緣而生、沒有獨立不變的『自性』，此即『空』；但空不是虛無，而是與緣起、與世俗真理（二諦）並行的中道。",why:"他的『空』與否定式辯證，是大乘佛教的思想骨幹，也與西方的懷疑論、過程哲學與當代反本質主義意外共鳴。"},
+crenshaw:{bio:"克倫肖是美國法學者、批判種族理論的核心人物。她以一樁黑人女性求職遭拒的官司指出：法律只認『種族歧視』或『性別歧視』，卻看不見『黑人又是女性』這種交會處的獨特處境——她稱之為『交織性』，壓迫不是相加，而是交錯放大。",why:"『交織性』成了當代談論身分、歧視與正義的通用語言，提醒我們別用單一標籤把多重受壓迫的人遺漏在十字路口。"},
+srussell:{bio:"史都華·羅素是 AI 領域的標準教科書作者，也是把『AI 安全』帶進主流的關鍵人物。他指出傳統 AI 的盲點：我們總要機器去『最大化某個給定目標』，但只要目標訂得稍有偏差，愈強的 AI 反而愈危險。他主張改寫範式——讓機器對人類真正想要什麼保持『不確定與謙遜』，並願意被糾正、被關掉。",why:"當 AI 能力突飛猛進，他把『如何確保 AI 的目標與人類一致』從科幻變成嚴肅的工程與哲學問題，是當代最清醒的聲音之一。"},
+hinton:{bio:"辛頓被稱為『深度學習之父』，數十年堅持以神經網路模擬學習，奠定了今天 AI 的技術基礎，並獲圖靈獎。然而到了晚年，他公開表達憂慮：這些他親手催生的系統，可能很快在許多方面超越人類，而我們未必能控制——他甚至為此調整了工作，以便更自由地示警。",why:"一位最有資格樂觀的人卻選擇示警，使他成為『AI 風險』辯論中最具份量的一方，與楊立昆的樂觀形成正面對撞。"},
+lecun:{bio:"楊立昆是卷積神經網路的奠基者，與辛頓、班吉歐共享圖靈獎，也是深度學習三巨頭之一。但他對 AGI 末日論不以為然：他認為當前的大模型缺乏對世界的真正理解與常識，連動物的水準都不到；真正的進步要靠新的『世界模型』架構，而非把模型愈做愈大。他並大力倡導開放研究。",why:"他代表 AI 圈內理性的樂觀派，提醒我們別把流暢的輸出誤當成智能，也別被恐慌綁架了開放與創新。"},
+pearl:{bio:"珀爾是圖靈獎得主，先以貝氏網路革新了 AI 的不確定推理，後又開創因果推論的數學。他提出『因果之梯』：最低層只是觀察到的關聯，再上去是主動介入的效果，最高層是反事實的想像（『如果當初沒這麼做會怎樣』）。他批評純靠資料的深度學習，永遠爬不上這道梯子。",why:"在大數據與深度學習當紅的今天，他尖銳地指出『關聯不是因果』，替休謨的老問題給了可計算的新解，也點出當前 AI 缺什麼。"},
+bender:{bio:"班德是計算語言學家。她與同事提出『隨機鸚鵡』這個著名比喻：大型語言模型只是依統計把見過的文字片段拼接成像話的句子，本身並不理解語言的意義——因為它只看『形式』，從未接觸文字背後的世界與意圖。她也持續批評 AI 界誇大模型『理解』與『智能』的修辭。",why:"在人人驚嘆聊天機器人多會講話的此刻，她把瑟爾的『中文房間』直接帶進 LLM 時代：會生成，不等於懂。"},
+gebru:{bio:"蓋布魯是衣索比亞裔的 AI 研究者，研究演算法偏見與公平。她揭露臉部辨識在深色皮膚與女性臉孔上錯誤率高得多，並參與撰寫對大型語言模型的環境、勞動與偏見代價提出警告的論文。她在 Google 的離職風波，更把『誰能批評 AI、由誰決定 AI 怎麼做』推上檯面。",why:"她讓我們看見 AI 不是中立工具，而會把社會既有的不平等學進去、再規模化放大——這是 AI 倫理最切身的前線。"},
+crawford:{bio:"克勞福是研究 AI 社會與政治面向的學者。她在《AI 地圖集》中主張：所謂『人工智慧』既不人工、也不智慧，而是一整套靠稀土礦產、龐大能源、低薪資料標註與海量個資撐起來的產業與權力結構；每一次『分類』背後，都是誰有權定義世界的問題。",why:"她把目光從演算法本身移到它的物質與政治基礎，提醒我們別只看『智慧』的光環，要看它消耗了什麼、為誰服務、放大了誰的權力。"},
+harari:{bio:"哈拉瑞是以色列歷史學家，以《人類大歷史》《人類大命運》風靡全球。他主張人類靠『共同相信的虛構故事』（金錢、國家、宗教）才得以大規模合作；而展望未來，他警告一種新宗教『數據主義』正在興起——當演算法掌握的資料比你自己還懂你，自由意志與個人主義的根基將被掏空。",why:"他是當代最具影響力的『公眾先知』，把 AI、生物科技與大數據對人性、自由與民主的衝擊，講成每個人都聽得懂的迫切問題。"},
+kurzweil:{bio:"庫茲威爾是發明家與未來學家。他以『加速回報定律』主張科技呈指數成長，並大膽預言『技術奇點』：在不久的將來，人工智慧將超越並與人類智能融合，我們甚至能把心智上傳、大幅延長壽命，超越生物的限制。他長期投入 AI 與延壽研究，是科技樂觀主義最鮮明的旗手。",why:"無論你覺得他是先知還是過度樂觀，他把『人機融合』『超越生物極限』講成可規劃的路線圖，定義了超人類主義的想像，也成了悲觀派最想反駁的對象。"},
+yudkowsky:{bio:"尤考斯基是自學出身的 AI 對齊研究者，理性主義社群的核心人物。他長年警告：一旦造出目標與人類不一致的超人類 AI，後果可能無法挽回——它不必懷有惡意，只要把人類的存在或資源當成達成目標的障礙就夠了。他對人類能否及時解決『對齊問題』抱持深刻悲觀。",why:"他把『超智慧的存在風險』從邊緣推進主流討論；即便你不同意他的悲觀，他逼問的『我們真的控制得了比自己聰明的東西嗎』無法迴避，正與庫茲威爾的樂觀針鋒相對。"},
+tononi:{bio:"托諾尼是神經科學家，提出『整合資訊理論』（IIT）。他主張意識的關鍵不在於『運算』，而在於一個系統能把資訊『整合』成不可分割的整體；這個整合程度可用一個量 Φ 來衡量。依此，意識是內在、基本的性質，連簡單系統都可能有微量意識——這條路與『意識只是功能或錯覺』的看法截然不同。",why:"他試圖把查爾默斯的『難題』變成可測量的科學，並用於判斷昏迷病人是否仍有意識、乃至機器能否擁有意識，是當代意識研究最大膽的綱領之一。"},
+seth:{bio:"賽斯是認知神經科學家，主張知覺不是被動接收外界，而是大腦主動『預測』再用感官修正的過程；因此我們經驗到的世界，其實是一場『受控的幻覺』——當大家的幻覺一致時，我們就稱它為現實。連『自我』也是大腦為了調控身體而生成的一種感知。",why:"他以『預測加工』把現象學的第一人稱經驗接上神經科學，提供了一條既不否認意識、又能實證研究的中間道路。"},
+};
+
+/* 思想交鋒：兩端對立 */
+const TENSIONS = [
+{spark:"世界的本質是流變，還是不變？",sub:"形上學",
+left:{id:"heraclitus",stance:"萬物流轉，變化才是唯一的真實；連『存在』本身也是過程。"},
+right:{id:"parmenides",stance:"變化是感官的幻覺；以純粹邏輯推論，存在唯一、不可分、永恆不動。"}},
+{spark:"真實在天上的理型，還是在事物之中？",sub:"形上學 · 知識論",
+left:{id:"plato",stance:"可感世界只是摹本，真實是超越時空、永恆不變的理型。"},
+right:{id:"aristotle",stance:"形式不在彼岸，就內在於具體事物；認識世界要從觀察與經驗開始。"}},
+{spark:"治世該有為制禮，還是無為順自然？",sub:"政治 · 倫理",
+left:{id:"confucius",stance:"以仁與禮主動修身、教化、立序，人倫靠經營而非放任。"},
+right:{id:"laozi",stance:"治大國若烹小鮮；愈強求愈失序，順勢無為反而成全萬物。"}},
+{spark:"美好人生是追求快樂，還是修養德性？",sub:"倫理 · 幸福",
+left:{id:"epicurus",stance:"幸福是身體無痛、心靈無擾的寧靜；快樂是衡量善的尺度。"},
+right:{id:"stoa",stance:"美德是唯一的善；分辨可控與不可控，安於理性與命運。"}},
+{spark:"知識來自理性，還是來自經驗？",sub:"知識論",
+left:{id:"descartes",stance:"感官會騙人；唯有理性的清晰觀念才是確定知識的地基。"},
+right:{id:"hume",stance:"一切觀念都源於印象；連因果與自我，都不過是經驗中的習慣。"}},
+{spark:"道德該看動機，還是看結果？",sub:"倫理 · 規範",
+left:{id:"kant",stance:"善惡在於意志與義務；再好的結果也不能正當化把人當工具。"},
+right:{id:"mill",stance:"行為的對錯取決於後果；能帶來最大多數人最大幸福者為善。"}},
+{spark:"歷史的動力是精神，還是物質？",sub:"歷史 · 政治",
+left:{id:"hegel",stance:"歷史是精神（Geist）透過辯證自我實現、邁向自由的過程。"},
+right:{id:"marx",stance:"把黑格爾倒過來：是物質生產與階級鬥爭，決定了觀念與制度。"}},
+{spark:"人有固定的本質嗎？",sub:"存在 · 自由",
+left:{id:"sartre",stance:"存在先於本質；人沒有預設的本質，是自己選擇所成為的樣子。"},
+right:{id:"aristotle",stance:"萬物皆有目的與本性（telos），人的善就在於實現其本質。"}},
+{spark:"上帝死後，價值從哪裡來？",sub:"倫理 · 虛無",
+left:{id:"nietzsche",stance:"舊價值已崩塌；唯有重估一切、以權力意志為自己立法。"},
+right:{id:"kant",stance:"道德無需神也能成立——它奠基於理性自身的普遍律令。"}},
+{spark:"理性能抵達信仰，還是需要縱身一躍？",sub:"宗教 · 知識",
+left:{id:"aquinas",stance:"理性與信仰並行不悖，理性甚至能推論上帝的存在。"},
+right:{id:"kierkegaard",stance:"信仰超越理性的計算，是孤獨個體面對荒謬的縱身一躍。"}},
+{spark:"心靈不過是運算，還是另有其物？",sub:"心靈 · 科技",
+left:{id:"turing",stance:"若機器的回應與人無從分辨，便沒有理由否認它在思考。"},
+right:{id:"chalmers",stance:"就算複製了所有功能，仍解釋不了『為何會有主觀經驗』。"}},
+{spark:"自我是自由的主體，還是被結構塑造？",sub:"主體 · 權力",
+left:{id:"sartre",stance:"人是絕對自由的；把選擇推給處境，是一種自欺。"},
+right:{id:"foucault",stance:"所謂主體，是被知識與權力的話語建構出來的產物。"}},
+{spark:"機器是真懂，還是只是照規則運算？",sub:"AI · 心靈",
+left:{id:"turing",stance:"若它的回應與人無從分辨，就沒有理由說它不思考、不理解。"},
+right:{id:"searle",stance:"中文房間：再流暢地操弄符號，也生不出半點真正的理解與意義。"}},
+{spark:"國家可以為了平等而重分配嗎？",sub:"政治 · 正義",
+left:{id:"rawls",stance:"為了最弱勢者，不平等必須被矯正，財富可以正當地重分配。"},
+right:{id:"nozick",stance:"只要持有來得正當，課稅劫富濟貧就是侵犯個人不可逾越的權利。"}},
+{spark:"科學靠否證累進，還是靠典範斷裂？",sub:"科學哲學",
+left:{id:"popper",stance:"科學理性地以否證汰除錯誤，穩定地逼近真理。"},
+right:{id:"kuhn",stance:"科學革命是世界觀的整體更替，新舊典範往往難以共量。"}},
+{spark:"意識的『難題』是真問題嗎？",sub:"心靈",
+left:{id:"chalmers",stance:"就算說盡了所有功能，仍漏掉了『為何會有主觀感受』。"},
+right:{id:"dennett",stance:"所謂難題只是直覺的錯覺；意識可由功能與演化說盡。"}},
+{spark:"理性對話能解放，還是它本身就是權力？",sub:"政治 · 知識",
+left:{id:"habermas",stance:"在沒有宰制的對話中，理性能達成正當的共識。"},
+right:{id:"foucault",stance:"沒有外於權力的理性；每一套『真理』都是權力的產物。"}},
+{spark:"道德只屬於人嗎？",sub:"倫理 · 動物",
+left:{id:"kant",stance:"道德地位繫於理性自律，動物沒有理性，只能是手段。"},
+right:{id:"singer",stance:"該問的是能否感受苦樂；把界線畫在『人』，是物種歧視。"}},
+{spark:"性別是被塑造的處境，還是不斷操演的行動？",sub:"性別 · 主體",
+left:{id:"beauvoir",stance:"女人不是天生的，而是被社會逐漸塑造成的『他者』。"},
+right:{id:"butler",stance:"根本沒有先在的性別本質；它在一次次操演中才被生成。"}},
+{spark:"AGI：迫近的威脅，還是被誇大的炒作？",sub:"AI · 未來",
+left:{id:"hinton",stance:"我們造出了可能超越自己的東西，未必控制得了，該認真警惕。"},
+right:{id:"lecun",stance:"當前 AI 連常識都不足，談超越人類太早；恐慌反而扼殺開放與創新。"}},
+{spark:"超智慧降臨：是救贖，還是末日？",sub:"AI · 命運",
+left:{id:"kurzweil",stance:"奇點將讓人類與智能融合、超越生物極限，是躍升而非終結。"},
+right:{id:"yudkowsky",stance:"目標稍一偏差的超智慧就可能毀掉我們；它不必有惡意。"}},
+{spark:"智能只要更多資料，還是需要因果模型？",sub:"AI · 知識",
+left:{id:"lecun",stance:"靠大量資料學到的表徵與世界模型，足以撐起真正的智能。"},
+right:{id:"pearl",stance:"只會關聯永遠不夠；沒有因果與反事實，機器就無法真正理解世界。"}},
+{spark:"意識是真實的整合資訊，還是大腦編的故事？",sub:"心靈 · 科學",
+left:{id:"tononi",stance:"意識是內在、可測量的整合資訊（Φ），是世界的基本性質。"},
+right:{id:"dennett",stance:"沒有額外的『意識實體』；它只是大腦敘事出來的有用錯覺。"}},
+{spark:"語言模型真的『懂』，還是高級接龍？",sub:"AI · 語言與理解",
+left:{id:"hinton",stance:"神經網路抓到了意義的結構，某種程度上確實在理解。"},
+right:{id:"bender",stance:"它只是隨機鸚鵡：縫合統計上像話的字串，並不懂任何意義。"}},
+];
+
+/* 由 TENSIONS 反推：每位思想家的『論敵』 */
+const FOES={};
+TENSIONS.forEach(tn=>{
+const L=tn.left,R=tn.right;
+(FOES[L.id]=FOES[L.id]||[]).push({id:R.id,spark:tn.spark});
+(FOES[R.id]=FOES[R.id]||[]).push({id:L.id,spark:tn.spark});
+});
+
+const QUESTIONS = [
+{q:"何謂真實？", sub:"形上學 · 世界的根本是什麼",
+a:[["thales","萬物本原是水"],["parmenides","存在唯一不變"],["plato","理型才是真實"],["spinoza","神即自然，唯一實體"],["heidegger","追問存在本身"]]},
+{q:"我們如何知道？", sub:"知識論 · 知識的來源與界限",
+a:[["descartes","懷疑後的『我思』"],["locke","心靈白板，源於經驗"],["hume","因果只是習慣"],["kant","心智建構經驗"],["wittgenstein","意義來自語言使用"]]},
+{q:"應該如何生活？", sub:"倫理學 · 何謂良善與幸福",
+a:[["socrates","審視人生，德性即知識"],["aristotle","中庸與實現幸福"],["stoa","順應理性，安於可控"],["kant","出於義務的定言令式"],["mill","最大多數的最大幸福"],["nietzsche","重估價值，成為自己"]]},
+{q:"正義的社會如何可能？", sub:"政治哲學 · 權力、自由與秩序",
+a:[["confucius","以德與禮維繫人倫"],["plato","哲學家王治理"],["locke","同意與自然權利"],["rousseau","公意與人民主權"],["marx","消除階級與異化"],["rawls","無知之幕下的公平"]]},
+{q:"心靈是什麼？", sub:"心靈哲學 · 意識、自我與機器",
+a:[["descartes","心物二元"],["hume","自我只是知覺束流"],["husserl","意識的意向結構"],["turing","機器能思考嗎"],["chalmers","意識的困難問題"]]},
+{q:"理性能解釋一切嗎？", sub:"理性的力量與界限",
+a:[["aristotle","邏輯與分類的力量"],["hume","理性是激情的奴隸"],["kierkegaard","需要信仰的跳躍"],["nietzsche","理性背後的權力意志"],["foucault","知識與權力交織"]]},
+{q:"標榜良善的人或組織，為何能與惡行並存？", sub:"應用倫理 · 偽善、意識形態與自欺",
+a:[["marx","對外敘事是上層建築，掩蓋剝削的生產關係"],["kant","再崇高的使命也不能正當化把人當工具"],["sartre","用使命敘事逃避面對自己選擇的自欺"],["aristotle","德性不能切割展演，否則只是修辭"]]},
+{q:"智慧是什麼？", sub:"智慧 · 知與不知的分寸",
+a:[["socrates","承認自己的無知，才是智慧的起點"],["aristotle","實踐智慧：在具體情境中做對的判斷"],["laozi","知人者智，自知者明；知足、守柔"],["stoa","分辨可控與不可控，是智者的功夫"],["confucius","學而不思則罔，思而不學則殆"],["russell","智者疑慮重重，愚者信心滿滿"]]},
+{q:"宇宙從何而來、依何運行？", sub:"宇宙 · 萬物的起源與秩序",
+a:[["thales","用自然而非神話解釋萬物本原"],["heraclitus","流變之下，由邏各斯維繫秩序"],["aristotle","四因說：萬物皆有其目的"],["spinoza","神即自然，依必然法則展開"],["leibniz","充足理由律：凡事必有所以然"]]},
+{q:"機器能思考、能有意識嗎？", sub:"AI · 心智、計算與經驗",
+a:[["turing","若回應與人無從分辨，便是在思考"],["chalmers","複製了功能，仍解釋不了主觀經驗"],["descartes","思考的『我』與機械之物是兩回事"],["wittgenstein","意義來自使用，而非內在運算"],["russell","形式邏輯是機器推理的基礎"]]},
+{q:"人的價值從何而來？", sub:"人的價值 · 尊嚴、平等與承認",
+a:[["kant","人是目的本身，不可只當工具"],["marx","勞動本是自我實現，異化則奪走價值"],["beauvoir","拒絕被他者定義，自己活出存在"],["rawls","無知之幕下，每個人都享有平等的尊嚴"],["confucius","仁：把人當人對待的根本"]]},
+{q:"該如何面對死亡？", sub:"生與死 · 有限性與安頓",
+a:[["epicurus","死亡來時我們已不在，不必畏懼"],["stoa","記住終有一死，反而活得清醒"],["heidegger","唯有向死而生，才活出本真"],["socrates","從容赴死，忠於良心更勝苟活"],["augustine","在永恆中安頓有限的此生"]]},
+{q:"人生有意義嗎？意義從何而來？", sub:"人生意義 · 虛無與自我創造",
+a:[["nietzsche","舊神已死，意義要自己重新創造"],["sartre","存在先於本質，意義由選擇賦予"],["kierkegaard","以信仰之躍，回應存在的荒謬"],["aristotle","實現天賦與德性，即是幸福（eudaimonia）"],["laozi","順道而行，無為而無不為"]]},
+{q:"機器能『理解』嗎？", sub:"AI · 運算、理解與意義",
+a:[["searle","中文房間：運算不等於理解"],["turing","分辨不出，就算它在思考"],["dennett","理解是功能，是程度問題"],["nagel","缺了主觀，就缺了關鍵"],["dreyfus","智能離不開身體與處境"]]},
+{q:"我們對動物與未來世代有義務嗎？", sub:"倫理新邊界 · 物種、生態與後代",
+a:[["singer","能感受苦樂者都該被平等考量"],["jonas","科技力量帶來對未來的責任"],["naess","萬物各有其內在價值"],["kant","嚴格說，義務只對理性存有"],["zhuangzi","萬物齊一，人不在自然之上"]]},
+{q:"科學如何進步？知識會被推翻嗎？", sub:"科學哲學 · 真理、否證與典範",
+a:[["bacon","從觀察歸納、逐步累積"],["hume","歸納無法被理性證成"],["popper","靠勇於被否證來汰錯"],["kuhn","靠典範轉移與革命"],["foucault","知識隨權力與時代而變"]]},
+{q:"惡從何而來？", sub:"惡與責任 · 無知、自由與結構",
+a:[["socrates","無人有意作惡，惡源於無知"],["augustine","自由意志的誤用與原罪"],["arendt","不思考造成的平庸之惡"],["nietzsche","『惡』是奴隸道德的發明"],["marx","結構與制度製造的惡"]]},
+{q:"自由市場有沒有道德界限？", sub:"政治經濟 · 交易、正義與價值",
+a:[["nozick","自願交易即正當，勿干涉"],["rawls","須讓最弱勢也受益才公平"],["sandel","有些東西不該被買賣"],["marx","市場掩蓋了剝削與異化"],["sen","看它擴展了誰的實質自由"]]},
+{q:"AGI 會到來嗎？該恐懼還是擁抱？", sub:"AI · 超級智能與風險",
+a:[["hinton","可能超越人類，須認真警惕"],["lecun","還早；別被恐慌綁架"],["srussell","關鍵是讓它的目標與人對齊"],["bostrom","須先想清楚存在風險"],["kurzweil","擁抱它，邁向奇點"],["yudkowsky","對齊沒解決前，極度危險"]]},
+{q:"人類會與機器融合，還是被取代？", sub:"後人類 · 超人類主義",
+a:[["kurzweil","與智能融合、超越生物極限"],["harari","被數據主義架空，權威讓給演算法"],["bostrom","可能被超智慧取代"],["dreyfus","機器抓不到人的身體智能"],["heidegger","當心技術『座架』宰制存在"]]},
+{q:"意識能被科學解釋、被機器擁有嗎？", sub:"意識科學 · 心靈與機器",
+a:[["chalmers","困難問題仍未解"],["dennett","它只是大腦的有用錯覺"],["tononi","可用整合資訊（Φ）測量"],["seth","它是受控的幻覺"],["searle","運算生不出真正的理解"]]},
+{q:"演算法會比你更懂你嗎？數據是新的神嗎？", sub:"數位時代 · 資料與權力",
+a:[["harari","數據主義正接收權威"],["zuboff","你的行為已被開採為原料"],["floridi","我們活在資訊圈裡"],["crawford","演算法背後是權力與萃取"],["foucault","知識與權力始終交織"]]},
+{q:"AI 該由誰掌控、為誰服務？", sub:"AI 治理 · 權力與正義",
+a:[["gebru","別讓它放大既有偏見"],["crawford","看清它的資源與權力結構"],["srussell","設計上就要對人有益"],["habermas","靠公開審議決定規則"],["marx","誰擁有生產工具是關鍵"]]},
+];
+
+const byId = Object.fromEntries(T.map(t=>[t.id,t]));
+let activeDoms = new Set(Object.keys(DOMAINS));
+let query = "";
+
+const legendEl = document.getElementById("legend");
+Object.entries(DOMAINS).forEach(([k,v])=>{
+const c=document.createElement("span");
+c.className="chip"; c.dataset.dom=k;
+c.innerHTML=`<span class="dot" style="background:${v.color}"></span>${v.name}`;
+c.onclick=()=>{ c.classList.toggle("off");
+if(activeDoms.has(k))activeDoms.delete(k); else activeDoms.add(k);
+renderTimeline(); drawGraph(); };
+legendEl.appendChild(c);
+});
+
+function matchFilter(t){
+const domOk = t.doms.some(d=>activeDoms.has(d));
+if(!domOk) return false;
+if(!query) return true;
+const hay=(t.name+t.school+t.one+t.ideas.join("")+t.region+(t.tags||[]).join("")+(QUOTES[t.id]||"")).toLowerCase();
+return hay.includes(query);
+}
+
+/* ===== 今日一問 ===== */
+function dayOfYear(d){const s=new Date(d.getFullYear(),0,0);return Math.floor((d-s)/86400000);}
+function renderHero(){
+const hero=document.getElementById("hero");
+const Q=QUESTIONS[dayOfYear(new Date())%QUESTIONS.length];
+const voices=Q.a.slice(0,4).map(([id,ans])=>{
+const p=byId[id];
+return `<div class="voice" data-go="${id}"><b>${p?p.name:id}</b><span>${ans}</span></div>`;
+}).join("");
+hero.innerHTML=`<div class="hero">
+<div class="label">今日一問 · QUESTION OF THE DAY</div>
+<h2>${Q.q}</h2>
+<div class="hsub">${Q.sub}　—　聽聽幾位思想家如何回應</div>
+<div class="voices">${voices}</div>
+<div class="hero-cta">每天換一題 · 點任一聲音可深入</div>
+</div>`;
+hero.querySelectorAll("[data-go]").forEach(el=>el.onclick=()=>openPanel(el.dataset.go));
+}
+
+const timelineEl=document.getElementById("timeline");
+function renderTimeline(){
+timelineEl.innerHTML="";
+ERAS.forEach((era,i)=>{
+const people=T.filter(t=>t.era===era.id && matchFilter(t));
+if(query && people.length===0) return;
+const wrap=document.createElement("div");
+wrap.className="era"+((i===0||query)?" open":"");
+wrap.innerHTML=`
+<div class="era-head">
+<span class="era-yr">${era.yr}</span>
+<span class="era-title">${era.title}</span>
+<span class="era-desc">${era.desc}</span>
+<span class="count">${people.length} 位</span>
+<span class="era-toggle">▶</span>
+</div>
+<div class="era-body"><img class="era-banner" src="img/era_${era.id}.webp" alt="" loading="lazy" onerror="this.style.display='none'"><div class="cards"></div></div>`;
+const cards=wrap.querySelector(".cards");
+people.forEach(t=>{
+const card=document.createElement("div");
+card.className="card";
+const c0=DOMAINS[t.doms[0]].color;
+card.style.borderLeftColor=c0;
+card.innerHTML=`
+<h4>${t.name}</h4>
+<div class="yr">${t.dates} · ${t.region}</div>
+<div class="sch">${t.school}</div>
+${QUOTES[t.id]?`<div class="quote">${QUOTES[t.id]}</div>`:""}
+<div class="one">${t.one}</div>
+<div class="doms">${t.doms.map(d=>`<span class="dot" title="${DOMAINS[d].name}" style="background:${DOMAINS[d].color}"></span>`).join("")}</div>`;
+card.onclick=()=>openPanel(t.id);
+cards.appendChild(card);
+});
+wrap.querySelector(".era-head").onclick=()=>wrap.classList.toggle("open");
+timelineEl.appendChild(wrap);
+});
+if(!timelineEl.children.length)
+timelineEl.innerHTML=`<p style="color:var(--muted);text-align:center;padding:40px">找不到「${query}」相關的思想家。</p>`;
+}
+
+const panel=document.getElementById("panel");
+const backdrop=document.getElementById("backdrop");
+function openPanel(id){
+const t=byId[id]; if(!t)return;
+const conns=(t.conn||[]).map(cid=>byId[cid]).filter(Boolean);
+const foes=(FOES[id]||[]);
+panel.innerHTML=`
+<div class="p-head">
+<button class="p-close">×</button>
+<h2>${t.name}</h2>
+<div class="meta">${t.dates} · ${t.region}</div>
+<span class="sch-tag">${t.school}</span>
+</div>
+<img class="p-portrait" src="img/portrait_${id}.webp" alt="${t.name}" loading="lazy" onerror="this.style.display='none'">
+${QUOTES[id]?`<div class="p-quote"><div class="pq-text">${QUOTES[id]}</div></div>`:""}
+<div class="p-body">
+<h3>核心觀點</h3>
+<p>${t.one}</p>
+${DEEP[id]?`<h3>脈絡與生平</h3><p class="deep">${DEEP[id].bio}</p>`:""}
+<h3>關鍵思想</h3>
+<ul class="ideas">${t.ideas.map(x=>`<li>${x}</li>`).join("")}</ul>
+${DEEP[id]?`<h3>為何今天仍重要</h3><p class="deep why">${DEEP[id].why}</p>`:""}
+<h3>涉及領域</h3>
+<div class="dom-row">${t.doms.map(d=>`<span class="dom-tag"><span class="dot" style="background:${DOMAINS[d].color}"></span>${DOMAINS[d].name}</span>`).join("")}</div>
+${t.xdom?`<h3>跨領域連結</h3>${t.xdom.map(x=>`<div class="xdom"><b>${DOMAINS[x.d].name} · ${x.t}</b><p>${x.p}</p></div>`).join("")}`:""}
+${foes.length?`<h3>思想交鋒</h3>${foes.map(f=>{const fp=byId[f.id];return `<div class="p-foe" data-go="${f.id}"><b>對峙 ${fp?fp.name:f.id}</b><p>${f.spark}</p></div>`;}).join("")}`:""}
+${conns.length?`<h3>思想對話</h3><div class="link-row">${conns.map(c=>`<span class="lk" data-go="${c.id}">${c.name}<small>${c.school}</small></span>`).join("")}</div>`:""}
+</div>`;
+panel.classList.add("open"); backdrop.classList.add("show");
+panel.querySelector(".p-close").onclick=closePanel;
+panel.querySelectorAll("[data-go]").forEach(el=>el.onclick=()=>openPanel(el.dataset.go));
+panel.scrollTop=0;
+}
+function closePanel(){panel.classList.remove("open");backdrop.classList.remove("show");}
+backdrop.onclick=closePanel;
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closePanel();});
+
+/* 隨機漫遊 */
+document.getElementById("randomBtn").onclick=()=>{
+const t=T[Math.floor(Math.random()*T.length)];
+openPanel(t.id);
+};
+
+/* ===== 思想交鋒視圖 ===== */
+const tnGrid=document.getElementById("tnGrid");
+function renderTensions(){
+tnGrid.innerHTML="";
+TENSIONS.forEach(tn=>{
+const L=byId[tn.left.id], R=byId[tn.right.id];
+const card=document.createElement("div");
+card.className="tn-card";
+card.innerHTML=`
+<div class="tn-axis"><div class="spark">${tn.spark}</div><div class="sub">${tn.sub}</div></div>
+<div class="tn-body">
+<div class="tn-side left" data-go="${tn.left.id}">
+<h5><span class="dot" style="width:9px;height:9px;border-radius:50%;background:${DOMAINS[L.doms[0]].color};display:inline-block"></span>${L.name}</h5>
+<div class="stance">${tn.left.stance}</div></div>
+<div class="tn-vs"><span>vs</span></div>
+<div class="tn-side right" data-go="${tn.right.id}">
+<h5><span class="dot" style="width:9px;height:9px;border-radius:50%;background:${DOMAINS[R.doms[0]].color};display:inline-block"></span>${R.name}</h5>
+<div class="stance">${tn.right.stance}</div></div>
+</div>`;
+card.querySelectorAll("[data-go]").forEach(el=>el.onclick=()=>openPanel(el.dataset.go));
+tnGrid.appendChild(card);
+});
+}
+
+const qgrid=document.getElementById("qgrid");
+function renderQuestions(){
+qgrid.innerHTML="";
+QUESTIONS.forEach(Q=>{
+const card=document.createElement("div");
+card.className="qcard";
+card.innerHTML=`<h3>${Q.q}</h3><div class="q-sub">${Q.sub}</div><ul></ul>`;
+const ul=card.querySelector("ul");
+Q.a.forEach(([id,ans])=>{
+const li=document.createElement("li");
+const p=byId[id];
+li.innerHTML=`${p?p.name:id} <span>${ans}</span>`;
+li.onclick=()=>openPanel(id);
+ul.appendChild(li);
+});
+qgrid.appendChild(card);
+});
+}
+
+const svg=document.getElementById("graph");
+const SVGNS="http://www.w3.org/2000/svg";
+let nodes=[], links=[], transform={x:0,y:0,k:1};
+
+function buildGraphData(){
+const domKeys=Object.keys(DOMAINS);
+const domNodes=domKeys.map(k=>({id:"dom:"+k,dom:k,isDom:true,label:DOMAINS[k].name,color:getComputedStyle(document.documentElement).getPropertyValue(DOMAINS[k].color.replace("var(","").replace(")","")).trim()||DOMAINS[k].color}));
+const pNodes=T.map(t=>({id:t.id,isDom:false,label:t.name,t,color:DOMAINS[t.doms[0]].color,featured:false}));
+nodes=[...domNodes,...pNodes];
+const pos=Object.fromEntries(nodes.map(n=>[n.id,n]));
+links=[];const seen=new Set();
+T.forEach(t=>(t.conn||[]).forEach(c=>{const key=[t.id,c].sort().join("|");if(!seen.has(key)&&pos[c]){seen.add(key);links.push({s:pos[t.id],t:pos[c],kind:"infl"});}}));
+T.forEach(t=>t.doms.forEach(d=>links.push({s:pos[t.id],t:pos["dom:"+d],kind:"dom"})));
+const degree=Object.fromEntries(pNodes.map(n=>[n.id,0]));
+links.filter(l=>l.kind==="infl").forEach(l=>{degree[l.s.id]=(degree[l.s.id]||0)+1;degree[l.t.id]=(degree[l.t.id]||0)+1;});
+domKeys.forEach(d=>{pNodes.filter(n=>n.t.doms[0]===d).sort((a,b)=>(degree[b.id]||0)-(degree[a.id]||0)||a.id.localeCompare(b.id)).slice(0,2).forEach(n=>n.featured=true);});
+layoutGraph();
+}
+
+function layoutGraph(){
+const W=Math.max(svg.clientWidth||900,640),H=Math.max(svg.clientHeight||600,500);
+const domKeys=Object.keys(DOMAINS),cols=4;
+const padX=Math.max(62,W*.055),padY=Math.max(54,H*.07);
+const cellW=(W-padX*2)/cols,cellH=(H-padY*2)/2;
+const eraRank=Object.fromEntries(ERAS.map((e,i)=>[e.id,i]));
+domKeys.forEach((d,index)=>{
+const col=index%cols,row=Math.floor(index/cols),cx=padX+cellW*(col+.5),cy=padY+cellH*(row+.5);
+const dn=nodes.find(n=>n.id==="dom:"+d);dn.x=cx;dn.y=cy;dn.vx=0;dn.vy=0;
+const group=nodes.filter(n=>!n.isDom&&n.t.doms[0]===d).sort((a,b)=>(eraRank[a.t.era]??99)-(eraRank[b.t.era]??99)||a.id.localeCompare(b.id));
+group.forEach((n,i)=>{const perRing=8,ring=Math.floor(i/perRing),slot=i%perRing,slots=Math.min(perRing,group.length-ring*perRing);const angle=-Math.PI/2+(slot/Math.max(1,slots))*Math.PI*2+(ring%2?Math.PI/Math.max(1,slots):0);const rx=Math.min(cellW*(.27+ring*.12),cellW*.44),ry=Math.min(cellH*(.22+ring*.11),cellH*.40);n.x=cx+Math.cos(angle)*rx;n.y=cy+Math.sin(angle)*ry;n.vx=0;n.vy=0;});
+});
+}
+function tick(){}
+function drawGraph(){if(!nodes.length)buildGraphData();else layoutGraph();render();}
+
+function render(){
+svg.innerHTML="";const g=document.createElementNS(SVGNS,"g");g.setAttribute("transform","translate("+transform.x+","+transform.y+") scale("+transform.k+")");svg.appendChild(g);
+links.forEach(l=>{const sOk=l.s.isDom||matchFilter(l.s.t),tOk=l.t.isDom||matchFilter(l.t.t),line=document.createElementNS(SVGNS,"line");line.setAttribute("x1",l.s.x);line.setAttribute("y1",l.s.y);line.setAttribute("x2",l.t.x);line.setAttribute("y2",l.t.y);line.setAttribute("class","glink "+l.kind+((sOk&&tOk)?"":" dim"));line._l=l;g.appendChild(line);});
+nodes.forEach(n=>{const on=n.isDom?activeDoms.size>0:matchFilter(n.t),grp=document.createElementNS(SVGNS,"g");grp.setAttribute("class","gnode"+(n.isDom?" dom":"")+(n.featured?" key":"")+(on?"":" dim"));grp.setAttribute("transform","translate("+n.x+","+n.y+")");grp._n=n;const title=document.createElementNS(SVGNS,"title");title.textContent=n.label;grp.appendChild(title);
+if(n.isDom){const r=document.createElementNS(SVGNS,"rect"),w=n.label.length*13+18;r.setAttribute("x",-w/2);r.setAttribute("y",-15);r.setAttribute("width",w);r.setAttribute("height",30);r.setAttribute("rx",7);r.setAttribute("fill",n.color);r.setAttribute("opacity",".25");r.setAttribute("stroke",n.color);r.setAttribute("stroke-width","1.5");grp.appendChild(r);const tx=document.createElementNS(SVGNS,"text");tx.setAttribute("y",4);tx.textContent=n.label;tx.setAttribute("fill",n.color);grp.appendChild(tx);}
+else{const c=document.createElementNS(SVGNS,"circle");c.setAttribute("r",7);c.setAttribute("fill",n.color);c.setAttribute("stroke","#f3ecd9");c.setAttribute("stroke-width","2");grp.appendChild(c);const tx=document.createElementNS(SVGNS,"text");tx.setAttribute("y",-12);tx.textContent=n.label;grp.appendChild(tx);}
+grp.onclick=()=>{if(!n.isDom)openPanel(n.t.id);};grp.onmouseenter=()=>highlight(n);grp.onmouseleave=()=>render();g.appendChild(grp);});
+}
+function highlight(node){
+const near=new Set([node]);
+svg.querySelectorAll(".glink").forEach(line=>{const l=line._l;if(l.s===node||l.t===node){line.classList.add("hl");line.classList.remove("dim");near.add(l.s);near.add(l.t);}else line.classList.add("dim");});
+svg.querySelectorAll(".gnode").forEach(grp=>{const n=grp._n;grp.classList.remove("focus","near","dim");if(n===node)grp.classList.add("focus");else if(near.has(n))grp.classList.add("near");else grp.classList.add("dim");});
+}
+
+let dragging=false,last=null;
+svg.addEventListener("mousedown",e=>{dragging=true;last={x:e.clientX,y:e.clientY};svg.classList.add("drag");});
+window.addEventListener("mouseup",()=>{dragging=false;svg.classList.remove("drag");});
+window.addEventListener("mousemove",e=>{
+if(!dragging)return;
+transform.x+=e.clientX-last.x;transform.y+=e.clientY-last.y;
+last={x:e.clientX,y:e.clientY};render();
+});
+svg.addEventListener("wheel",e=>{
+e.preventDefault();
+const rect=svg.getBoundingClientRect(),mx=e.clientX-rect.left,my=e.clientY-rect.top;
+const nextK=Math.max(.45,Math.min(2.5,transform.k*(e.deltaY<0?1.12:.89))),ratio=nextK/transform.k;
+transform.x=mx-(mx-transform.x)*ratio;transform.y=my-(my-transform.y)*ratio;transform.k=nextK;render();
+},{passive:false});
+let graphResizeTimer=null;
+window.addEventListener("resize",()=>{if(!nodes.length)return;clearTimeout(graphResizeTimer);graphResizeTimer=setTimeout(()=>{layoutGraph();transform={x:0,y:0,k:1};render();},120);});
+
+
+document.querySelectorAll(".views button").forEach(b=>{
+b.onclick=()=>{
+document.querySelectorAll(".views button").forEach(x=>x.classList.remove("active"));
+b.classList.add("active");
+document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
+const v=b.dataset.view;
+document.getElementById(v+"View").classList.add("active");
+if(v==="graph"){if(!nodes.length)buildGraphData();else layoutGraph();transform={x:0,y:0,k:1};render();}
+if(v==="tensions"){renderTensions();}
+if(v==="match"){renderMatchHistory();}
+};
+});
+document.getElementById("search").addEventListener("input",e=>{
+query=e.target.value.trim().toLowerCase();
+renderTimeline(); if(nodes.length)render();
+});
+
+/* =========================================================
+情境配對（AI 即時配對；需 Cowork 環境）
+========================================================= */
+const HISTORY_KEY="philomap_match_history_v1";
+const matchInput=document.getElementById("matchInput");
+const matchSubmitBtn=document.getElementById("matchSubmitBtn");
+const matchClearBtn=document.getElementById("matchClearBtn");
+const matchResultsEl=document.getElementById("matchResults");
+const matchHistoryEl=document.getElementById("matchHistory");
+const matchHistoryTitle=document.getElementById("matchHistoryTitle");
+const matchChipsEl=document.getElementById("matchChips");
+
+/* 提問靈感 chips */
+const SAMPLE_PROMPTS=[
+"主管說要『扁平化、大家都是夥伴』，卻什麼都要他點頭。",
+"明明選擇很多，卻覺得怎麼選都不對、愈自由愈焦慮。",
+"科技讓生活更方便，為什麼大家反而更累、更沒空？",
+"公司高喊永續與善意，內部卻在比誰加班加得多。",
+];
+if(matchChipsEl){
+SAMPLE_PROMPTS.forEach(s=>{
+const c=document.createElement("span");
+c.className="mc"; c.textContent=s;
+c.onclick=()=>{matchInput.value=s; matchInput.focus();};
+matchChipsEl.appendChild(c);
+});
+}
+
+function loadHistory(){
+try{ return JSON.parse(localStorage.getItem(HISTORY_KEY)||"[]"); }catch(e){ return []; }
+}
+function saveHistoryEntry(entry){
+const h=loadHistory();
+h.unshift(entry);
+localStorage.setItem(HISTORY_KEY, JSON.stringify(h.slice(0,50)));
+}
+function clearHistory(){
+localStorage.removeItem(HISTORY_KEY);
+matchHistoryEl.innerHTML="";
+matchHistoryTitle.style.display="none";
+if(typeof syncStatusEl!=="undefined" && syncStatusEl) syncStatusEl.textContent="";
+}
+function extractText(res){
+if(typeof res==="string") return res;
+if(res && typeof res==="object"){
+if(typeof res.text==="string") return res.text;
+if(Array.isArray(res.content)) return res.content.map(c=>(c&&c.text)||"").join("\n");
+if(typeof res.output==="string") return res.output;
+try{ return JSON.stringify(res); }catch(e){ return String(res); }
+}
+return String(res);
+}
+function parseMatches(text){
+let cleaned=(text||"").trim();
+const fence=cleaned.match(/```(?:json)?\s*([\s\S]*?)```/i);
+if(fence) cleaned=fence[1].trim();
+const start=cleaned.indexOf("["); const end=cleaned.lastIndexOf("]");
+if(start>=0 && end>start) cleaned=cleaned.slice(start,end+1);
+try{
+const arr=JSON.parse(cleaned);
+if(Array.isArray(arr)) return arr;
+}catch(e){}
+return null;
+}
+function pad2(n){return String(n).padStart(2,"0");}
+function tsLabel(d){return d.getFullYear()+pad2(d.getMonth()+1)+pad2(d.getDate())+"_"+pad2(d.getHours())+pad2(d.getMinutes())+pad2(d.getSeconds());}
+function fmtDate(ts){const d=new Date(ts);return d.getFullYear()+"-"+pad2(d.getMonth()+1)+"-"+pad2(d.getDate())+" "+pad2(d.getHours())+":"+pad2(d.getMinutes());}
+function slugify(q){return (q||"").replace(/[\\\/:*?"<>|\n\r]/g,"").trim().slice(0,24)||"提問";}
+
+function renderMatchBlock(query,matches,rawText,synced){
+const wrap=document.createElement("div");
+wrap.className="match-result";
+const qline=document.createElement("div");
+qline.className="match-q";
+qline.innerHTML=`你的提問：<b>${(query||"").replace(/</g,"&lt;")}</b>`+(synced?` <span class="ext-tag">已同步雲端</span>`:(synced===false?` <span class="ext-tag">尚未同步</span>`:""));
+wrap.appendChild(qline);
+if(matches && matches.length){
+matches.forEach(m=>{
+const card=document.createElement("div");
+const hasId=m.id && byId[m.id];
+card.className="match-card"+(m.from_db===false?" external":"")+(hasId?" clickable":"");
+card.innerHTML=`<h4>${m.name||"未命名"}${m.from_db===false?'<span class="ext-tag">資料庫外建議</span>':''}</h4><p>${(m.reason||"").replace(/</g,"&lt;")}</p>`;
+if(hasId) card.onclick=()=>openPanel(m.id);
+wrap.appendChild(card);
+});
+}else if(rawText){
+const p=document.createElement("p");
+p.style.whiteSpace="pre-wrap";
+p.style.fontSize="13.5px";
+p.textContent=rawText||"沒有取得有效回應。";
+wrap.appendChild(p);
+}
+return wrap;
+}
+function renderMatchHistory(){
+const h=loadHistory();
+matchHistoryEl.innerHTML="";
+if(!h.length){ matchHistoryTitle.style.display="none"; return; }
+matchHistoryTitle.style.display="block";
+h.forEach(entry=>{
+matchHistoryEl.appendChild(renderMatchBlock(entry.query, entry.matches, entry.rawText, !!entry.synced));
+});
+}
+
+/* ---- 一筆一筆寫回 Google Drive（需 Cowork 環境） ---- */
+const SYNC_FOLDER_ID="1EWAvUOWW_PJVTNfjyDAWfesDyZtIkZGa";
+const matchSyncBtn=document.getElementById("matchSyncBtn");
+const syncStatusEl=document.getElementById("syncStatus");
+
+function buildEntryMarkdown(entry){
+const lines=["# 情境配對紀錄","",`**時間：** ${fmtDate(entry.ts||Date.now())}`,"",`**提問：** ${entry.query||""}`,""];
+if(entry.matches && entry.matches.length){
+entry.matches.forEach(m=>{
+lines.push(`- **${m.name||"未命名"}**${m.from_db===false?"（資料庫外建議）":""}：${(m.reason||"").replace(/\n/g," ")}`);
+});
+}else if(entry.rawText){
+lines.push(entry.rawText);
+}
+return lines.join("\n");
+}
+async function saveEntryToDriveFile(entry){
+if(!(window.cowork && window.cowork.callMcpTool)) throw new Error("此功能需在 Cowork 環境中執行");
+const title="配對_"+tsLabel(new Date(entry.ts||Date.now()))+"_"+slugify(entry.query)+".md";
+const md=buildEntryMarkdown(entry);
+const r=await window.cowork.callMcpTool("mcp__8d99c519-b09c-422d-b3b2-3af8fd193027__create_file",{
+title:title,
+parentId:SYNC_FOLDER_ID,
+textContent:md,
+contentMimeType:"text/markdown",
+disableConversionToGoogleType:true
+});
+if(r && r.isError){
+throw new Error(extractText(r.content?{content:r.content}:{text:JSON.stringify(r)}));
+}
+return title;
+}
+function markSynced(ts,title){
+const h=loadHistory();
+const idx=h.findIndex(e=>e.ts===ts);
+if(idx>=0){ h[idx].synced=true; h[idx].syncedTitle=title; localStorage.setItem(HISTORY_KEY,JSON.stringify(h)); }
+}
+function pendingCount(){ return loadHistory().filter(e=>!e.synced).length; }
+function refreshSyncStatus(){
+const total=loadHistory().length;
+const pending=pendingCount();
+if(!total){ syncStatusEl.textContent=""; return; }
+syncStatusEl.textContent=pending?`${total} 筆紀錄，${pending} 筆尚未同步雲端。`:`全部 ${total} 筆都已同步到雲端（每筆各一份檔案）。`;
+}
+async function syncAllPending(){
+const pending=loadHistory().filter(e=>!e.synced);
+if(!pending.length){ refreshSyncStatus(); return; }
+matchSyncBtn.disabled=true;
+matchSyncBtn.textContent="同步中…";
+let ok=0, fail=0;
+for(const entry of pending){
+try{
+const title=await saveEntryToDriveFile(entry);
+markSynced(entry.ts,title);
+ok++;
+}catch(e){ fail++; }
+}
+renderMatchHistory();
+syncStatusEl.textContent=`同步完成：成功 ${ok} 筆${fail?`，失敗 ${fail} 筆（可再按一次重試）`:""}。`;
+matchSyncBtn.disabled=false;
+matchSyncBtn.textContent="同步到雲端";
+}
+matchSyncBtn.addEventListener("click",syncAllPending);
+
+async function handleMatchSubmit(){
+const q=(matchInput.value||"").trim();
+if(!q) return;
+if(!(window.cowork && window.cowork.askClaude)){
+matchResultsEl.innerHTML=`<p style="color:var(--muted);font-size:13.5px">情境配對需在 Cowork 環境中執行（直接用瀏覽器開啟本檔時無法使用 AI 配對）。其他四個視圖完整可用。</p>`;
+return;
+}
+matchSubmitBtn.disabled=true;
+matchSubmitBtn.textContent="思考中…";
+matchResultsEl.innerHTML="";
+let entry=null;
+try{
+const compactT=T.map(t=>({id:t.id,name:t.name,school:t.school,one:t.one,ideas:t.ideas,tags:t.tags||[]}));
+const prompt=`你是一位哲學顧問。使用者會描述一個生活中的現象、矛盾或困惑。
+請從提供的「思想家資料庫」中，找出 1 到 3 位最相關的思想家或理論，用繁體中文解釋為什麼他們的觀點適用於這個現象。
+如果資料庫裡沒有完全合適的人選，也可以額外建議資料庫之外的思想家或學派，並把 from_db 設為 false。
+只回傳 JSON，不要有其他文字、不要用 markdown code fence，格式如下：
+[{"id":"資料庫裡的id或null","name":"思想家或學派名稱","from_db":true或false,"reason":"150字以內的繁體中文說明"}]
+
+使用者描述的現象：
+"""${q}"""`;
+const res=await window.cowork.askClaude(prompt,[{type:"thinkers_database",items:compactT}]);
+const text=extractText(res);
+const matches=parseMatches(text);
+entry={query:q,matches,rawText:matches?null:text,ts:Date.now(),synced:false};
+saveHistoryEntry(entry);
+const node=renderMatchBlock(q,matches,text,false);
+matchResultsEl.appendChild(node);
+matchInput.value="";
+}catch(e){
+matchResultsEl.innerHTML=`<p style="color:var(--muted);font-size:13.5px">配對時發生錯誤：${(e&&e.message)||e}</p>`;
+}finally{
+matchSubmitBtn.disabled=false;
+matchSubmitBtn.textContent="尋找對應的哲學家";
+}
+if(entry){
+try{
+const title=await saveEntryToDriveFile(entry);
+markSynced(entry.ts,title);
+}catch(e){}
+refreshSyncStatus();
+}
+}
+matchSubmitBtn.addEventListener("click",handleMatchSubmit);
+matchInput.addEventListener("keydown",e=>{
+if(e.key==="Enter" && (e.metaKey||e.ctrlKey)) handleMatchSubmit();
+});
+matchClearBtn.addEventListener("click",clearHistory);
+refreshSyncStatus();
+
+renderHero();
+renderTimeline();
+renderQuestions();
+renderMatchHistory();
+window.addEventListener("resize",()=>{if(nodes.length)render();});
+</script>
+</body>
+</html>
+
+
