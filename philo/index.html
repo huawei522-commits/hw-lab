@@ -229,38 +229,6 @@ padding:7px 13px;border-radius:9px;font-size:12.5px}
 ::-webkit-scrollbar-track{background:transparent}
 .count{font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums}
 
-/* ===== 情境配對 ===== */
-.match-wrap{max-width:800px;margin:0 auto}
-.match-box{background:var(--bg2);border:1px solid var(--line);border-radius:var(--radius);padding:22px;margin-bottom:24px;
-box-shadow:0 2px 10px rgba(80,55,20,.05)}
-.match-box textarea{width:100%;min-height:92px;background:var(--panel);border:1px solid var(--line);
-border-radius:9px;color:var(--txt);font-family:inherit;font-size:15px;padding:13px;resize:vertical;outline:none;line-height:1.7}
-.match-box textarea:focus{border-color:var(--accent2)}
-.match-actions{display:flex;justify-content:flex-end;margin-top:12px;gap:10px;flex-wrap:wrap}
-.match-btn{background:var(--accent);color:#f7f0dd;border:none;padding:10px 22px;border-radius:5px;
-font-size:14px;font-weight:600;cursor:pointer;transition:.15s;letter-spacing:.5px}
-.match-btn:hover{opacity:.88}
-.match-btn:disabled{opacity:.55;cursor:default}
-.match-clear{background:none;border:1px solid var(--line);color:var(--muted);padding:10px 16px;
-border-radius:5px;font-size:13px;cursor:pointer;font-style:italic}
-.match-clear:hover{color:var(--txt);border-color:var(--muted)}
-.match-result{margin-bottom:22px;padding-bottom:18px;border-bottom:1px dashed var(--line2)}
-.match-q{font-size:14px;color:var(--muted);margin-bottom:12px}
-.match-q b{color:var(--txt)}
-.match-card{background:var(--bg2);border:1px solid var(--line);border-left:3px solid var(--accent2);
-border-radius:5px;padding:14px 16px;margin-bottom:10px;transition:.15s}
-.match-card.clickable{cursor:pointer}
-.match-card.clickable:hover{border-color:var(--accent2);box-shadow:0 4px 14px rgba(0,0,0,.08)}
-.match-card.external{border-left-color:var(--c-relig)}
-.match-card h4{font-size:15.5px;margin-bottom:6px;display:flex;align-items:center;gap:8px;color:var(--ink)}
-.match-card p{font-size:14px;color:var(--txt)}
-.ext-tag{font-size:10.5px;background:var(--panel);color:var(--muted);padding:2px 8px;border-radius:10px;font-weight:400}
-.match-empty{color:var(--muted);font-size:13.5px;text-align:center;padding:30px 0}
-.match-history-title{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin:30px 0 14px}
-.match-chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
-.match-chips .mc{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:6px 13px;
-font-size:12.5px;cursor:pointer;color:var(--muted);font-style:italic;transition:.13s}
-.match-chips .mc:hover{border-color:var(--accent2);color:var(--accent2)}
 /* responsive-boundary-v20260712 */
 img,svg{max-width:100%}
 button,input,textarea{min-width:0}
@@ -297,7 +265,6 @@ body{font-size:15px}header.top{padding:11px 14px 10px;gap:9px}header.top h1{widt
 <button data-view="graph">關聯圖譜</button>
 <button data-view="tensions">思想交鋒</button>
 <button data-view="questions">大哉問</button>
-<button data-view="match">情境配對</button>
 </div>
 <div class="toolbar">
 <div class="legend" id="legend"></div>
@@ -333,24 +300,6 @@ body{font-size:15px}header.top{padding:11px 14px 10px;gap:9px}header.top h1{widt
 <section class="view" id="questionsView">
 <div class="intro"><p>哲學的另一種讀法：不從年代，而從千百年來反覆追問的核心問題切入。點任一答案看是誰、在何時如何回應。</p></div>
 <div class="qgrid" id="qgrid"></div>
-</section>
-<section class="view" id="matchView">
-<div class="match-wrap">
-<div class="intro"><p>描述一個讓你困惑的現象、矛盾或情境，AI 會從哲學史裡找出最對應的思想家或理論，並說明為什麼。（此功能需在 Cowork 裡開啟才會運作；直接用瀏覽器開啟本檔時，前四個視圖完整可用，AI 配對與雲端同步則無法運作。）</p></div>
-<div class="match-box">
-<textarea id="matchInput" placeholder="例如：景觀設計公司老闆壓榨員工，卻標榜設計對社會、民眾、生態友善……"></textarea>
-<div class="match-chips" id="matchChips"></div>
-<div class="match-actions">
-<button class="match-clear" id="matchSyncBtn" type="button">同步到雲端</button>
-<button class="match-clear" id="matchClearBtn" type="button">清除紀錄</button>
-<button class="match-btn" id="matchSubmitBtn" type="button">尋找對應的哲學家</button>
-</div>
-<div id="syncStatus" style="font-size:11.5px;color:var(--muted);text-align:right;margin-top:8px;font-style:italic"></div>
-</div>
-<div id="matchResults"></div>
-<div class="match-history-title" id="matchHistoryTitle" style="display:none">過去的配對紀錄</div>
-<div id="matchHistory"></div>
-</div>
 </section>
 </main>
 </div>
@@ -1454,7 +1403,6 @@ const v=b.dataset.view;
 document.getElementById(v+"View").classList.add("active");
 if(v==="graph"){if(!nodes.length)buildGraphData();else layoutGraph();transform={x:0,y:0,k:1};render();}
 if(v==="tensions"){renderTensions();}
-if(v==="match"){renderMatchHistory();}
 };
 });
 document.getElementById("search").addEventListener("input",e=>{
@@ -1462,228 +1410,9 @@ query=e.target.value.trim().toLowerCase();
 renderTimeline(); if(nodes.length)render();
 });
 
-/* =========================================================
-情境配對（AI 即時配對；需 Cowork 環境）
-========================================================= */
-const HISTORY_KEY="philomap_match_history_v1";
-const matchInput=document.getElementById("matchInput");
-const matchSubmitBtn=document.getElementById("matchSubmitBtn");
-const matchClearBtn=document.getElementById("matchClearBtn");
-const matchResultsEl=document.getElementById("matchResults");
-const matchHistoryEl=document.getElementById("matchHistory");
-const matchHistoryTitle=document.getElementById("matchHistoryTitle");
-const matchChipsEl=document.getElementById("matchChips");
-
-/* 提問靈感 chips */
-const SAMPLE_PROMPTS=[
-"主管說要『扁平化、大家都是夥伴』，卻什麼都要他點頭。",
-"明明選擇很多，卻覺得怎麼選都不對、愈自由愈焦慮。",
-"科技讓生活更方便，為什麼大家反而更累、更沒空？",
-"公司高喊永續與善意，內部卻在比誰加班加得多。",
-];
-if(matchChipsEl){
-SAMPLE_PROMPTS.forEach(s=>{
-const c=document.createElement("span");
-c.className="mc"; c.textContent=s;
-c.onclick=()=>{matchInput.value=s; matchInput.focus();};
-matchChipsEl.appendChild(c);
-});
-}
-
-function loadHistory(){
-try{ return JSON.parse(localStorage.getItem(HISTORY_KEY)||"[]"); }catch(e){ return []; }
-}
-function saveHistoryEntry(entry){
-const h=loadHistory();
-h.unshift(entry);
-localStorage.setItem(HISTORY_KEY, JSON.stringify(h.slice(0,50)));
-}
-function clearHistory(){
-localStorage.removeItem(HISTORY_KEY);
-matchHistoryEl.innerHTML="";
-matchHistoryTitle.style.display="none";
-if(typeof syncStatusEl!=="undefined" && syncStatusEl) syncStatusEl.textContent="";
-}
-function extractText(res){
-if(typeof res==="string") return res;
-if(res && typeof res==="object"){
-if(typeof res.text==="string") return res.text;
-if(Array.isArray(res.content)) return res.content.map(c=>(c&&c.text)||"").join("\n");
-if(typeof res.output==="string") return res.output;
-try{ return JSON.stringify(res); }catch(e){ return String(res); }
-}
-return String(res);
-}
-function parseMatches(text){
-let cleaned=(text||"").trim();
-const fence=cleaned.match(/```(?:json)?\s*([\s\S]*?)```/i);
-if(fence) cleaned=fence[1].trim();
-const start=cleaned.indexOf("["); const end=cleaned.lastIndexOf("]");
-if(start>=0 && end>start) cleaned=cleaned.slice(start,end+1);
-try{
-const arr=JSON.parse(cleaned);
-if(Array.isArray(arr)) return arr;
-}catch(e){}
-return null;
-}
-function pad2(n){return String(n).padStart(2,"0");}
-function tsLabel(d){return d.getFullYear()+pad2(d.getMonth()+1)+pad2(d.getDate())+"_"+pad2(d.getHours())+pad2(d.getMinutes())+pad2(d.getSeconds());}
-function fmtDate(ts){const d=new Date(ts);return d.getFullYear()+"-"+pad2(d.getMonth()+1)+"-"+pad2(d.getDate())+" "+pad2(d.getHours())+":"+pad2(d.getMinutes());}
-function slugify(q){return (q||"").replace(/[\\\/:*?"<>|\n\r]/g,"").trim().slice(0,24)||"提問";}
-
-function renderMatchBlock(query,matches,rawText,synced){
-const wrap=document.createElement("div");
-wrap.className="match-result";
-const qline=document.createElement("div");
-qline.className="match-q";
-qline.innerHTML=`你的提問：<b>${(query||"").replace(/</g,"&lt;")}</b>`+(synced?` <span class="ext-tag">已同步雲端</span>`:(synced===false?` <span class="ext-tag">尚未同步</span>`:""));
-wrap.appendChild(qline);
-if(matches && matches.length){
-matches.forEach(m=>{
-const card=document.createElement("div");
-const hasId=m.id && byId[m.id];
-card.className="match-card"+(m.from_db===false?" external":"")+(hasId?" clickable":"");
-card.innerHTML=`<h4>${m.name||"未命名"}${m.from_db===false?'<span class="ext-tag">資料庫外建議</span>':''}</h4><p>${(m.reason||"").replace(/</g,"&lt;")}</p>`;
-if(hasId) card.onclick=()=>openPanel(m.id);
-wrap.appendChild(card);
-});
-}else if(rawText){
-const p=document.createElement("p");
-p.style.whiteSpace="pre-wrap";
-p.style.fontSize="13.5px";
-p.textContent=rawText||"沒有取得有效回應。";
-wrap.appendChild(p);
-}
-return wrap;
-}
-function renderMatchHistory(){
-const h=loadHistory();
-matchHistoryEl.innerHTML="";
-if(!h.length){ matchHistoryTitle.style.display="none"; return; }
-matchHistoryTitle.style.display="block";
-h.forEach(entry=>{
-matchHistoryEl.appendChild(renderMatchBlock(entry.query, entry.matches, entry.rawText, !!entry.synced));
-});
-}
-
-/* ---- 一筆一筆寫回 Google Drive（需 Cowork 環境） ---- */
-const SYNC_FOLDER_ID="1EWAvUOWW_PJVTNfjyDAWfesDyZtIkZGa";
-const matchSyncBtn=document.getElementById("matchSyncBtn");
-const syncStatusEl=document.getElementById("syncStatus");
-
-function buildEntryMarkdown(entry){
-const lines=["# 情境配對紀錄","",`**時間：** ${fmtDate(entry.ts||Date.now())}`,"",`**提問：** ${entry.query||""}`,""];
-if(entry.matches && entry.matches.length){
-entry.matches.forEach(m=>{
-lines.push(`- **${m.name||"未命名"}**${m.from_db===false?"（資料庫外建議）":""}：${(m.reason||"").replace(/\n/g," ")}`);
-});
-}else if(entry.rawText){
-lines.push(entry.rawText);
-}
-return lines.join("\n");
-}
-async function saveEntryToDriveFile(entry){
-if(!(window.cowork && window.cowork.callMcpTool)) throw new Error("此功能需在 Cowork 環境中執行");
-const title="配對_"+tsLabel(new Date(entry.ts||Date.now()))+"_"+slugify(entry.query)+".md";
-const md=buildEntryMarkdown(entry);
-const r=await window.cowork.callMcpTool("mcp__8d99c519-b09c-422d-b3b2-3af8fd193027__create_file",{
-title:title,
-parentId:SYNC_FOLDER_ID,
-textContent:md,
-contentMimeType:"text/markdown",
-disableConversionToGoogleType:true
-});
-if(r && r.isError){
-throw new Error(extractText(r.content?{content:r.content}:{text:JSON.stringify(r)}));
-}
-return title;
-}
-function markSynced(ts,title){
-const h=loadHistory();
-const idx=h.findIndex(e=>e.ts===ts);
-if(idx>=0){ h[idx].synced=true; h[idx].syncedTitle=title; localStorage.setItem(HISTORY_KEY,JSON.stringify(h)); }
-}
-function pendingCount(){ return loadHistory().filter(e=>!e.synced).length; }
-function refreshSyncStatus(){
-const total=loadHistory().length;
-const pending=pendingCount();
-if(!total){ syncStatusEl.textContent=""; return; }
-syncStatusEl.textContent=pending?`${total} 筆紀錄，${pending} 筆尚未同步雲端。`:`全部 ${total} 筆都已同步到雲端（每筆各一份檔案）。`;
-}
-async function syncAllPending(){
-const pending=loadHistory().filter(e=>!e.synced);
-if(!pending.length){ refreshSyncStatus(); return; }
-matchSyncBtn.disabled=true;
-matchSyncBtn.textContent="同步中…";
-let ok=0, fail=0;
-for(const entry of pending){
-try{
-const title=await saveEntryToDriveFile(entry);
-markSynced(entry.ts,title);
-ok++;
-}catch(e){ fail++; }
-}
-renderMatchHistory();
-syncStatusEl.textContent=`同步完成：成功 ${ok} 筆${fail?`，失敗 ${fail} 筆（可再按一次重試）`:""}。`;
-matchSyncBtn.disabled=false;
-matchSyncBtn.textContent="同步到雲端";
-}
-matchSyncBtn.addEventListener("click",syncAllPending);
-
-async function handleMatchSubmit(){
-const q=(matchInput.value||"").trim();
-if(!q) return;
-if(!(window.cowork && window.cowork.askClaude)){
-matchResultsEl.innerHTML=`<p style="color:var(--muted);font-size:13.5px">情境配對需在 Cowork 環境中執行（直接用瀏覽器開啟本檔時無法使用 AI 配對）。其他四個視圖完整可用。</p>`;
-return;
-}
-matchSubmitBtn.disabled=true;
-matchSubmitBtn.textContent="思考中…";
-matchResultsEl.innerHTML="";
-let entry=null;
-try{
-const compactT=T.map(t=>({id:t.id,name:t.name,school:t.school,one:t.one,ideas:t.ideas,tags:t.tags||[]}));
-const prompt=`你是一位哲學顧問。使用者會描述一個生活中的現象、矛盾或困惑。
-請從提供的「思想家資料庫」中，找出 1 到 3 位最相關的思想家或理論，用繁體中文解釋為什麼他們的觀點適用於這個現象。
-如果資料庫裡沒有完全合適的人選，也可以額外建議資料庫之外的思想家或學派，並把 from_db 設為 false。
-只回傳 JSON，不要有其他文字、不要用 markdown code fence，格式如下：
-[{"id":"資料庫裡的id或null","name":"思想家或學派名稱","from_db":true或false,"reason":"150字以內的繁體中文說明"}]
-
-使用者描述的現象：
-"""${q}"""`;
-const res=await window.cowork.askClaude(prompt,[{type:"thinkers_database",items:compactT}]);
-const text=extractText(res);
-const matches=parseMatches(text);
-entry={query:q,matches,rawText:matches?null:text,ts:Date.now(),synced:false};
-saveHistoryEntry(entry);
-const node=renderMatchBlock(q,matches,text,false);
-matchResultsEl.appendChild(node);
-matchInput.value="";
-}catch(e){
-matchResultsEl.innerHTML=`<p style="color:var(--muted);font-size:13.5px">配對時發生錯誤：${(e&&e.message)||e}</p>`;
-}finally{
-matchSubmitBtn.disabled=false;
-matchSubmitBtn.textContent="尋找對應的哲學家";
-}
-if(entry){
-try{
-const title=await saveEntryToDriveFile(entry);
-markSynced(entry.ts,title);
-}catch(e){}
-refreshSyncStatus();
-}
-}
-matchSubmitBtn.addEventListener("click",handleMatchSubmit);
-matchInput.addEventListener("keydown",e=>{
-if(e.key==="Enter" && (e.metaKey||e.ctrlKey)) handleMatchSubmit();
-});
-matchClearBtn.addEventListener("click",clearHistory);
-refreshSyncStatus();
-
 renderHero();
 renderTimeline();
 renderQuestions();
-renderMatchHistory();
 window.addEventListener("resize",()=>{if(nodes.length)render();});
 </script>
 </body>
