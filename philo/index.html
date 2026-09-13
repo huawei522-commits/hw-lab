@@ -327,7 +327,7 @@ body{font-size:15px}header.top{padding:11px 14px 10px;gap:9px}header.top h1{widt
 <section class="view" id="graphView">
 <div id="graphWrap">
 <svg id="graph"></svg>
-<div class="graph-help">八個知識領域 · 67 位思想家<br>滑過任一節點，看它牽動誰。</div>
+<div class="graph-help" id="graphHelp">八個知識領域 · 67 位思想家<br><span id="graphHint">滑過任一節點，看它牽動誰。</span></div>
 </div>
 </section>
 <section class="view" id="tensionsView">
@@ -1266,6 +1266,11 @@ qgrid.appendChild(card);
 });
 }
 
+/* 有沒有滑鼠可以「滑過」。沒有的話（手機、平板）走兩段式點擊 */
+const CAN_HOVER=window.matchMedia("(hover:hover)").matches;
+if(!CAN_HOVER){const h=document.getElementById("graphHint");
+if(h)h.textContent="點一下看它牽動誰，再點一次進入。";}
+let tapped=null;   /* 觸控裝置上目前被點選、正在顯示關聯的節點 */
 const svg=document.getElementById("graph");
 const SVGNS="http://www.w3.org/2000/svg";
 let nodes=[], links=[], transform={x:0,y:0,k:1};
@@ -1298,7 +1303,7 @@ group.forEach((n,i)=>{const perRing=8,ring=Math.floor(i/perRing),slot=i%perRing,
 });
 }
 function tick(){}
-function drawGraph(){if(!nodes.length)buildGraphData();else layoutGraph();render();}
+function drawGraph(){tapped=null;if(!nodes.length)buildGraphData();else layoutGraph();render();}
 
 function render(){
 svg.innerHTML="";const g=document.createElementNS(SVGNS,"g");g.setAttribute("transform","translate("+transform.x+","+transform.y+") scale("+transform.k+")");svg.appendChild(g);
@@ -1306,7 +1311,17 @@ links.forEach(l=>{const sOk=l.s.isDom||matchFilter(l.s.t),tOk=l.t.isDom||matchFi
 nodes.forEach(n=>{const on=n.isDom?activeDoms.size>0:matchFilter(n.t),grp=document.createElementNS(SVGNS,"g");grp.setAttribute("class","gnode"+(n.isDom?" dom":"")+(n.featured?" key":"")+(on?"":" dim"));grp.setAttribute("transform","translate("+n.x+","+n.y+")");grp._n=n;const title=document.createElementNS(SVGNS,"title");title.textContent=n.label;grp.appendChild(title);
 if(n.isDom){const r=document.createElementNS(SVGNS,"rect"),w=n.label.length*13+18;r.setAttribute("x",-w/2);r.setAttribute("y",-15);r.setAttribute("width",w);r.setAttribute("height",30);r.setAttribute("rx",7);r.setAttribute("fill",n.color);r.setAttribute("opacity",".25");r.setAttribute("stroke",n.color);r.setAttribute("stroke-width","1.5");grp.appendChild(r);const tx=document.createElementNS(SVGNS,"text");tx.setAttribute("y",4);tx.textContent=n.label;tx.setAttribute("fill",n.color);grp.appendChild(tx);}
 else{const c=document.createElementNS(SVGNS,"circle");c.setAttribute("r",7);c.setAttribute("fill",n.color);c.setAttribute("stroke","#f3ecd9");c.setAttribute("stroke-width","2");grp.appendChild(c);const tx=document.createElementNS(SVGNS,"text");tx.setAttribute("y",-12);tx.textContent=n.label;grp.appendChild(tx);}
-grp.onclick=()=>{if(!n.isDom)openPanel(n.t.id);};grp.onmouseenter=()=>highlight(n);grp.onmouseleave=()=>render();g.appendChild(grp);});
+grp.onclick=(e)=>{
+if(n.isDom)return;
+if(CAN_HOVER){openPanel(n.t.id);return;}
+/* 觸控裝置沒有「滑過」這個動作，改成兩段式：
+   先點一次看它牽動誰，確定要看了再點第二次進個人頁 */
+e.stopPropagation();
+if(tapped===n){tapped=null;openPanel(n.t.id);}
+else{tapped=n;highlight(n);}
+};
+if(CAN_HOVER){grp.onmouseenter=()=>highlight(n);grp.onmouseleave=()=>render();}
+g.appendChild(grp);});
 }
 function highlight(node){
 const near=new Set([node]);
@@ -1317,6 +1332,7 @@ svg.querySelectorAll(".gnode").forEach(grp=>{const n=grp._n;grp.classList.remove
 }
 
 let dragging=false,last=null;
+svg.addEventListener("click",()=>{if(!CAN_HOVER&&tapped){tapped=null;render();}});
 svg.addEventListener("mousedown",e=>{dragging=true;last={x:e.clientX,y:e.clientY};svg.classList.add("drag");});
 window.addEventListener("mouseup",()=>{dragging=false;svg.classList.remove("drag");});
 window.addEventListener("mousemove",e=>{
