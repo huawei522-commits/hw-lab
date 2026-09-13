@@ -141,15 +141,22 @@ svg#graph.drag{cursor:grabbing}
 /* deterministic-domain-layout-v20260712 */
 .gnode{transition:opacity .16s}
 .gnode circle{cursor:pointer;transition:r .12s,stroke-width .12s}
+.gnode circle.hit{transition:none}   /* 觸控範圍不要跟著放大動畫 */
 .gnode text{font-size:11.5px;fill:var(--txt);pointer-events:none;text-anchor:middle;paint-order:stroke;stroke:var(--bg2);stroke-width:4px;stroke-linejoin:round;opacity:.14;transition:opacity .14s}
 .gnode.dom text{font-size:13px;font-weight:700;opacity:1;stroke-width:5px}
 .gnode.key text,.gnode:hover text,.gnode.focus text,.gnode.near text{opacity:1}
-.gnode.focus circle{r:9px;stroke:var(--accent2);stroke-width:3px}
-.gnode.near circle{stroke-width:3px}
+.gnode.focus circle:not(.hit){r:9px;stroke:var(--accent2);stroke-width:3px}
+.gnode.near circle:not(.hit){stroke-width:3px}
 .glink{stroke:var(--line2);stroke-width:1;opacity:.08;transition:opacity .14s,stroke-width .14s}
 .glink.infl{opacity:.15}
 .glink.hl{stroke:var(--accent);stroke-width:2;opacity:.78}
 .gnode.dim{opacity:.10}.glink.dim{opacity:.012}
+/* 窄螢幕上 67 個人名一定會互相卡到。預設只留色點與八個領域名稱，
+   點選之後才浮出該節點與其關聯者的名字。 */
+@media (max-width:640px){
+.gnode:not(.dom) text{display:none}
+.gnode.focus text,.gnode.near text{display:block;opacity:1}
+}
 .graph-help{position:absolute;left:18px;bottom:16px;font-size:12.5px;color:var(--muted);
 background:#f7f0ddee;padding:9px 14px;border-radius:7px;border:1px solid var(--line);max-width:310px;font-style:italic}
 
@@ -1269,7 +1276,7 @@ qgrid.appendChild(card);
 /* 有沒有滑鼠可以「滑過」。沒有的話（手機、平板）走兩段式點擊 */
 const CAN_HOVER=window.matchMedia("(hover:hover)").matches;
 if(!CAN_HOVER){const h=document.getElementById("graphHint");
-if(h)h.textContent="點一下看它牽動誰，再點一次進入。";}
+if(h)h.textContent="點任一點：浮出名字與關聯；再點一次進入。";}
 let tapped=null;   /* 觸控裝置上目前被點選、正在顯示關聯的節點 */
 const svg=document.getElementById("graph");
 const SVGNS="http://www.w3.org/2000/svg";
@@ -1316,8 +1323,11 @@ const vw=svg.clientWidth||900, vh=svg.clientHeight||600;
 let minX=Infinity,maxX=-Infinity,minY=Infinity,maxY=-Infinity;
 nodes.forEach(n=>{
 /* 領域標籤是方塊、人名是圓點加上方文字，各自留出標籤需要的空間 */
-const halfW=n.isDom?(n.label.length*13+18)/2+10:Math.max(34,n.label.length*7);
-const top=n.isDom?18:26, bottom=n.isDom?18:12;
+/* 窄螢幕上人名是隱藏的，不必替它預留寬度——省下來的空間可以把圖放大 */
+const narrow=vw<640;
+const halfW=n.isDom?(n.label.length*13+18)/2+10
+                   :(narrow?14:Math.max(34,n.label.length*7));
+const top=n.isDom?18:(narrow?14:26), bottom=n.isDom?18:(narrow?14:12);
 if(n.x-halfW<minX)minX=n.x-halfW;
 if(n.x+halfW>maxX)maxX=n.x+halfW;
 if(n.y-top<minY)minY=n.y-top;
@@ -1340,7 +1350,11 @@ svg.innerHTML="";const g=document.createElementNS(SVGNS,"g");g.setAttribute("tra
 links.forEach(l=>{const sOk=l.s.isDom||matchFilter(l.s.t),tOk=l.t.isDom||matchFilter(l.t.t),line=document.createElementNS(SVGNS,"line");line.setAttribute("x1",l.s.x);line.setAttribute("y1",l.s.y);line.setAttribute("x2",l.t.x);line.setAttribute("y2",l.t.y);line.setAttribute("class","glink "+l.kind+((sOk&&tOk)?"":" dim"));line._l=l;g.appendChild(line);});
 nodes.forEach(n=>{const on=n.isDom?activeDoms.size>0:matchFilter(n.t),grp=document.createElementNS(SVGNS,"g");grp.setAttribute("class","gnode"+(n.isDom?" dom":"")+(n.featured?" key":"")+(on?"":" dim"));grp.setAttribute("transform","translate("+n.x+","+n.y+")");grp._n=n;const title=document.createElementNS(SVGNS,"title");title.textContent=n.label;grp.appendChild(title);
 if(n.isDom){const r=document.createElementNS(SVGNS,"rect"),w=n.label.length*13+18;r.setAttribute("x",-w/2);r.setAttribute("y",-15);r.setAttribute("width",w);r.setAttribute("height",30);r.setAttribute("rx",7);r.setAttribute("fill",n.color);r.setAttribute("opacity",".25");r.setAttribute("stroke",n.color);r.setAttribute("stroke-width","1.5");grp.appendChild(r);const tx=document.createElementNS(SVGNS,"text");tx.setAttribute("y",4);tx.textContent=n.label;tx.setAttribute("fill",n.color);grp.appendChild(tx);}
-else{const c=document.createElementNS(SVGNS,"circle");c.setAttribute("r",7);c.setAttribute("fill",n.color);c.setAttribute("stroke","#f3ecd9");c.setAttribute("stroke-width","2");grp.appendChild(c);const tx=document.createElementNS(SVGNS,"text");tx.setAttribute("y",-12);tx.textContent=n.label;grp.appendChild(tx);}
+else{
+/* 手指比滑鼠粗，加一個看不見的大圓當觸控範圍 */
+const hit=document.createElementNS(SVGNS,"circle");hit.setAttribute("r",17);
+hit.setAttribute("fill","transparent");hit.setAttribute("class","hit");grp.appendChild(hit);
+const c=document.createElementNS(SVGNS,"circle");c.setAttribute("r",7);c.setAttribute("fill",n.color);c.setAttribute("stroke","#f3ecd9");c.setAttribute("stroke-width","2");grp.appendChild(c);const tx=document.createElementNS(SVGNS,"text");tx.setAttribute("y",-12);tx.textContent=n.label;grp.appendChild(tx);}
 grp.onclick=(e)=>{
 if(n.isDom)return;
 if(CAN_HOVER){openPanel(n.t.id);return;}
