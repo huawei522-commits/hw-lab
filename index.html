@@ -5,47 +5,221 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HW Lab</title>
 <link rel="icon" href="data:,">
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;1,500&family=Noto+Serif+TC:wght@400;600&family=Space+Mono&display=swap" rel="stylesheet">
+<meta name="description" content="用兩千五百年的哲學，看懂今天的 AI 爭論。67 位思想家、22 組對立、12 道大哉問。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://huawei522-commits.github.io/hw-lab/">
+<meta property="og:title" content="The Map of Philosophy — HW Lab">
+<meta property="og:description" content="Reading today's arguments about AI through 2,500 years of philosophy. 67 thinkers, 22 disputes, 12 questions that won't go away.">
+<meta property="og:image" content="https://huawei522-commits.github.io/hw-lab/og-cover.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Noto+Serif+TC:wght@400;600&family=Space+Mono&display=swap" rel="stylesheet">
 <style>
-:root{--ink:#1B1A17;--paper:#EDE7DB;--slate:#6E7B8B;--hair:rgba(27,26,23,.18);--c2:#8A6F4E;}
+:root{--ink:#1B1A17;--paper:#EDE7DB;--slate:#6E7B8B;--hair:rgba(27,26,23,.18);--c2:#8A6F4E;
+      --en-body:'Cormorant Garamond',Georgia,'Times New Roman',serif;}
 *{box-sizing:border-box;margin:0;padding:0;}
+[hidden]{display:none!important;}
 body{min-height:100vh;background:var(--paper);color:var(--ink);
-     font-family:'Noto Serif TC',serif;display:flex;align-items:center;justify-content:center;padding:8vw 6vw;}
-main{max-width:720px;width:100%;}
+     font-family:'Noto Serif TC',serif;display:flex;justify-content:center;padding:7vw 6vw;}
+main{max-width:720px;width:100%;margin:auto;}
+
+/* 語言切換 */
+.langbar{display:flex;gap:2px;justify-content:flex-end;margin-bottom:22px;}
+.langbar button{font-family:'Space Mono',monospace;font-size:.66rem;letter-spacing:.14em;
+  background:none;border:1px solid var(--hair);color:var(--slate);padding:5px 12px;
+  cursor:pointer;transition:.18s;}
+.langbar button+button{border-left:none;}
+.langbar button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink);}
+.langbar button:hover:not([aria-pressed="true"]){color:var(--ink);border-color:var(--slate);}
+.langbar button:focus-visible{outline:2px solid var(--c2);outline-offset:2px;}
+
 .kicker{font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.22em;
         text-transform:uppercase;color:var(--slate);margin-bottom:14px;}
-h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,7vw,3.6rem);font-weight:500;line-height:1.1;}
+h1{font-family:'Cormorant Garamond',serif;font-size:clamp(2.4rem,7vw,3.6rem);font-weight:500;
+   line-height:1.1;text-wrap:balance;}
 h1 em{font-style:italic;color:var(--c2);}
 .lede{margin-top:14px;color:var(--slate);font-size:.95rem;line-height:1.9;}
-ul{list-style:none;margin-top:40px;border-top:1px solid var(--hair);}
-li a{display:flex;flex-wrap:wrap;align-items:baseline;gap:12px;padding:20px 4px;
+ul.index{list-style:none;margin-top:40px;border-top:1px solid var(--hair);}
+ul.index a{display:flex;flex-wrap:wrap;align-items:baseline;gap:12px;padding:20px 4px;
      border-bottom:1px solid var(--hair);text-decoration:none;color:inherit;transition:padding-left .25s ease;}
-li a:hover{padding-left:14px;}
-li a:hover .name{color:var(--c2);}
+ul.index a:hover{padding-left:14px;}
+ul.index a:hover .name{color:var(--c2);}
 .name{font-size:1.12rem;font-weight:600;transition:color .25s ease;}
 .en{font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.12em;color:var(--slate);}
 .desc{flex-basis:100%;font-size:.86rem;color:var(--slate);line-height:1.8;}
 footer{margin-top:44px;font-family:'Space Mono',monospace;font-size:.68rem;
        letter-spacing:.1em;color:var(--slate);opacity:.8;}
+
+/* ---------- 英文版 ---------- */
+#en-view{font-family:var(--en-body);}
+#en-view h1{font-size:clamp(2.5rem,7.4vw,3.7rem);letter-spacing:-.01em;}
+#en-view .sub{margin-top:12px;font-size:1.12rem;font-style:italic;color:var(--c2);line-height:1.55;}
+.stat{margin-top:20px;font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.13em;
+      color:var(--slate);display:flex;flex-wrap:wrap;gap:6px 16px;}
+#en-view h2{font-family:'Space Mono',monospace;font-size:.68rem;letter-spacing:.2em;
+  text-transform:uppercase;color:var(--slate);font-weight:400;
+  margin:38px 0 13px;padding-bottom:7px;border-bottom:1px solid var(--hair);}
+#en-view p{font-size:1.09rem;line-height:1.72;margin-bottom:14px;max-width:62ch;}
+#en-view p em{color:var(--c2);}
+#en-view p strong{font-weight:600;}
+.pull{border-left:2px solid var(--c2);padding-left:18px;margin:22px 0;
+      font-style:italic;font-size:1.16rem;line-height:1.62;color:var(--ink);}
+.counts{display:flex;flex-wrap:wrap;gap:10px;margin:18px 0 4px;}
+.count{font-family:'Space Mono',monospace;font-size:.72rem;letter-spacing:.06em;
+  border:1px solid var(--hair);padding:7px 12px;color:var(--slate);white-space:nowrap;}
+.count b{color:var(--ink);font-weight:400;}
+.count s{opacity:.55;}
+ol.disputes{list-style:none;counter-reset:d;
+  columns:2;column-gap:34px;margin-top:4px;}
+ol.disputes li{counter-increment:d;break-inside:avoid;padding:9px 0;
+  border-bottom:1px solid var(--hair);font-size:.95rem;line-height:1.5;}
+ol.disputes li .who{display:block;font-family:'Space Mono',monospace;font-size:.68rem;
+  letter-spacing:.08em;color:var(--c2);margin-bottom:3px;}
+ol.disputes li .q{color:var(--slate);}
+.cta{display:inline-block;margin-top:26px;font-family:'Space Mono',monospace;font-size:.74rem;
+  letter-spacing:.12em;text-decoration:none;color:var(--ink);
+  border-bottom:1px solid var(--c2);padding-bottom:3px;transition:.2s;}
+.cta:hover{color:var(--c2);letter-spacing:.16em;}
+.note{margin-top:34px;padding:17px 19px;background:rgba(138,111,78,.07);
+  border:1px solid var(--hair);font-size:.93rem;line-height:1.68;color:var(--slate);}
+.note b{color:var(--ink);font-weight:600;}
+
+@media (max-width:620px){
+  ol.disputes{columns:1;}
+  #en-view p{font-size:1.04rem;}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;}}
 </style>
 </head>
 <body>
 <main>
-  <div class="kicker">HW Lab</div>
-  <h1>做出來，<em>才看得懂</em></h1>
-  <p class="lede">哲學、景觀、教學。把想清楚的事情，做成可以動手走一遍的東西。</p>
 
-  <ul>
-    <li>
-      <a href="philo/">
-        <span class="name">哲學探索地圖</span>
-        <span class="en">The Map of Philosophy</span>
-        <span class="desc">機器能不能思考、統計算不算理解、演算法該聽誰的——用兩千五百年的哲學，看懂今天的 AI 爭論。67 位思想家、22 組對立、12 道大哉問。</span>
-      </a>
-    </li>
-  </ul>
+  <div class="langbar">
+    <button type="button" id="btn-zh" aria-pressed="true">中文</button>
+    <button type="button" id="btn-en" aria-pressed="false">EN</button>
+  </div>
 
-  <footer>HW LAB · 2026</footer>
+  <!-- ============ 中文 ============ -->
+  <div id="zh-view">
+    <div class="kicker">HW Lab</div>
+    <h1>做出來，<em>才看得懂</em></h1>
+    <p class="lede">哲學、景觀、教學。把想清楚的事情，做成可以動手走一遍的東西。</p>
+
+    <ul class="index">
+      <li>
+        <a href="philo/">
+          <span class="name">哲學探索地圖</span>
+          <span class="en">The Map of Philosophy</span>
+          <span class="desc">機器能不能思考、統計算不算理解、演算法該聽誰的——用兩千五百年的哲學，看懂今天的 AI 爭論。67 位思想家、22 組對立、12 道大哉問。</span>
+        </a>
+      </li>
+    </ul>
+
+    <footer>HW LAB · 2026</footer>
+  </div>
+
+  <!-- ============ English ============ -->
+  <div id="en-view" hidden>
+    <div class="kicker">HW Lab</div>
+    <h1>The Map of <em>Philosophy</em></h1>
+    <p class="sub">Reading today's arguments about AI through 2,500 years of philosophy.</p>
+    <div class="stat">
+      <span>67 THINKERS</span><span>22 DISPUTES</span><span>12 QUESTIONS</span>
+    </div>
+
+    <h2>What it is</h2>
+    <p>An interactive map built on one premise: the arguments we are now having about artificial
+      intelligence — whether a machine can think, whether statistics amounts to understanding, who
+      gets to decide what an algorithm optimises for — are not new. They are old questions wearing
+      new clothes.</p>
+    <p>So the map runs backwards. It starts from a contemporary dispute and traces where it came
+      from, rather than marching forward from the Greeks and hoping the present shows up at the end.</p>
+
+    <h2>Why it was cut down</h2>
+    <p>It opened with 75 thinkers and 23 questions. It now carries 67 and 12. The reduction was the
+      point, not an accident of editing.</p>
+    <p>Roughly half of what was here was encyclopedia: dates, schools, three-bullet summaries of what
+      each thinker believed. <strong>That layer is now worth close to nothing.</strong> Any reader
+      with a language model gets a better version in ten seconds, shaped to the question they
+      actually came with.</p>
+    <p class="pull">What a language model cannot supply is judgment — which two thinkers are
+      genuinely in conflict, why a particular figure still matters, where an idea touches landscape,
+      politics or ecology.</p>
+    <p>So the encyclopedia layer went and the judgment layer stayed. The same test removed eight
+      names. Kept: people who put forward a claim that can be argued with and shown to be wrong.
+      Removed: forecasts, warnings and positions taken. Two engineers disagreeing about how soon
+      AGI arrives is an industry argument, not a philosophical one.</p>
+    <div class="counts">
+      <span class="count"><s>75</s> → <b>67 thinkers</b></span>
+      <span class="count"><s>23</s> → <b>12 questions</b></span>
+      <span class="count"><s>359</s> → <b>134 graph edges</b></span>
+      <span class="count"><s>7</s> → <b>6 fields per thinker</b></span>
+    </div>
+
+    <h2>The 22 disputes</h2>
+    <p>The editorial judgment is easiest to see in the list itself. Each pairing is a claim that
+      these two are genuinely arguing — not merely that they lived near each other.</p>
+    <ol class="disputes">
+      <li><span class="who">Heraclitus vs Parmenides</span><span class="q">Is reality flux, or permanence?</span></li>
+      <li><span class="who">Plato vs Aristotle</span><span class="q">Is the real in the Forms, or in things themselves?</span></li>
+      <li><span class="who">Confucius vs Laozi</span><span class="q">Govern through ritual and effort, or through non-action?</span></li>
+      <li><span class="who">Epicurus vs the Stoics</span><span class="q">Is the good life pleasure, or virtue?</span></li>
+      <li><span class="who">Descartes vs Hume</span><span class="q">Does knowledge come from reason, or from experience?</span></li>
+      <li><span class="who">Kant vs Mill</span><span class="q">Judge an act by its motive, or by its consequences?</span></li>
+      <li><span class="who">Hegel vs Marx</span><span class="q">Does history move by spirit, or by matter?</span></li>
+      <li><span class="who">Sartre vs Aristotle</span><span class="q">Do human beings have a fixed nature?</span></li>
+      <li><span class="who">Nietzsche vs Kant</span><span class="q">After God, where do values come from?</span></li>
+      <li><span class="who">Aquinas vs Kierkegaard</span><span class="q">Can reason reach faith, or does it take a leap?</span></li>
+      <li><span class="who">Turing vs Chalmers</span><span class="q">Is mind only computation, or something more?</span></li>
+      <li><span class="who">Sartre vs Foucault</span><span class="q">Is the self free, or shaped by structures?</span></li>
+      <li><span class="who">Turing vs Searle</span><span class="q">Does a machine understand, or only follow rules?</span></li>
+      <li><span class="who">Rawls vs Nozick</span><span class="q">May the state redistribute in the name of equality?</span></li>
+      <li><span class="who">Popper vs Kuhn</span><span class="q">Does science advance by falsification, or by rupture?</span></li>
+      <li><span class="who">Chalmers vs Dennett</span><span class="q">Is the hard problem of consciousness a real problem?</span></li>
+      <li><span class="who">Habermas vs Foucault</span><span class="q">Does rational dialogue liberate, or is it itself power?</span></li>
+      <li><span class="who">Kant vs Singer</span><span class="q">Does morality extend beyond human beings?</span></li>
+      <li><span class="who">Beauvoir vs Butler</span><span class="q">Is gender a situation imposed, or an act performed?</span></li>
+      <li><span class="who">Hume vs Pearl</span><span class="q">Is causation a habit of mind, or a real structure?</span></li>
+      <li><span class="who">Tononi vs Dennett</span><span class="q">Is consciousness integrated information, or a story the brain tells?</span></li>
+      <li><span class="who">Dennett vs Bender</span><span class="q">Do language models understand meaning, or only predict text?</span></li>
+    </ol>
+
+    <a class="cta" href="philo/">OPEN THE MAP →</a>
+
+    <div class="note">
+      <b>A note on language.</b> The map itself is written in Traditional Chinese. If you do not read
+      it, a good deal still survives the language barrier: the network view, the dispute pairings
+      above, and the names and dates along the timeline. A full English edition is not planned yet —
+      the content is still moving, and translating it now would mean translating it twice.
+    </div>
+
+    <footer>HW LAB · 2026 · Taipei</footer>
+  </div>
+
 </main>
+
+<script>
+(function(){
+  var zh=document.getElementById('zh-view'), en=document.getElementById('en-view'),
+      bz=document.getElementById('btn-zh'), be=document.getElementById('btn-en');
+  function set(lang, push){
+    var isEn = lang==='en';
+    zh.hidden=isEn; en.hidden=!isEn;
+    bz.setAttribute('aria-pressed', String(!isEn));
+    be.setAttribute('aria-pressed', String(isEn));
+    document.documentElement.lang = isEn ? 'en' : 'zh-Hant';
+    document.title = isEn ? 'HW Lab — The Map of Philosophy' : 'HW Lab';
+    if(push && history.replaceState) history.replaceState(null,'', isEn ? '#en' : location.pathname);
+  }
+  bz.addEventListener('click',function(){set('zh',true);});
+  be.addEventListener('click',function(){set('en',true);});
+  // 用 #en 進來的人（例如從 LinkedIn 點進來）直接看到英文
+  set(location.hash.toLowerCase()==='#en' ? 'en' : 'zh', false);
+  window.addEventListener('hashchange',function(){
+    set(location.hash.toLowerCase()==='#en' ? 'en' : 'zh', false);
+  });
+})();
+</script>
 </body>
 </html>
