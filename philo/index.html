@@ -1287,13 +1287,20 @@ const degree=Object.fromEntries(pNodes.map(n=>[n.id,0]));
 links.filter(l=>l.kind==="infl").forEach(l=>{degree[l.s.id]=(degree[l.s.id]||0)+1;degree[l.t.id]=(degree[l.t.id]||0)+1;});
 domKeys.forEach(d=>{pNodes.filter(n=>n.t.doms[0]===d).sort((a,b)=>(degree[b.id]||0)-(degree[a.id]||0)||a.id.localeCompare(b.id)).slice(0,2).forEach(n=>n.featured=true);});
 layoutGraph();
+fitGraph();
 }
 
 function layoutGraph(){
-const W=Math.max(svg.clientWidth||900,640),H=Math.max(svg.clientHeight||600,500);
-const domKeys=Object.keys(DOMAINS),cols=4;
+/* 版面用自己的座標空間，畫完再由 fitGraph() 縮放置中，
+   所以這裡不需要遷就實際的畫布尺寸 */
+const vw=svg.clientWidth||900;
+const domKeys=Object.keys(DOMAINS);
+const cols=vw<640?2:4;                       /* 手機直式螢幕排 2 欄比較合理 */
+const rows=Math.ceil(domKeys.length/cols);
+const W=cols===2?460:Math.max(vw,640);
+const H=cols===2?980:Math.max(svg.clientHeight||600,500);
 const padX=Math.max(62,W*.055),padY=Math.max(54,H*.07);
-const cellW=(W-padX*2)/cols,cellH=(H-padY*2)/2;
+const cellW=(W-padX*2)/cols,cellH=(H-padY*2)/rows;
 const eraRank=Object.fromEntries(ERAS.map((e,i)=>[e.id,i]));
 domKeys.forEach((d,index)=>{
 const col=index%cols,row=Math.floor(index/cols),cx=padX+cellW*(col+.5),cy=padY+cellH*(row+.5);
@@ -1302,8 +1309,31 @@ const group=nodes.filter(n=>!n.isDom&&n.t.doms[0]===d).sort((a,b)=>(eraRank[a.t.
 group.forEach((n,i)=>{const perRing=8,ring=Math.floor(i/perRing),slot=i%perRing,slots=Math.min(perRing,group.length-ring*perRing);const angle=-Math.PI/2+(slot/Math.max(1,slots))*Math.PI*2+(ring%2?Math.PI/Math.max(1,slots):0);const rx=Math.min(cellW*(.27+ring*.12),cellW*.44),ry=Math.min(cellH*(.22+ring*.11),cellH*.40);n.x=cx+Math.cos(angle)*rx;n.y=cy+Math.sin(angle)*ry;n.vx=0;n.vy=0;});
 });
 }
+/* 把整張圖縮放置中到可視區域。沒有這個，窄螢幕只會看到左上角一塊。 */
+function fitGraph(){
+if(!nodes.length)return;
+const vw=svg.clientWidth||900, vh=svg.clientHeight||600;
+let minX=Infinity,maxX=-Infinity,minY=Infinity,maxY=-Infinity;
+nodes.forEach(n=>{
+/* 領域標籤是方塊、人名是圓點加上方文字，各自留出標籤需要的空間 */
+const halfW=n.isDom?(n.label.length*13+18)/2+10:Math.max(34,n.label.length*7);
+const top=n.isDom?18:26, bottom=n.isDom?18:12;
+if(n.x-halfW<minX)minX=n.x-halfW;
+if(n.x+halfW>maxX)maxX=n.x+halfW;
+if(n.y-top<minY)minY=n.y-top;
+if(n.y+bottom>maxY)maxY=n.y+bottom;
+});
+const cw=Math.max(1,maxX-minX), ch=Math.max(1,maxY-minY);
+/* 窄螢幕時底部的說明框是整條橫的，會壓到最後一排，先把那塊高度讓出來 */
+const help=document.querySelector(".graph-help");
+const reserve=(help&&vw<640)?help.getBoundingClientRect().height+20:0;
+const vhUse=Math.max(120,vh-reserve);
+/* 只在放不下的時候縮小，絕不放大——放大會讓桌機原本剛好的排版變擠 */
+const k=Math.min(vw/cw, vhUse/ch, 1);
+transform={k:k, x:(vw-cw*k)/2-minX*k, y:(vhUse-ch*k)/2-minY*k};
+}
 function tick(){}
-function drawGraph(){tapped=null;if(!nodes.length)buildGraphData();else layoutGraph();render();}
+function drawGraph(){tapped=null;if(!nodes.length)buildGraphData();else layoutGraph();fitGraph();render();}
 
 function render(){
 svg.innerHTML="";const g=document.createElementNS(SVGNS,"g");g.setAttribute("transform","translate("+transform.x+","+transform.y+") scale("+transform.k+")");svg.appendChild(g);
@@ -1347,7 +1377,7 @@ const nextK=Math.max(.45,Math.min(2.5,transform.k*(e.deltaY<0?1.12:.89))),ratio=
 transform.x=mx-(mx-transform.x)*ratio;transform.y=my-(my-transform.y)*ratio;transform.k=nextK;render();
 },{passive:false});
 let graphResizeTimer=null;
-window.addEventListener("resize",()=>{if(!nodes.length)return;clearTimeout(graphResizeTimer);graphResizeTimer=setTimeout(()=>{layoutGraph();transform={x:0,y:0,k:1};render();},120);});
+window.addEventListener("resize",()=>{if(!nodes.length)return;clearTimeout(graphResizeTimer);graphResizeTimer=setTimeout(()=>{layoutGraph();fitGraph();render();},120);});
 
 
 document.querySelectorAll(".views button").forEach(b=>{
@@ -1357,7 +1387,7 @@ b.classList.add("active");
 document.querySelectorAll(".view").forEach(v=>v.classList.remove("active"));
 const v=b.dataset.view;
 document.getElementById(v+"View").classList.add("active");
-if(v==="graph"){if(!nodes.length)buildGraphData();else layoutGraph();transform={x:0,y:0,k:1};render();}
+if(v==="graph"){if(!nodes.length)buildGraphData();else layoutGraph();fitGraph();render();}
 if(v==="tensions"){renderTensions();}
 };
 });
