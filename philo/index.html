@@ -184,6 +184,13 @@ padding:3px 12px;border-radius:14px;font-size:11.5px;font-weight:600;letter-spac
 border:1px solid var(--line);font-style:italic;font-size:15px;color:var(--ink);line-height:1.65}
 .p-quote::before{content:"\201C";position:absolute;left:8px;top:-6px;font-size:40px;color:var(--line2);font-family:Georgia,serif}
 .p-quote .pq-text{padding-left:18px}
+.p-quote.is-summary::before{content:none}
+.p-quote.is-summary .pq-text{padding-left:0;font-style:normal}
+.pq-kind{display:block;font-size:10px;letter-spacing:.16em;color:var(--muted);
+margin-bottom:5px;padding-left:18px}
+.p-quote.is-summary .pq-kind{padding-left:0}
+.card .quote.is-summary{font-style:normal;opacity:.9}
+.card .quote.is-summary::before{content:"— ";color:var(--line2)}
 .p-portrait{display:block;width:100%;max-width:286px;margin:18px auto 0;border-radius:6px;
 box-shadow:0 4px 16px rgba(80,55,20,.22);border:1px solid var(--line)}
 .era-banner{display:block;width:100%;margin:2px 0 14px;border-radius:7px;
@@ -226,6 +233,10 @@ padding:7px 13px;border-radius:9px;font-size:12.5px}
 ::-webkit-scrollbar-thumb{background:#c2ab78;border-radius:6px;border:2px solid var(--bg)}
 ::-webkit-scrollbar-track{background:transparent}
 .count{font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums}
+.provenance{max-width:760px;margin:34px auto 0;padding:14px 17px;font-size:12.5px;
+line-height:1.8;color:var(--muted);background:var(--bg2);border:1px solid var(--line);
+border-radius:var(--radius)}
+.provenance b{color:var(--txt);font-weight:600}
 
 /* responsive-boundary-v20260712 */
 img,svg{max-width:100%}
@@ -281,6 +292,7 @@ body{font-size:15px}header.top{padding:11px 14px 10px;gap:9px}header.top h1{widt
 <p>這張地圖從當代的問題出發——機器能不能思考、統計算不算理解、演算法該聽誰的——再回頭看這些問題的來歷。它們都不新，是同一批老問題換了身體。沿著時間軸往下，看每個時代怎麼接手，再看今天的爭論接在哪一段。</p>
 </div>
 <div id="timeline"></div>
+<p class="provenance">這張地圖的內容由 HW 與 AI 協作整理。標為<b>引文</b>者為可考的原句，標為<b>觀點摘要</b>者是對其主張的濃縮、並非原話。各家生平與年代未逐條比對原典，若你發現錯誤，非常歡迎告訴我。</p>
 </section>
 <section class="view" id="graphView">
 <div id="graphWrap">
@@ -842,7 +854,7 @@ wittgenstein:"凡不可言說之事，應當保持沉默。",
 husserl:"回到事物本身！",
 heidegger:"人，是向死的存在。",
 sartre:"人是被判處自由的——一旦被拋入世界，便要為所做的一切負責。",
-beauvoir:"女人不是生成的，而是被塑造的。",
+beauvoir:"女人不是生而為女人，而是成為女人的。",
 rawls:"正義，是社會制度的首要美德。",
 foucault:"哪裡有權力，哪裡就有抵抗。",
 turing:"我們只能看到不遠的前方，卻能看到許多有待完成的事。",
@@ -861,7 +873,7 @@ sandel:"不是所有東西都該拿來買賣；有些價值，市場會腐蝕。
 arendt:"最大的惡，往往出自那些從不下決心當好人或壞人的平凡人。",
 habermas:"唯有在沒有宰制的對話中達成的共識，才具有正當性。",
 adorno:"奧斯威辛之後，文化的每一道光輝都帶著共謀的陰影。",
-singer:"問題不在牠們能否推理或說話，而在牠們能否感受痛苦。",
+singer:"把同等的利益給予同等的考量——物種，從來不是可以例外的理由。",
 jonas:"行動吧，但要讓你行為的後果，與地球上真正人類生活的延續相容。",
 naess:"每一個生命都有它自身的價值，不因對人有沒有用而定。",
 popper:"一個理論若無法被任何可能的觀察推翻，它就不是科學。",
@@ -874,10 +886,6 @@ mou:"良知須暫時自我坎陷，才能開出知識與民主的客觀世界。
 zhuangzi:"不知周之夢為蝴蝶與？蝴蝶之夢為周與？",
 nagarjuna:"凡因緣所生之法，我說即是空。",
 crenshaw:"當壓迫沿著多條軸線交會，單一視角就會把人遺漏在十字路口。",
-bender:"語言模型是隨機鸚鵡：它把見過的文字縫成像話的句子，卻不懂任何一個字的意思。",
-crawford:"所謂人工智慧，既不人工、也不智慧：它是用礦產、人力與資料堆出來的權力。",
-pearl:"只會看資料的機器停在『關聯』；真正的智能，要能想像『如果當初不一樣，會怎樣』。",
-tononi:"意識的多寡，可以用一個系統整合資訊的量（Φ）來衡量。",
 bender:"語言模型是隨機鸚鵡：它把見過的文字縫成像話的句子，卻不懂任何一個字的意思。",
 crawford:"所謂人工智慧，既不人工、也不智慧：它是用礦產、人力與資料堆出來的權力。",
 pearl:"只會看資料的機器停在『關聯』；真正的智能，要能想像『如果當初不一樣，會怎樣』。",
@@ -917,7 +925,7 @@ wittgenstein:{bio:"維根斯坦是奧地利富商之子，散盡家財、性格�
 husserl:{bio:"胡塞爾原是數學家，後轉向哲學，創立了『現象學』。他主張哲學應『回到事物本身』，懸置（epoché）一切既有的理論預設，純粹地描述意識經驗如何呈現。他的核心概念是『意向性』：意識永遠是『關於某物』的意識。",why:"他對第一人稱經驗的嚴格描述，成為當代意識科學與認知現象學的方法源頭，也直接培育了海德格、沙特等一代歐陸哲學家。"},
 heidegger:{bio:"海德格是二十世紀最具影響也最具爭議的哲學家。他認為整個西方哲學遺忘了最根本的問題——『存在』本身的意義。在《存在與時間》中，他以『此在』（Dasein）分析人這種特殊的存在者：我們被『拋入』世界、與他人共在，並在『向死而生』的覺悟中，才可能活出本真的自己。（他與納粹的牽連，至今仍是無法迴避的污點。）",why:"他對技術『座架』本質的批判，是當代科技哲學的奠基文本；他對時間、死亡與本真的思考，也深刻影響了存在主義、詮釋學與後現代思潮。"},
 sartre:{bio:"沙特是法國存在主義的旗手，也是拒領諾貝爾獎的公共知識分子。他的名言『存在先於本質』意指：人沒有預先寫好的本質，是被『拋入』世界後，透過一次次選擇造就自己。這份絕對的自由也是沉重的責任——把選擇推給處境或天性，是一種『自欺』（bad faith）。",why:"他把自由與責任推到極致，連結了反殖民、左翼運動與公共參與；在一個一切都可被歸因於基因、環境或演算法的時代，他對『你仍要為自己負責』的堅持格外刺耳而珍貴。"},
-beauvoir:{bio:"波娃是哲學家、小說家，也是現代女性主義的奠基者。她以存在主義為底，在《第二性》中提出震撼世界的命題：『女人不是生成的，而是被塑造的』——女性氣質並非天生本質，而是社會與歷史把女性建構成相對於男性的『他者』。",why:"《第二性》是第二波女性主義與性別研究的理論基石；她對『他者』與社會建構的分析，至今仍是理解性別、種族與各種壓迫結構的核心工具。"},
+beauvoir:{bio:"波娃是哲學家、小說家，也是現代女性主義的奠基者。她以存在主義為底，在《第二性》中提出震撼世界的命題：『女人不是生而為女人，而是成為女人的』——女性氣質並非天生本質，而是社會與歷史把女性建構成相對於男性的『他者』。",why:"《第二性》是第二波女性主義與性別研究的理論基石；她對『他者』與社會建構的分析，至今仍是理解性別、種族與各種壓迫結構的核心工具。"},
 rawls:{bio:"羅爾斯是二十世紀最重要的政治哲學家，以一部《正義論》重新點燃了規範性政治哲學。他設計了一個思想實驗：想像人們在『無知之幕』後協商社會規則——不知道自己將生為貧富、男女、何種族裔。他論證理性的人會選出兩條正義原則，其中最特別的是：不平等只有在能讓最弱勢者也受益時才被允許。",why:"他把『公平』放回正義的核心，主導了往後半世紀關於分配正義、福利制度與機會平等的全球辯論。"},
 foucault:{bio:"傅柯是法國後結構主義的代表，以歷史考掘的方式分析瘋癲、監獄、醫學與性如何被建構。他提出『權力／知識』：權力不只是壓制，更生產出『何謂正常、何謂真理』的知識，並透過學校、醫院、監獄等機構，把人訓練成自我規訓的『馴順身體』（如『全景監獄』的隱喻）。",why:"在演算法推薦、人臉辨識與大數據監控的時代，他對規訓、監控與『正常化』的分析，成了理解數位權力與隱私最鋒利的框架。"},
 turing:{bio:"圖靈是英國數學家，理論電腦科學與人工智慧之父，二戰期間於布萊切利園破解德軍 Enigma 密碼，扭轉戰局。他以『圖靈機』精確定義了什麼是『可計算』，並提出『模仿遊戲』（圖靈測試）：若機器的回應與人無從分辨，我們便沒有理由否認它在思考。他因同性戀身分遭受迫害，英年早逝。",why:"他奠定了電腦科學的理論根基，並把『心靈是否就是一種運算』推上哲學前台——在大型 AI 時代，這個問題比以往任何時候都更迫切。"},
@@ -1058,6 +1066,10 @@ a:[["searle","中文房間：操弄符號不等於理解"],["turing","分辨不�
 {q:"AI 的權力與方向，該由誰決定？",sub:"AI 治理 · 資料、權力與風險",
 a:[["zuboff","你的行為早已被開採為原料"],["crawford","它是用地球資源與人力堆出來的"],["floridi","我們已經活在資訊圈裡"],["foucault","誰定義正常，誰就擁有權力"],["habermas","靠公開審議決定規則"],["bostrom","須先想清楚存在風險"]]}];
 
+/* 這些條目不是逐字引文，是觀點摘要——呈現時不加引號、另外標示，
+   以免讀者誤以為是原話。判準偏保守：不確定的一律歸在這裡。 */
+const PARAPHRASE = new Set(["plato", "aquinas", "locke", "stoa", "heidegger", "chalmers", "searle", "nagel", "dennett", "bostrom", "zuboff", "dreyfus", "floridi", "nussbaum", "sandel", "arendt", "habermas", "adorno", "singer", "naess", "popper", "butler", "fanon", "nishida", "crenshaw", "bender", "crawford", "pearl", "tononi", "kuhn", "mou", "sen"]);
+
 const byId = Object.fromEntries(T.map(t=>[t.id,t]));
 let activeDoms = new Set(Object.keys(DOMAINS));
 let query = "";
@@ -1127,7 +1139,7 @@ card.innerHTML=`
 <h4>${t.name}</h4>
 <div class="yr">${t.dates} · ${t.region}</div>
 <div class="sch">${t.school}</div>
-${QUOTES[t.id]?`<div class="quote">${QUOTES[t.id]}</div>`:""}
+${QUOTES[t.id]?`<div class="quote${PARAPHRASE.has(t.id)?" is-summary":""}">${QUOTES[t.id]}</div>`:""}
 <div class="one">${t.one}</div>
 <div class="doms">${t.doms.map(d=>`<span class="dot" title="${DOMAINS[d].name}" style="background:${DOMAINS[d].color}"></span>`).join("")}</div>`;
 card.onclick=()=>openPanel(t.id);
@@ -1154,7 +1166,7 @@ panel.innerHTML=`
 <span class="sch-tag">${t.school}</span>
 </div>
 <img class="p-portrait" src="img/portrait_${id}.webp" alt="${t.name}" loading="lazy" onerror="this.style.display='none'">
-${QUOTES[id]?`<div class="p-quote"><div class="pq-text">${QUOTES[id]}</div></div>`:""}
+${QUOTES[id]?`<div class="p-quote${PARAPHRASE.has(id)?" is-summary":""}"><span class="pq-kind">${PARAPHRASE.has(id)?"觀點摘要":"引文"}</span><div class="pq-text">${QUOTES[id]}</div></div>`:""}
 <div class="p-body">
 <h3>核心觀點</h3>
 <p>${t.one}</p>
