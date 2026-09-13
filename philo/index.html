@@ -49,6 +49,14 @@ cursor:pointer;font-family:var(--sans);font-size:15px;letter-spacing:.5px;transi
 .views button.active{border-bottom-color:var(--accent);color:var(--accent);font-weight:600;font-style:normal}
 .views button:hover:not(.active){color:var(--txt)}
 .toolbar{margin-left:auto;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+/* 窄螢幕時領域篩選改成橫向捲動，右側淡出暗示還有內容 */
+@media (max-width:720px){
+.toolbar .legend{position:relative;-webkit-overflow-scrolling:touch;
+mask-image:linear-gradient(to right,#000 calc(100% - 26px),transparent);
+-webkit-mask-image:linear-gradient(to right,#000 calc(100% - 26px),transparent)}
+.toolbar .legend::-webkit-scrollbar{height:3px}
+.toolbar .legend::-webkit-scrollbar-thumb{background:var(--line2);border-radius:3px}
+}
 .ghost-btn{background:var(--bg2);border:1px solid var(--line);color:var(--accent);padding:8px 13px;border-radius:8px;
 cursor:pointer;font-family:inherit;font-size:13px;font-style:italic;transition:.15s;white-space:nowrap}
 .ghost-btn:hover{border-color:var(--accent);background:var(--panel)}
@@ -282,7 +290,7 @@ body{font-size:15px}header.top{padding:11px 14px 10px;gap:9px}header.top h1{widt
 .cards,.tn-grid,.qgrid{grid-template-columns:minmax(0,1fr);gap:10px}.card{padding:14px}.tn-body{grid-template-columns:minmax(0,1fr)}.tn-vs{height:32px;padding:0 14px}.tn-vs::before{top:50%;bottom:auto;left:14px;right:14px;width:auto;height:1px}.tn-vs span{padding:0 8px}.qcard{padding:17px 16px}
 .graph-help{left:10px;right:10px;bottom:10px;max-width:none;padding:8px 10px}#panel{width:100%;max-width:none}.p-head{padding:20px 18px 15px}.p-head h2{font-size:22px}.p-quote{margin:14px 18px 0;padding:12px 14px}.p-body{padding:15px 18px 60px}
 .match-box{padding:16px}.match-actions{justify-content:stretch}.match-actions>button{flex:1 1 145px;padding-left:12px;padding-right:12px}}
-@media (max-width:420px){.toolbar .legend{display:none}.ghost-btn{flex:0 0 auto}#search{flex:1 1 120px}.hero .voices{display:grid;grid-template-columns:minmax(0,1fr)}.match-actions>button{flex-basis:100%}}
+@media (max-width:420px){.ghost-btn{flex:0 0 auto}#search{flex:1 1 120px}.hero .voices{display:grid;grid-template-columns:minmax(0,1fr)}.match-actions>button{flex-basis:100%}}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}}
 
 </style>
