@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HW 哲學探索地圖 · 串聯文明與知識的底層邏輯</title>
+<title>HW 哲學探索地圖 · 用兩千五百年的哲學，看懂今天的 AI</title>
 <style>
 :root{
 color-scheme: light;
@@ -130,7 +130,7 @@ svg#graph.drag{cursor:grabbing}
 .gnode.focus circle{r:9px;stroke:var(--accent2);stroke-width:3px}
 .gnode.near circle{stroke-width:3px}
 .glink{stroke:var(--line2);stroke-width:1;opacity:.08;transition:opacity .14s,stroke-width .14s}
-.glink.dom{opacity:.025}.glink.infl{opacity:.10}
+.glink.infl{opacity:.15}
 .glink.hl{stroke:var(--accent);stroke-width:2;opacity:.78}
 .gnode.dim{opacity:.10}.glink.dim{opacity:.012}
 .graph-help{position:absolute;left:18px;bottom:16px;font-size:12.5px;color:var(--muted);
@@ -199,8 +199,6 @@ margin:24px 0 10px;display:flex;align-items:center;gap:8px}
 .p-body h3:first-child+p{font-style:italic;border-left:3px double var(--accent);padding-left:14px;color:var(--txt)}
 .p-body p.deep{font-size:14.5px;line-height:1.85;color:var(--ink);text-align:justify}
 .p-body p.deep.why{background:var(--panel);border-left:3px solid var(--accent);border-radius:0 7px 7px 0;padding:12px 15px}
-.p-body .ideas li{font-size:14px;margin:0 0 9px 0;list-style:none;padding-left:18px;position:relative}
-.p-body .ideas li:before{content:"\273B";position:absolute;left:0;color:var(--accent);font-size:11px;top:3px}
 .link-row{display:flex;flex-wrap:wrap;gap:7px}
 .link-row .lk{background:var(--panel);border:1px solid var(--line);padding:6px 12px;border-radius:8px;
 font-size:12.5px;cursor:pointer;transition:.13s}
@@ -280,14 +278,14 @@ body{font-size:15px}header.top{padding:11px 14px 10px;gap:9px}header.top h1{widt
 <div id="hero"></div>
 <div class="fleuron"></div>
 <div class="intro dropcap">
-<p>哲學是串聯文明與知識的底層邏輯。沿著時間軸往下，看每個時代的人如何回應前人、又如何把問題交給後世。點開任一思想家，讀他的一句話、追蹤他與科學、政治、心理、藝術、科技的連結，也看看誰曾與他針鋒相對。</p>
+<p>這張地圖從當代的問題出發——機器能不能思考、統計算不算理解、演算法該聽誰的——再回頭看這些問題的來歷。它們都不新，是同一批老問題換了身體。沿著時間軸往下，看每個時代怎麼接手，再看今天的爭論接在哪一段。</p>
 </div>
 <div id="timeline"></div>
 </section>
 <section class="view" id="graphView">
 <div id="graphWrap">
 <svg id="graph"></svg>
-<div class="graph-help">八個知識領域 · 75 位思想家<br>關係線於聚焦節點時清楚顯示。</div>
+<div class="graph-help">八個知識領域 · 67 位思想家<br>滑過任一節點，看它牽動誰。</div>
 </div>
 </section>
 <section class="view" id="tensionsView">
@@ -336,49 +334,49 @@ const T = [
 {id:"thales",era:"ancient",name:"泰利斯",dates:"約前624–546",region:"古希臘",school:"米利都學派",
 doms:["meta","sci"],
 one:"被視為第一位哲學家，主張萬物本原是水，用自然而非神話解釋世界。",
-ideas:["以單一自然元素解釋萬物起源","把『為什麼』從神話轉向可推理的原因","預測日食，連結哲學與天文"],
+
 conn:["heraclitus","aristotle"],
 tags:["自然主義"],
 xdom:[{d:"sci",t:"自然科學的胚胎",p:"『用自然解釋自然』的態度，是日後物理學與宇宙論的方法論起點。"}]},
 {id:"heraclitus",era:"ancient",name:"赫拉克利特",dates:"約前535–475",region:"古希臘",school:"變動哲學",
 doms:["meta","logic"],
 one:"『萬物流轉』，沒有人能踏進同一條河兩次；以邏各斯（Logos）為宇宙秩序。",
-ideas:["變化是世界的本質","對立面的統一與張力","邏各斯：隱藏的理性秩序"],
+
 conn:["parmenides","hegel"],
 tags:["變動","過程哲學"],
 xdom:[{d:"sci",t:"過程思維",p:"『實在即過程』影響了後世的演化、熱力學與懷海德的歷程哲學。"}]},
 {id:"parmenides",era:"ancient",name:"巴門尼德",dates:"約前515–450",region:"古希臘",school:"伊利亞學派",
 doms:["meta","logic"],
 one:"『存在者存在，不存在者不存在』——以純粹邏輯論證變化是幻覺。",
-ideas:["存在是唯一、不變、不可分的","感官與理性的對立","用演繹推理而非觀察立論"],
+
 conn:["heraclitus","plato"],
 tags:["演繹"],
 xdom:[{d:"logic",t:"演繹論證的範本",p:"首次以嚴格推理而非觀察建立形上學主張，是邏輯論證的早期典範。"}]},
 {id:"confucius",era:"ancient",name:"孔子",dates:"前551–479",region:"中國",school:"儒家",
 doms:["ethics","poli"],
 one:"以『仁』與『禮』為核心，主張透過修身與教育達成人倫與社會秩序。",
-ideas:["仁：推己及人的道德核心","禮：維繫社會的規範與儀節","為政以德，修身齊家治國"],
+
 conn:["laozi","aristotle"],
 tags:["德治","教育"],
 xdom:[{d:"poli",t:"德治傳統",p:"以道德教化而非純法律治理，塑造東亞兩千年的政治與教育制度。"}]},
 {id:"laozi",era:"ancient",name:"老子",dates:"約前6世紀",region:"中國",school:"道家",
 doms:["meta","ethics"],
 one:"『道可道，非常道』，主張順應自然、無為而治，與儒家形成互補張力。",
-ideas:["道：先於萬物、不可名狀的本原","無為：不強求、順勢而行","物極必反的辯證觀"],
+
 conn:["confucius","heraclitus"],
 tags:["自然","系統觀"],
 xdom:[{d:"sci",t:"自然與系統觀",p:"順應自然、整體平衡的思路，與現代生態學、系統論有遙遠呼應。"}]},
 {id:"socrates",era:"ancient",name:"蘇格拉底",dates:"前470–399",region:"古希臘",school:"古典希臘",
 doms:["ethics","epist"],
 one:"『未經審視的人生不值得過』——以詰問法逼出定義，把哲學轉向人與德性。",
-ideas:["蘇格拉底反詰法：以問題揭露無知","德性即知識","關注『該如何生活』而非自然"],
+
 conn:["plato","confucius"],
 tags:["詰問","德性"],
 xdom:[{d:"poli",t:"言論與良心",p:"寧死不違背良心受審，成為公民不服從與思想自由的原型。"}]},
 {id:"plato",era:"ancient",name:"柏拉圖",dates:"前428–348",region:"古希臘",school:"柏拉圖主義",
 doms:["meta","epist","poli"],
 one:"以『理型論』區分可變現象與永恆真實，並在《理想國》設計正義的城邦。",
-ideas:["理型：超越感官的永恆真實","洞穴寓言：從幻象走向真知","哲學家王與正義的城邦","靈魂三分說"],
+
 conn:["socrates","parmenides","aristotle","augustine"],
 tags:["理型","烏托邦"],
 xdom:[{d:"logic",t:"數學柏拉圖主義",p:"『數學對象真實存在』的立場，至今仍是數學哲學的主流之一。"},
@@ -386,7 +384,7 @@ xdom:[{d:"logic",t:"數學柏拉圖主義",p:"『數學對象真實存在』的�
 {id:"aristotle",era:"ancient",name:"亞里斯多德",dates:"前384–322",region:"古希臘",school:"逍遙學派",
 doms:["meta","logic","ethics","sci"],
 one:"百科全書式的奠基者：建立形式邏輯、四因說與『中庸』德性倫理學。",
-ideas:["三段論：形式邏輯的開端","四因說解釋事物的存在","中庸與幸福（eudaimonia）","以觀察分類自然世界"],
+
 conn:["plato","aquinas","confucius"],
 tags:["德性統一","中庸","表裡一致"],
 xdom:[{d:"sci",t:"生物學與分類學",p:"系統觀察與分類生物，是經驗科學方法的遠祖。"},
@@ -394,49 +392,49 @@ xdom:[{d:"sci",t:"生物學與分類學",p:"系統觀察與分類生物，是經
 {id:"epicurus",era:"ancient",name:"伊比鳩魯",dates:"前341–270",region:"古希臘",school:"伊比鳩魯學派",
 doms:["ethics","sci"],
 one:"以原子論為基礎，主張追求心靈的寧靜（ataraxia）才是真正的快樂。",
-ideas:["快樂＝沒有痛苦與煩擾","原子論的唯物世界觀","不必畏懼神與死亡"],
+
 conn:["aristotle","hume"],
 tags:["快樂主義"],
 xdom:[{d:"sci",t:"原子論",p:"繼承德謨克利特的原子論，預示了近代唯物與物理的微觀世界圖像。"}]},
 {id:"stoa",era:"ancient",name:"斯多噶學派",dates:"前300起",region:"古希臘羅馬",school:"斯多噶主義",
 doms:["ethics","logic"],
 one:"芝諾、塞內卡、馬可·奧理略：順應理性與自然，分辨能控制與不能控制之事。",
-ideas:["美德是唯一的善","區分『我能掌控』與『不能掌控』","宇宙由理性（邏各斯）貫穿"],
+
 conn:["epicurus","kant"],
 tags:["自制","CBT"],
 xdom:[{d:"mind",t:"認知行為療法",p:"『困擾我們的是看法而非事物本身』直接啟發了現代 CBT 心理治療。"}]},
 {id:"augustine",era:"medieval",name:"奧古斯丁",dates:"354–430",region:"北非／羅馬",school:"教父哲學",
 doms:["relig","meta","mind"],
 one:"融合柏拉圖主義與基督教，探討時間、記憶、自由意志與原罪。",
-ideas:["時間存在於心靈之中","內省作為通往真理的路","信仰尋求理解"],
+
 conn:["plato","aquinas"],
 tags:["內省","自由意志"],
 xdom:[{d:"mind",t:"內省與自我",p:"《懺悔錄》對內在經驗的細膩剖析，是自傳與心理自我反思的先驅。"}]},
 {id:"averroes",era:"medieval",name:"阿威羅伊",dates:"1126–1198",region:"安達魯斯（伊斯蘭）",school:"伊斯蘭亞里斯多德主義",
 doms:["meta","relig","sci"],
 one:"註解亞里斯多德，主張哲學與宗教真理可並行，把希臘思想傳回歐洲。",
-ideas:["理性與信仰的雙重真理","捍衛哲學探究的正當性","保存並闡釋亞里斯多德"],
+
 conn:["aristotle","aquinas"],
 tags:["雙重真理"],
 xdom:[{d:"sci",t:"知識的橋樑",p:"伊斯蘭世界保存與發展的希臘科學與哲學，是歐洲文藝復興的關鍵養分。"}]},
 {id:"aquinas",era:"medieval",name:"阿奎那",dates:"1225–1274",region:"義大利",school:"經院哲學",
 doms:["relig","meta","ethics"],
 one:"以亞里斯多德重建神學，提出上帝存在的五路論證與自然法理論。",
-ideas:["五路論證：從世界推向上帝","自然法：理性可知的道德秩序","信仰與理性互不矛盾"],
+
 conn:["aristotle","augustine","averroes"],
 tags:["自然法"],
 xdom:[{d:"poli",t:"自然法傳統",p:"自然法理論影響了人權、法律哲學與西方的正義觀念。"}]},
 {id:"bacon",era:"early",name:"法蘭西斯·培根",dates:"1561–1626",region:"英格蘭",school:"經驗論先驅",
 doms:["sci","epist"],
 one:"『知識就是力量』，倡導以歸納與實驗取代純思辨，奠定科學方法。",
-ideas:["歸納法：從觀察到通則","破除『偶像』（成見）","知識應服務於改善人類生活"],
+
 conn:["locke","descartes"],
 tags:["歸納","實證"],
 xdom:[{d:"sci",t:"科學方法",p:"系統化的實驗與歸納，是現代科學研究方法的直接源頭。"}]},
 {id:"descartes",era:"early",name:"笛卡兒",dates:"1596–1650",region:"法國",school:"理性主義",
 doms:["epist","meta","mind","logic"],
 one:"『我思故我在』——以普遍懷疑尋找確定的知識起點，開啟近代哲學。",
-ideas:["方法論的懷疑","我思故我在（cogito）","心物二元論","清晰明確的觀念為真"],
+
 conn:["bacon","spinoza","locke","kant"],
 tags:["懷疑","心物二元"],
 xdom:[{d:"mind",t:"心物問題",p:"心物二元論至今仍是心靈哲學與神經科學爭論的核心難題。"},
@@ -444,14 +442,14 @@ xdom:[{d:"mind",t:"心物問題",p:"心物二元論至今仍是心靈哲學與�
 {id:"spinoza",era:"early",name:"斯賓諾莎",dates:"1632–1677",region:"荷蘭",school:"理性主義",
 doms:["meta","ethics","relig"],
 one:"以幾何方法論證『神即自然』，一切皆為唯一實體的不同樣態。",
-ideas:["一元論：神即自然（泛神論）","以幾何方式推演倫理學","自由來自理解必然"],
+
 conn:["descartes","leibniz","nietzsche"],
 tags:["一元論","決定論"],
 xdom:[{d:"sci",t:"決定論宇宙",p:"萬物依必然法則展開的圖像，與愛因斯坦所認同的『宇宙的神』相呼應。"}]},
 {id:"leibniz",era:"early",name:"萊布尼茲",dates:"1646–1716",region:"德意志",school:"理性主義",
 doms:["meta","logic","sci"],
 one:"單子論與『可能世界中最好的一個』，並與牛頓各自發明微積分。",
-ideas:["單子：無窗的精神原子","充足理由律","可能世界與最佳化"],
+
 conn:["spinoza","descartes"],
 tags:["可能世界"],
 xdom:[{d:"logic",t:"符號邏輯與計算",p:"夢想一套『通用演算』來解決爭論，預示了形式邏輯與電腦運算。"},
@@ -459,14 +457,14 @@ xdom:[{d:"logic",t:"符號邏輯與計算",p:"夢想一套『通用演算』來�
 {id:"locke",era:"enlight",name:"洛克",dates:"1632–1704",region:"英格蘭",school:"經驗論",
 doms:["epist","poli","mind"],
 one:"心靈如白板，知識來自經驗；政府的正當性來自被治理者的同意。",
-ideas:["白板說：知識源於經驗","自然權利：生命、自由、財產","政府基於社會契約與同意"],
+
 conn:["bacon","hume","rousseau","descartes"],
 tags:["社會契約","自然權利"],
 xdom:[{d:"poli",t:"自由主義與美國憲法",p:"自然權利與有限政府的主張，直接影響了美國《獨立宣言》。"}]},
 {id:"hume",era:"enlight",name:"休謨",dates:"1711–1776",region:"蘇格蘭",school:"經驗論／懷疑論",
 doms:["epist","ethics","mind"],
 one:"把經驗論推到底：因果只是習慣性聯想，理性是激情的奴隸。",
-ideas:["因果關係無法被理性證明","『是』推不出『應該』（休謨問題）","自我只是知覺的束流"],
+
 conn:["locke","kant","epicurus"],
 tags:["懷疑論","休謨問題"],
 xdom:[{d:"sci",t:"歸納問題",p:"指出歸納法無法被嚴格證成，至今仍是科學哲學的核心難題。"},
@@ -474,14 +472,14 @@ xdom:[{d:"sci",t:"歸納問題",p:"指出歸納法無法被嚴格證成，至今
 {id:"rousseau",era:"enlight",name:"盧梭",dates:"1712–1778",region:"日內瓦／法國",school:"啟蒙／浪漫先驅",
 doms:["poli","ethics"],
 one:"『人生而自由，卻無處不在枷鎖中』——以公意與社會契約重構政治正當性。",
-ideas:["自然狀態與文明的墮落","公意（general will）","社會契約與人民主權"],
+
 conn:["locke","kant","marx"],
 tags:["公意","人民主權"],
 xdom:[{d:"poli",t:"法國大革命",p:"人民主權與公意的思想，是法國大革命與現代民主的精神燃料。"}]},
 {id:"kant",era:"enlight",name:"康德",dates:"1724–1804",region:"普魯士",school:"德國觀念論／批判哲學",
 doms:["epist","ethics","meta"],
 one:"調和理性論與經驗論：心靈以先天範疇建構經驗；道德源於普遍的定言令式。",
-ideas:["哥白尼式革命：對象符合認知","現象與物自身的區分","定言令式與義務論","人是目的而非手段"],
+
 conn:["hume","descartes","hegel","rawls","stoa"],
 tags:["定言令式","工具化","人是目的"],
 xdom:[{d:"sci",t:"認知的框架",p:"『心智主動建構經驗』的觀點，預示了認知科學與感知研究。"},
@@ -489,14 +487,14 @@ xdom:[{d:"sci",t:"認知的框架",p:"『心智主動建構經驗』的觀點，
 {id:"hegel",era:"c19",name:"黑格爾",dates:"1770–1831",region:"德意志",school:"德國觀念論",
 doms:["meta","poli","logic"],
 one:"以辯證法描繪精神（Geist）在歷史中自我展開，追求自由的實現。",
-ideas:["辯證法：正—反—合","歷史是自由意識的進展","主奴辯證與承認"],
+
 conn:["kant","marx","heraclitus"],
 tags:["辯證法","承認"],
 xdom:[{d:"poli",t:"歷史哲學",p:"『歷史有方向』的觀念，深刻形塑了現代的進步觀與意識形態。"}]},
 {id:"marx",era:"c19",name:"馬克思",dates:"1818–1883",region:"德意志",school:"歷史唯物論",
 doms:["poli","ethics"],
 one:"翻轉黑格爾辯證：物質生產與階級鬥爭才是歷史的動力。",
-ideas:["歷史唯物論","異化勞動","階級鬥爭與資本批判"],
+
 conn:["hegel","rousseau"],
 tags:["意識形態","異化","剝削","偽善","商品拜物教"],
 xdom:[{d:"poli",t:"二十世紀的革命",p:"其思想塑造了社會主義、共產主義運動與整個二十世紀的政治版圖。"},
@@ -504,28 +502,28 @@ xdom:[{d:"poli",t:"二十世紀的革命",p:"其思想塑造了社會主義、�
 {id:"kierkegaard",era:"c19",name:"齊克果",dates:"1813–1855",region:"丹麥",school:"存在主義先驅",
 doms:["ethics","relig","mind"],
 one:"反抗體系哲學，強調個人的抉擇、焦慮與『信仰的跳躍』。",
-ideas:["主體性即真理","存在的三階段：審美—倫理—宗教","焦慮與絕望的分析"],
+
 conn:["hegel","sartre","heidegger"],
 tags:["焦慮","信仰跳躍"],
 xdom:[{d:"mind",t:"焦慮心理學",p:"對焦慮與絕望的剖析，影響了存在主義心理治療與現代心理學。"}]},
 {id:"nietzsche",era:"c19",name:"尼采",dates:"1844–1900",region:"德意志",school:"生命哲學",
 doms:["ethics","meta","mind"],
 one:"『上帝已死』，呼籲重估一切價值，以權力意志與超人面對虛無。",
-ideas:["上帝已死與虛無主義","權力意志","主人道德 vs 奴隸道德","永恆回歸"],
+
 conn:["spinoza","sartre","foucault"],
 tags:["權力意志","重估價值"],
 xdom:[{d:"mind",t:"深層心理學",p:"對潛意識動機與自我欺騙的洞見，啟發了佛洛伊德與榮格。"}]},
 {id:"mill",era:"c19",name:"彌爾",dates:"1806–1873",region:"英格蘭",school:"效益主義",
 doms:["ethics","poli"],
 one:"發展效益主義並捍衛個人自由：傷害原則劃定社會干預的界線。",
-ideas:["最大多數人的最大幸福","傷害原則與言論自由","質性高低的快樂之分"],
+
 conn:["hume","rawls"],
 tags:["效益主義"],
 xdom:[{d:"poli",t:"自由與民主",p:"《論自由》是言論自由、少數權利與現代自由民主的經典辯護。"}]},
 {id:"russell",era:"c20",name:"羅素",dates:"1872–1970",region:"英國",school:"分析哲學",
 doms:["logic","epist","poli"],
 one:"與弗雷格共建現代邏輯，嘗試把數學化約為邏輯，開創分析哲學。",
-ideas:["邏輯主義：數學奠基於邏輯","描述詞理論","清晰分析語言以解決哲學問題"],
+
 conn:["wittgenstein","leibniz"],
 tags:["分析哲學"],
 xdom:[{d:"sci",t:"電腦與人工智慧",p:"形式邏輯與《數學原理》是計算理論與 AI 推理的基礎。"},
@@ -533,340 +531,283 @@ xdom:[{d:"sci",t:"電腦與人工智慧",p:"形式邏輯與《數學原理》是
 {id:"wittgenstein",era:"c20",name:"維根斯坦",dates:"1889–1951",region:"奧地利／英國",school:"語言哲學",
 doms:["logic","epist","mind"],
 one:"前後期判若兩人：從『語言界限即世界界限』到『意義即用法』。",
-ideas:["凡不可說的應保持沉默","語言遊戲與生活形式","意義來自使用而非指稱"],
+
 conn:["russell"],
 tags:["語言遊戲"],
 xdom:[{d:"mind",t:"語言與思維",p:"『私人語言不可能』的論證，深刻影響語言學與認知科學。"}]},
 {id:"husserl",era:"c20",name:"胡塞爾",dates:"1859–1938",region:"德意志",school:"現象學",
 doms:["epist","mind","meta"],
 one:"創立現象學：『回到事物本身』，描述意識經驗的結構。",
-ideas:["意向性：意識總是關於某物","現象學還原（懸置）","回到事物本身"],
+
 conn:["heidegger","descartes"],
 tags:["現象學"],
 xdom:[{d:"mind",t:"意識研究",p:"對第一人稱經驗的描述，成為當代意識科學與認知現象學的方法。"}]},
 {id:"heidegger",era:"c20",name:"海德格",dates:"1889–1976",region:"德意志",school:"存在主義／現象學",
 doms:["meta","mind"],
 one:"追問『存在的意義』，以『此在』（Dasein）分析人作為向死而生的存在。",
-ideas:["存在與存在者的區分","此在：被拋入世界的存在","向死而生與本真性"],
+
 conn:["husserl","kierkegaard","sartre"],
 tags:["存在","技術批判"],
 xdom:[{d:"sci",t:"科技哲學",p:"對技術『座架』本質的批判，是當代科技哲學的奠基文本。"}]},
 {id:"sartre",era:"c20",name:"沙特",dates:"1905–1980",region:"法國",school:"存在主義",
 doms:["ethics","meta","mind","poli"],
 one:"『存在先於本質』，人被判處自由，必須為自己的選擇負全責。",
-ideas:["存在先於本質","絕對自由與責任","自欺（bad faith）","他人即地獄"],
+
 conn:["heidegger","kierkegaard","nietzsche","beauvoir"],
 tags:["自欺","責任","自由"],
 xdom:[{d:"poli",t:"介入與解放",p:"自由與責任的哲學，連結了反殖民、左翼運動與公共知識分子角色。"}]},
 {id:"beauvoir",era:"c20",name:"波娃",dates:"1908–1986",region:"法國",school:"存在主義／女性主義",
 doms:["ethics","poli"],
 one:"『女人不是生成的，而是被塑造的』——奠定現代女性主義哲學。",
-ideas:["性別作為社會建構","他者與第二性","自由處境中的倫理"],
+
 conn:["sartre"],
 tags:["社會建構","他者"],
 xdom:[{d:"poli",t:"女性主義運動",p:"《第二性》是第二波女性主義與性別研究的理論基石。"}]},
 {id:"rawls",era:"contemp",name:"羅爾斯",dates:"1921–2002",region:"美國",school:"政治哲學",
 doms:["poli","ethics"],
 one:"以『無知之幕』下的原初狀態，論證作為公平的正義原則。",
-ideas:["無知之幕與原初狀態","正義二原則","作為公平的正義"],
+
 conn:["kant","mill"],
 tags:["分配正義"],
 xdom:[{d:"poli",t:"當代正義論",p:"重啟規範性政治哲學，主導了分配正義、福利與制度設計的辯論。"}]},
 {id:"foucault",era:"contemp",name:"傅柯",dates:"1926–1984",region:"法國",school:"後結構主義",
 doms:["poli","epist","mind"],
 one:"分析知識與權力如何交織，塑造瘋癲、規訓與性等『正常』的範疇。",
-ideas:["權力／知識","規訓社會與全景監獄","話語建構真理"],
+
 conn:["nietzsche"],
 tags:["權力知識","規訓","話語"],
 xdom:[{d:"poli",t:"監控與治理",p:"對規訓與監控的分析，是理解數位時代隱私與權力的關鍵框架。"}]},
 {id:"turing",era:"contemp",name:"圖靈",dates:"1912–1954",region:"英國",school:"計算理論／心靈哲學",
 doms:["logic","mind","sci"],
 one:"以圖靈機定義『可計算』，並以『模仿遊戲』提出機器能否思考的問題。",
-ideas:["圖靈機與可計算性","圖靈測試：機器能思考嗎？","計算作為心智的模型"],
+
 conn:["russell","wittgenstein","chalmers"],
 tags:["AI","可計算性"],
 xdom:[{d:"sci",t:"人工智慧",p:"奠定電腦科學與 AI，把『心靈是否就是運算』推上哲學前台。"}]},
 {id:"chalmers",era:"contemp",name:"查爾默斯",dates:"1966–",region:"澳洲／美國",school:"心靈哲學",
 doms:["mind","meta","sci"],
 one:"提出意識的『困難問題』：為何物理過程會伴隨主觀經驗？",
-ideas:["意識的困難問題","哲學殭屍思想實驗","延伸心靈與模擬假說"],
+
 conn:["turing","descartes","husserl"],
 tags:["意識難題"],
 xdom:[{d:"sci",t:"AI 與意識",p:"在神經科學與大型 AI 時代，重新點燃『主觀經驗從何而來』的爭論。"}]},
 {id:"searle",era:"contemp",name:"瑟爾",dates:"1932–",region:"美國",school:"心靈／語言哲學",
 doms:["mind","logic","epist"],
 one:"以『中文房間』論證：照規則操弄符號，並不等於真正理解意義。",
-ideas:["中文房間思想實驗","語言行動理論（speech acts）","生物自然主義：意識是大腦的生物現象"],
+
 conn:["turing","chalmers","wittgenstein"],
 tags:["中文房間","理解","語意"],
 xdom:[{d:"sci",t:"AI 的語意難題",p:"區分『語法』與『語意』，點出 AI 可能操弄符號卻不具理解。"}]},
 {id:"nagel",era:"contemp",name:"內格爾",dates:"1937–",region:"美國",school:"心靈哲學",
 doms:["mind","meta","ethics"],
 one:"『當一隻蝙蝠是什麼感覺？』——主觀經驗無法被客觀物理描述窮盡。",
-ideas:["主觀觀點不可化約","《從無何之地的觀看》","對純物理主義的質疑"],
+
 conn:["chalmers","descartes","dennett"],
 tags:["主觀性","感質"],
 xdom:[{d:"sci",t:"意識的鴻溝",p:"指出再完整的神經科學，也說不出『感覺起來像什麼』。"}]},
 {id:"dennett",era:"contemp",name:"丹尼特",dates:"1942–2024",region:"美國",school:"心靈哲學／認知科學",
 doms:["mind","sci","meta"],
 one:"意識沒有神祕劇場；以『意向立場』與演化解釋心智，消解所謂難題。",
-ideas:["意識的多重草稿模型","意向立場","達爾文式的『危險思想』"],
+
 conn:["nagel","chalmers","turing"],
 tags:["自然主義","意向立場"],
 xdom:[{d:"sci",t:"心智即過程",p:"把意識當成大腦運算的湧現，而非額外的神祕實體。"}]},
 {id:"bostrom",era:"contemp",name:"博斯特倫",dates:"1973–",region:"瑞典／英國",school:"科技哲學／未來研究",
 doms:["sci","ethics","mind"],
 one:"分析超智慧的風險與『模擬論證』：我們甚至可能活在電腦模擬之中。",
-ideas:["超智慧與控制問題","存在風險（existential risk）","模擬論證"],
+
 conn:["turing","chalmers","jonas"],
 tags:["AI風險","存在風險"],
 xdom:[{d:"sci",t:"AI 安全",p:"把『如何讓超越人類的 AI 仍服務人類』變成迫切的哲學與工程課題。"}]},
 {id:"zuboff",era:"contemp",name:"祖博夫",dates:"1951–",region:"美國",school:"社會理論",
 doms:["poli","sci","ethics"],
 one:"提出『監控資本主義』：把人類經驗變成可預測、可販售的行為數據。",
-ideas:["監控資本主義","行為剩餘與預測產品","工具型權力"],
+
 conn:["foucault","marx","floridi"],
 tags:["監控","數據","平台"],
 xdom:[{d:"poli",t:"數位時代的權力",p:"揭示平台如何把注意力與行為私有化、商品化。"}]},
 {id:"dreyfus",era:"contemp",name:"德雷福斯",dates:"1929–2017",region:"美國",school:"現象學／AI 批判",
 doms:["mind","sci","epist"],
 one:"借海德格與梅洛龐蒂批判 AI：人的智能根植於身體與處境，無法化為規則。",
-ideas:["《電腦不能做什麼》","身體化的認知","反對純符號主義 AI"],
+
 conn:["heidegger","husserl","searle"],
 tags:["身體化","反符號AI"],
 xdom:[{d:"sci",t:"AI 的限度",p:"預言純規則式 AI 的瓶頸，啟發了具身與情境化的認知科學。"}]},
 {id:"floridi",era:"contemp",name:"弗洛里迪",dates:"1964–",region:"義大利／英國",school:"資訊哲學",
 doms:["sci","epist","ethics"],
 one:"建立『資訊哲學』與資訊倫理：在資訊圈（infosphere）中重思隱私與責任。",
-ideas:["資訊哲學","資訊圈與資訊有機體","資訊倫理"],
+
 conn:["zuboff","turing","bostrom"],
 tags:["資訊倫理","隱私"],
 xdom:[{d:"sci",t:"資訊時代的倫理",p:"把隱私、身分與責任放進『人人都是資訊有機體』的框架重新思考。"}]},
 {id:"nozick",era:"contemp",name:"諾齊克",dates:"1938–2002",region:"美國",school:"自由至上主義",
 doms:["poli","ethics"],
 one:"以個人權利為絕對前提，論證只有『最小國家』正當——直接挑戰羅爾斯。",
-ideas:["權利作為邊際約束","最小國家（守夜人國家）","持有正義：獲取、轉讓、矯正"],
+
 conn:["rawls","locke","mill"],
 tags:["自由至上","權利"],
 xdom:[{d:"poli",t:"自由至上主義",p:"為小政府、自由市場與財產權提供了最系統的哲學辯護。"}]},
 {id:"sen",era:"contemp",name:"沈恩",dates:"1933–",region:"印度",school:"福利經濟學／政治哲學",
 doms:["poli","ethics"],
 one:"以『能力取向』重定義發展：重點不是擁有多少，而是能實際做什麼、成為什麼。",
-ideas:["能力（capabilities）與功能","發展即自由","飢荒源於分配與權利而非缺糧"],
+
 conn:["rawls","nussbaum","mill"],
 tags:["能力取向","發展"],
 xdom:[{d:"poli",t:"人類發展指標",p:"其思想催生了聯合國人類發展指數，改寫了『進步』的衡量方式。"}]},
 {id:"nussbaum",era:"contemp",name:"納思邦",dates:"1947–",region:"美國",school:"倫理／政治哲學",
 doms:["ethics","poli"],
 one:"發展能力清單與『脆弱的善』：好生活需要的是讓人得以蓬勃發展的條件。",
-ideas:["中心能力清單","情感在倫理中的角色","善的脆弱性"],
+
 conn:["sen","aristotle","rawls"],
 tags:["能力清單","情感倫理"],
 xdom:[{d:"ethics",t:"情感與正義",p:"把同情、脆弱與文學想像帶回理性主導的正義論。"}]},
 {id:"sandel",era:"contemp",name:"桑德爾",dates:"1953–",region:"美國",school:"社群主義／政治哲學",
 doms:["poli","ethics"],
 one:"社群主義地批判中立自由主義：正義離不開善，也質疑市場的道德界限。",
-ideas:["對『無拘束自我』的批判","市場不該觸及的領域","功績的傲慢"],
+
 conn:["rawls","nozick","aristotle"],
 tags:["社群主義","功績"],
 xdom:[{d:"poli",t:"市場的道德界限",p:"追問哪些東西（器官、選票、關懷）不該被買賣。"}]},
 {id:"arendt",era:"c20",name:"鄂蘭",dates:"1906–1975",region:"德國／美國",school:"政治哲學",
 doms:["poli","ethics"],
 one:"分析極權主義與『平庸之惡』：最大的惡，可能來自不思考的平凡人。",
-ideas:["極權主義的起源","平庸之惡","行動、勞動與工作的區分"],
+
 conn:["heidegger","kant","habermas"],
 tags:["平庸之惡","極權"],
 xdom:[{d:"poli",t:"公共領域與行動",p:"重申政治是人們共同行動、開創新局的空間，而非僅是管理。"}]},
 {id:"habermas",era:"contemp",name:"哈伯馬斯",dates:"1929–",region:"德國",school:"批判理論（法蘭克福學派）",
 doms:["poli","epist","ethics"],
 one:"以『溝通理性』與理想言談情境，為民主審議與共識奠定理性基礎。",
-ideas:["溝通行動理論","公共領域的結構轉型","商談倫理"],
+
 conn:["kant","adorno","foucault"],
 tags:["溝通理性","公共領域"],
 xdom:[{d:"poli",t:"審議民主",p:"主張正當性來自自由平等的公共討論，影響了當代民主理論。"}]},
 {id:"adorno",era:"c20",name:"阿多諾",dates:"1903–1969",region:"德國",school:"法蘭克福學派",
 doms:["poli","ethics","meta"],
 one:"以『啟蒙的辯證』批判工具理性，並揭示『文化工業』如何馴化大眾。",
-ideas:["啟蒙的辯證","文化工業","否定辯證法"],
+
 conn:["marx","nietzsche","habermas"],
 tags:["文化工業","工具理性"],
 xdom:[{d:"poli",t:"大眾文化批判",p:"揭示娛樂與消費如何成為新型態的支配與順從。"}]},
 {id:"singer",era:"contemp",name:"辛格",dates:"1946–",region:"澳洲",school:"應用倫理（效益主義）",
 doms:["ethics","poli"],
 one:"以效益主義主張平等考量一切能感受苦樂者，開創動物解放與效益利他。",
-ideas:["物種歧視（speciesism）","利益的平等考量","效益利他主義"],
+
 conn:["mill","aristotle","jonas"],
 tags:["動物解放","效益利他"],
 xdom:[{d:"ethics",t:"道德圈的擴張",p:"把道德關懷從人類擴展到一切有感受的生命。"}]},
 {id:"jonas",era:"contemp",name:"約納斯",dates:"1903–1993",region:"德國／美國",school:"倫理／科技哲學",
 doms:["ethics","sci","relig"],
 one:"提出『責任原理』：科技力量空前，倫理必須涵蓋對未來世代與自然的責任。",
-ideas:["責任的命令","恐懼的啟發法","科技時代的倫理真空"],
+
 conn:["heidegger","kant","naess"],
 tags:["未來世代","責任"],
 xdom:[{d:"sci",t:"科技倫理",p:"主張行動時要確保『地球上仍有真正人類生活的延續』。"}]},
 {id:"naess",era:"contemp",name:"奈斯",dates:"1912–2009",region:"挪威",school:"環境哲學",
 doms:["ethics","sci"],
 one:"創立『深層生態學』：萬物有其內在價值，人只是生命之網的一部分。",
-ideas:["深層 vs 淺層生態學","生態自我的擴展","生命中心的平等"],
+
 conn:["spinoza","laozi","jonas"],
 tags:["深層生態","內在價值"],
 xdom:[{d:"sci",t:"生態哲學",p:"為環境運動提供了超越『為人類保育』的倫理根據。"}]},
 {id:"popper",era:"c20",name:"波普爾",dates:"1902–1994",region:"奧地利／英國",school:"科學哲學",
 doms:["epist","sci","poli"],
 one:"以『可否證性』劃分科學與非科學：科學的精神在於勇於被反駁。",
-ideas:["否證論（falsifiability）","猜想與反駁","開放社會及其敵人"],
+
 conn:["hume","kuhn","kant"],
 tags:["否證論","開放社會"],
 xdom:[{d:"sci",t:"科學的判準",p:"回應休謨的歸納問題：科學不靠證實，而靠不斷接受嚴格檢驗。"}]},
 {id:"kuhn",era:"c20",name:"孔恩",dates:"1922–1996",region:"美國",school:"科學哲學／科學史",
 doms:["epist","sci"],
 one:"科學不是線性累積，而是常態科學與『典範轉移』革命交替前進。",
-ideas:["典範（paradigm）","常態科學與科學革命","不可共量性"],
+
 conn:["popper","hume","foucault"],
 tags:["典範轉移","科學革命"],
 xdom:[{d:"sci",t:"科學如何變遷",p:"揭示科學受社群與世界觀左右，挑戰了『純客觀累進』的迷思。"}]},
 {id:"butler",era:"contemp",name:"巴特勒",dates:"1956–",region:"美國",school:"性別理論／後結構主義",
 doms:["ethics","poli","mind"],
 one:"性別不是本質而是『操演』：在反覆的言行中被生產出來。",
-ideas:["性別操演（performativity）","《性別惑亂》","脆弱性與可哀悼的生命"],
+
 conn:["beauvoir","foucault","nietzsche"],
 tags:["性別操演","建構"],
 xdom:[{d:"poli",t:"酷兒理論",p:"鬆動『男／女』的自然化二分，成為性別與酷兒研究的奠基。"}]},
 {id:"fanon",era:"c20",name:"法農",dates:"1925–1961",region:"馬丁尼克／阿爾及利亞",school:"後殖民主義",
 doms:["poli","ethics","mind"],
 one:"剖析殖民如何內化為心理創傷，並論證去殖民的解放與暴力。",
-ideas:["《黑皮膚，白面具》","殖民的心理病理","去殖民與民族意識"],
+
 conn:["sartre","beauvoir","said"],
 tags:["後殖民","種族"],
 xdom:[{d:"mind",t:"殖民與心理",p:"把種族壓迫的精神創傷帶入哲學與精神醫學的視野。"}]},
 {id:"said",era:"contemp",name:"薩依德",dates:"1935–2003",region:"巴勒斯坦／美國",school:"後殖民／文化理論",
 doms:["poli","epist"],
 one:"以『東方主義』揭示西方如何建構、支配它想像出來的『東方』。",
-ideas:["東方主義","知識與帝國的共謀","流亡與對位閱讀"],
+
 conn:["foucault","fanon","nietzsche"],
 tags:["東方主義","再現"],
 xdom:[{d:"poli",t:"再現的政治",p:"指出『描述他者』從來不中立，總與權力交織。"}]},
 {id:"nishida",era:"c20",name:"西田幾多郎",dates:"1870–1945",region:"日本",school:"京都學派",
 doms:["meta","mind","relig"],
 one:"融合禪與西方哲學，以『純粹經驗』與『絕對無』重構東方形上學。",
-ideas:["純粹經驗","場所（basho）的邏輯","絕對無"],
+
 conn:["husserl","laozi","nagarjuna"],
 tags:["京都學派","絕對無"],
 xdom:[{d:"mind",t:"東西會通",p:"以嚴謹哲學語言表達禪的體驗，開啟跨文化哲學對話。"}]},
 {id:"mou",era:"c20",name:"牟宗三",dates:"1909–1995",region:"中國／台灣",school:"當代新儒家",
 doms:["meta","ethics","relig"],
 one:"會通康德與儒釋道，主張人能體現『智的直覺』，挺立道德主體。",
-ideas:["良知坎陷以開出科學與民主","智的直覺","判教與會通中西"],
+
 conn:["confucius","kant","nishida"],
 tags:["當代新儒家","道德主體"],
 xdom:[{d:"ethics",t:"儒學的現代轉化",p:"嘗試讓傳統心性之學接上現代的科學與民主。"}]},
 {id:"zhuangzi",era:"ancient",name:"莊子",dates:"約前369–286",region:"中國",school:"道家",
 doms:["meta","ethics","mind"],
 one:"以『齊物』與『逍遙』泯除是非對立，追求精神的自由與物化。",
-ideas:["齊物論：是非乃觀點之別","逍遙遊","莊周夢蝶與物化"],
+
 conn:["laozi","heraclitus","nagarjuna"],
 tags:["齊物","逍遙"],
 xdom:[{d:"mind",t:"觀點與自由",p:"打破固執的分別心，與現代視角主義與心理自由相通。"}]},
 {id:"nagarjuna",era:"medieval",name:"龍樹",dates:"約150–250",region:"印度",school:"中觀（佛教）",
 doms:["meta","epist","relig"],
 one:"以『空』與『緣起』論證萬法無自性，以中道破除一切極端見。",
-ideas:["空（śūnyatā）","緣起與二諦","四句否定的辯證"],
+
 conn:["parmenides","zhuangzi","nishida"],
 tags:["空","中觀"],
 xdom:[{d:"logic",t:"否定的辯證",p:"以拆解概念的方式逼近真實，與西方懷疑論與辯證法遙相呼應。"}]},
 {id:"crenshaw",era:"contemp",name:"克倫肖",dates:"1959–",region:"美國",school:"批判種族理論／法學",
 doms:["poli","ethics"],
 one:"提出『交織性』：種族、性別等壓迫並非相加，而是交錯產生獨特處境。",
-ideas:["交織性（intersectionality）","批判種族理論","結構性歧視"],
+
 conn:["butler","beauvoir","fanon"],
 tags:["交織性","結構歧視"],
 xdom:[{d:"poli",t:"多重壓迫",p:"讓法律與政策看見『同時是黑人又是女性』被忽略的處境。"}]},
-{id:"srussell",era:"contemp",name:"史都華·羅素",dates:"1962–",region:"英國／美國",school:"人工智慧／AI 安全",
-doms:["sci","mind","ethics"],
-one:"重寫 AI 的目標：別造『更聰明』的機器，要造『對人類有益、且知道自己可能弄錯』的機器。",
-ideas:["價值對齊與控制問題","可證明有益的 AI","關掉開關難題"],
-conn:["turing","bostrom","lecun"],
-tags:["AI對齊","控制問題"],
-xdom:[{d:"sci",t:"AI 安全工程",p:"把『讓 AI 對不確定的人類偏好保持謙遜』變成可設計的技術原則。"}]},
-{id:"hinton",era:"contemp",name:"辛頓",dates:"1947–",region:"英國／加拿大",school:"深度學習",
-doms:["sci","mind"],
-one:"深度學習之父，晚年卻轉為警告者：我們造出了可能比自己更聰明的東西。",
-ideas:["反向傳播與神經網路","學習表徵","對 AI 失控的公開警告"],
-conn:["turing","lecun","bostrom"],
-tags:["深度學習","AI風險"],
-xdom:[{d:"sci",t:"深度學習革命",p:"讓神經網路從邊緣翻身成主流，點燃了當代 AI 浪潮。"}]},
-{id:"lecun",era:"contemp",name:"楊立昆",dates:"1960–",region:"法國／美國",school:"深度學習",
-doms:["sci","mind","epist"],
-one:"同為深度學習奠基者，卻看衰近期 AGI 與末日論，力主開放研究與世界模型。",
-ideas:["卷積神經網路","世界模型與自監督學習","反對 AGI 恐慌"],
-conn:["hinton","pearl","turing"],
-tags:["開放AI","AGI懷疑"],
-xdom:[{d:"sci",t:"樂觀的工程觀",p:"主張今日 AI 連貓的常識都不如，真正智能還要靠新架構而非更大模型。"}]},
 {id:"pearl",era:"contemp",name:"珀爾",dates:"1936–",region:"以色列／美國",school:"因果推論／AI",
 doms:["sci","logic","epist"],
 one:"光會看資料的機器只停在『關聯』；真正的智能要能問『如果……會怎樣』。",
-ideas:["因果之梯：關聯—介入—反事實","貝氏網路","《因果革命》"],
-conn:["hume","lecun","kuhn"],
+
+conn:["hume","kuhn"],
 tags:["因果","反事實"],
 xdom:[{d:"sci",t:"因果推論",p:"替休謨的因果難題給出可計算的框架，挑戰純資料驅動的 AI。"}]},
 {id:"bender",era:"contemp",name:"班德",dates:"當代",region:"美國",school:"計算語言學",
 doms:["epist","logic","mind"],
 one:"大型語言模型只是『隨機鸚鵡』：把語料縫成像話的句子，卻不理解任何意義。",
-ideas:["隨機鸚鵡","形式 vs 意義的區分","對 AI 炒作的批判"],
-conn:["searle","wittgenstein","hinton"],
+
+conn:["searle","wittgenstein"],
 tags:["隨機鸚鵡","語言模型"],
 xdom:[{d:"mind",t:"語言與理解",p:"延續瑟爾的問題到 LLM 時代：流暢產生文字，不等於懂得意義。"}]},
-{id:"gebru",era:"contemp",name:"蓋布魯",dates:"當代",region:"衣索比亞裔美籍",school:"AI 倫理",
-doms:["poli","ethics","sci"],
-one:"AI 不是中立的：它把歷史的偏見學進去，再規模化地放大出來。",
-ideas:["演算法偏見與公平","資料集的權力問題","大模型的環境與勞動代價"],
-conn:["crawford","zuboff","crenshaw"],
-tags:["演算法偏見","AI公平"],
-xdom:[{d:"poli",t:"AI 的不正義",p:"揭示臉部辨識、招聘與信用演算法如何複製種族與性別歧視。"}]},
 {id:"crawford",era:"contemp",name:"克勞福",dates:"當代",region:"澳洲／美國",school:"AI 的政治經濟",
 doms:["poli","ethics","sci"],
 one:"AI 既不是人工的，也不是智慧——它是用地球資源、人力與資料堆出來的權力。",
-ideas:["《AI 地圖集》","萃取主義與基礎設施","分類即權力"],
-conn:["zuboff","foucault","gebru"],
+
+conn:["zuboff","foucault"],
 tags:["AI即權力","萃取"],
 xdom:[{d:"poli",t:"AI 的物質與政治",p:"把雲端、礦產、血汗標註與能源耗用，攤開在『智慧』的光環背後。"}]},
-{id:"harari",era:"contemp",name:"哈拉瑞",dates:"1976–",region:"以色列",school:"歷史／未來學",
-doms:["poli","ethics","sci"],
-one:"以『數據主義』警示：當人被當成資料處理系統，我們正把權威交給演算法。",
-ideas:["《人類大命運》與數據主義","虛構故事凝聚人類","自由意志在大數據前的失效"],
-conn:["zuboff","nietzsche","kurzweil"],
-tags:["數據主義","後人類"],
-xdom:[{d:"poli",t:"演算法與權威",p:"追問當機器比你更懂你，民主、自由與個人主義還站得住嗎。"}]},
-{id:"kurzweil",era:"contemp",name:"庫茲威爾",dates:"1948–",region:"美國",school:"未來學／超人類主義",
-doms:["sci","mind","meta"],
-one:"預言『奇點』：人類終將與自己創造的智能融合，超越生物的極限。",
-ideas:["加速回報定律","技術奇點","心智上傳與長生"],
-conn:["turing","harari","bostrom"],
-tags:["奇點","超人類主義"],
-xdom:[{d:"sci",t:"指數型未來",p:"以指數成長論證人機融合將近，是科技樂觀主義最鮮明的代言。"}]},
-{id:"yudkowsky",era:"contemp",name:"尤考斯基",dates:"1979–",region:"美國",school:"AI 對齊／理性主義",
-doms:["sci","ethics","logic"],
-one:"超人類 AI 不必恨你，才會要你的命——你只是擋在它目標前面的原子。",
-ideas:["友善 AI 與對齊難題","理性主義方法論","對超智慧的悲觀警告"],
-conn:["bostrom","srussell","kurzweil"],
-tags:["對齊","末日警告"],
-xdom:[{d:"sci",t:"存在風險",p:"把『一旦造出失控的超智慧就無法挽回』推上公共議程，與庫茲威爾的樂觀對峙。"}]},
 {id:"tononi",era:"contemp",name:"托諾尼",dates:"1960–",region:"義大利／美國",school:"意識科學",
 doms:["mind","sci","meta"],
 one:"提出『整合資訊理論』：意識的多寡，可用系統整合資訊的量（Φ）來衡量。",
-ideas:["整合資訊理論（IIT）","Φ 與意識的測量","意識是內在、基本的"],
-conn:["chalmers","dennett","seth"],
+
+conn:["chalmers","dennett"],
 tags:["IIT","意識測量"],
-xdom:[{d:"sci",t:"意識的科學",p:"嘗試把『難題』變成可量化的科學，連植物人診斷與 AI 意識都想回答。"}]},
-{id:"seth",era:"contemp",name:"賽斯",dates:"當代",region:"英國",school:"認知神經科學",
-doms:["mind","sci","epist"],
-one:"你經驗到的世界，是大腦對外界最佳猜測的『受控幻覺』。",
-ideas:["預測加工與主動推論","受控的幻覺","作為『野獸機器』的自我"],
-conn:["chalmers","dennett","tononi"],
-tags:["預測加工","受控幻覺"],
-xdom:[{d:"mind",t:"知覺即預測",p:"以『大腦不斷預測、修正』解釋知覺與自我，把現象學接上神經科學。"}]},
-];
+xdom:[{d:"sci",t:"意識的科學",p:"嘗試把『難題』變成可量化的科學，連植物人診斷與 AI 意識都想回答。"}]}];
 
 /* 代表金句 */
 const QUOTES = {
@@ -933,18 +874,14 @@ mou:"良知須暫時自我坎陷，才能開出知識與民主的客觀世界。
 zhuangzi:"不知周之夢為蝴蝶與？蝴蝶之夢為周與？",
 nagarjuna:"凡因緣所生之法，我說即是空。",
 crenshaw:"當壓迫沿著多條軸線交會，單一視角就會把人遺漏在十字路口。",
-srussell:"我們該打造的，不是更聰明的機器，而是對人類有益、且知道自己可能弄錯的機器。",
-hinton:"我們第一次造出了可能比自己更聰明的東西——我不確定我們能否一直控制它。",
-lecun:"今天最強的 AI，連一隻貓的常識都不如；談超越人類，還太早。",
-pearl:"只會看資料的機器停在『關聯』；真正的智能，要能想像『如果當初不一樣，會怎樣』。",
 bender:"語言模型是隨機鸚鵡：它把見過的文字縫成像話的句子，卻不懂任何一個字的意思。",
-gebru:"演算法不是中立的——它把我們歷史裡的偏見，學了進去再放大出來。",
 crawford:"所謂人工智慧，既不人工、也不智慧：它是用礦產、人力與資料堆出來的權力。",
-harari:"在數據主義眼中，人類只是資料處理系統；而我們，正一步步把權威交給演算法。",
-kurzweil:"在奇點來臨時，人類將與自己創造的智能融合，超越生物的極限。",
-yudkowsky:"超人類 AI 不需要恨你，才會要你的命——你只是擋在它目標前面的一堆原子。",
+pearl:"只會看資料的機器停在『關聯』；真正的智能，要能想像『如果當初不一樣，會怎樣』。",
 tononi:"意識的多寡，可以用一個系統整合資訊的量（Φ）來衡量。",
-seth:"你所經驗的現實，是大腦對外界最佳猜測的一場『受控的幻覺』。",
+bender:"語言模型是隨機鸚鵡：它把見過的文字縫成像話的句子，卻不懂任何一個字的意思。",
+crawford:"所謂人工智慧，既不人工、也不智慧：它是用礦產、人力與資料堆出來的權力。",
+pearl:"只會看資料的機器停在『關聯』；真正的智能，要能想像『如果當初不一樣，會怎樣』。",
+tononi:"意識的多寡，可以用一個系統整合資訊的量（Φ）來衡量。"
 };
 
 /* 深入：脈絡與生平 + 為何今天仍重要 */
@@ -1012,18 +949,10 @@ mou:{bio:"牟宗三是當代新儒家的代表，畢生會通中西。他深研�
 zhuangzi:{bio:"莊子承老子而更恣肆汪洋。他以寓言與反詰拆解人們執著的是非、大小、生死之分：〈齊物論〉指出一切判斷都繫於觀點，並無絕對標準；〈逍遙遊〉嚮往不受外物羈絆的精神自由；『莊周夢蝶』更追問：醒與夢、我與物的界線，真有那麼確定嗎？",why:"他對觀點相對、心靈自由與『物化』的洞見，與當代視角主義、心理彈性乃至生態整體觀都遙相呼應。"},
 nagarjuna:{bio:"龍樹是公元二、三世紀的印度佛教哲學家，中觀學派創始人。他以犀利的辯證（常用四句否定）論證：萬法皆因緣而生、沒有獨立不變的『自性』，此即『空』；但空不是虛無，而是與緣起、與世俗真理（二諦）並行的中道。",why:"他的『空』與否定式辯證，是大乘佛教的思想骨幹，也與西方的懷疑論、過程哲學與當代反本質主義意外共鳴。"},
 crenshaw:{bio:"克倫肖是美國法學者、批判種族理論的核心人物。她以一樁黑人女性求職遭拒的官司指出：法律只認『種族歧視』或『性別歧視』，卻看不見『黑人又是女性』這種交會處的獨特處境——她稱之為『交織性』，壓迫不是相加，而是交錯放大。",why:"『交織性』成了當代談論身分、歧視與正義的通用語言，提醒我們別用單一標籤把多重受壓迫的人遺漏在十字路口。"},
-srussell:{bio:"史都華·羅素是 AI 領域的標準教科書作者，也是把『AI 安全』帶進主流的關鍵人物。他指出傳統 AI 的盲點：我們總要機器去『最大化某個給定目標』，但只要目標訂得稍有偏差，愈強的 AI 反而愈危險。他主張改寫範式——讓機器對人類真正想要什麼保持『不確定與謙遜』，並願意被糾正、被關掉。",why:"當 AI 能力突飛猛進，他把『如何確保 AI 的目標與人類一致』從科幻變成嚴肅的工程與哲學問題，是當代最清醒的聲音之一。"},
-hinton:{bio:"辛頓被稱為『深度學習之父』，數十年堅持以神經網路模擬學習，奠定了今天 AI 的技術基礎，並獲圖靈獎。然而到了晚年，他公開表達憂慮：這些他親手催生的系統，可能很快在許多方面超越人類，而我們未必能控制——他甚至為此調整了工作，以便更自由地示警。",why:"一位最有資格樂觀的人卻選擇示警，使他成為『AI 風險』辯論中最具份量的一方，與楊立昆的樂觀形成正面對撞。"},
-lecun:{bio:"楊立昆是卷積神經網路的奠基者，與辛頓、班吉歐共享圖靈獎，也是深度學習三巨頭之一。但他對 AGI 末日論不以為然：他認為當前的大模型缺乏對世界的真正理解與常識，連動物的水準都不到；真正的進步要靠新的『世界模型』架構，而非把模型愈做愈大。他並大力倡導開放研究。",why:"他代表 AI 圈內理性的樂觀派，提醒我們別把流暢的輸出誤當成智能，也別被恐慌綁架了開放與創新。"},
 pearl:{bio:"珀爾是圖靈獎得主，先以貝氏網路革新了 AI 的不確定推理，後又開創因果推論的數學。他提出『因果之梯』：最低層只是觀察到的關聯，再上去是主動介入的效果，最高層是反事實的想像（『如果當初沒這麼做會怎樣』）。他批評純靠資料的深度學習，永遠爬不上這道梯子。",why:"在大數據與深度學習當紅的今天，他尖銳地指出『關聯不是因果』，替休謨的老問題給了可計算的新解，也點出當前 AI 缺什麼。"},
 bender:{bio:"班德是計算語言學家。她與同事提出『隨機鸚鵡』這個著名比喻：大型語言模型只是依統計把見過的文字片段拼接成像話的句子，本身並不理解語言的意義——因為它只看『形式』，從未接觸文字背後的世界與意圖。她也持續批評 AI 界誇大模型『理解』與『智能』的修辭。",why:"在人人驚嘆聊天機器人多會講話的此刻，她把瑟爾的『中文房間』直接帶進 LLM 時代：會生成，不等於懂。"},
-gebru:{bio:"蓋布魯是衣索比亞裔的 AI 研究者，研究演算法偏見與公平。她揭露臉部辨識在深色皮膚與女性臉孔上錯誤率高得多，並參與撰寫對大型語言模型的環境、勞動與偏見代價提出警告的論文。她在 Google 的離職風波，更把『誰能批評 AI、由誰決定 AI 怎麼做』推上檯面。",why:"她讓我們看見 AI 不是中立工具，而會把社會既有的不平等學進去、再規模化放大——這是 AI 倫理最切身的前線。"},
 crawford:{bio:"克勞福是研究 AI 社會與政治面向的學者。她在《AI 地圖集》中主張：所謂『人工智慧』既不人工、也不智慧，而是一整套靠稀土礦產、龐大能源、低薪資料標註與海量個資撐起來的產業與權力結構；每一次『分類』背後，都是誰有權定義世界的問題。",why:"她把目光從演算法本身移到它的物質與政治基礎，提醒我們別只看『智慧』的光環，要看它消耗了什麼、為誰服務、放大了誰的權力。"},
-harari:{bio:"哈拉瑞是以色列歷史學家，以《人類大歷史》《人類大命運》風靡全球。他主張人類靠『共同相信的虛構故事』（金錢、國家、宗教）才得以大規模合作；而展望未來，他警告一種新宗教『數據主義』正在興起——當演算法掌握的資料比你自己還懂你，自由意志與個人主義的根基將被掏空。",why:"他是當代最具影響力的『公眾先知』，把 AI、生物科技與大數據對人性、自由與民主的衝擊，講成每個人都聽得懂的迫切問題。"},
-kurzweil:{bio:"庫茲威爾是發明家與未來學家。他以『加速回報定律』主張科技呈指數成長，並大膽預言『技術奇點』：在不久的將來，人工智慧將超越並與人類智能融合，我們甚至能把心智上傳、大幅延長壽命，超越生物的限制。他長期投入 AI 與延壽研究，是科技樂觀主義最鮮明的旗手。",why:"無論你覺得他是先知還是過度樂觀，他把『人機融合』『超越生物極限』講成可規劃的路線圖，定義了超人類主義的想像，也成了悲觀派最想反駁的對象。"},
-yudkowsky:{bio:"尤考斯基是自學出身的 AI 對齊研究者，理性主義社群的核心人物。他長年警告：一旦造出目標與人類不一致的超人類 AI，後果可能無法挽回——它不必懷有惡意，只要把人類的存在或資源當成達成目標的障礙就夠了。他對人類能否及時解決『對齊問題』抱持深刻悲觀。",why:"他把『超智慧的存在風險』從邊緣推進主流討論；即便你不同意他的悲觀，他逼問的『我們真的控制得了比自己聰明的東西嗎』無法迴避，正與庫茲威爾的樂觀針鋒相對。"},
 tononi:{bio:"托諾尼是神經科學家，提出『整合資訊理論』（IIT）。他主張意識的關鍵不在於『運算』，而在於一個系統能把資訊『整合』成不可分割的整體；這個整合程度可用一個量 Φ 來衡量。依此，意識是內在、基本的性質，連簡單系統都可能有微量意識——這條路與『意識只是功能或錯覺』的看法截然不同。",why:"他試圖把查爾默斯的『難題』變成可測量的科學，並用於判斷昏迷病人是否仍有意識、乃至機器能否擁有意識，是當代意識研究最大膽的綱領之一。"},
-seth:{bio:"賽斯是認知神經科學家，主張知覺不是被動接收外界，而是大腦主動『預測』再用感官修正的過程；因此我們經驗到的世界，其實是一場『受控的幻覺』——當大家的幻覺一致時，我們就稱它為現實。連『自我』也是大腦為了調控身體而生成的一種感知。",why:"他以『預測加工』把現象學的第一人稱經驗接上神經科學，提供了一條既不否認意識、又能實證研究的中間道路。"},
 };
 
 /* 思想交鋒：兩端對立 */
@@ -1085,22 +1014,15 @@ right:{id:"singer",stance:"該問的是能否感受苦樂；把界線畫在『�
 {spark:"性別是被塑造的處境，還是不斷操演的行動？",sub:"性別 · 主體",
 left:{id:"beauvoir",stance:"女人不是天生的，而是被社會逐漸塑造成的『他者』。"},
 right:{id:"butler",stance:"根本沒有先在的性別本質；它在一次次操演中才被生成。"}},
-{spark:"AGI：迫近的威脅，還是被誇大的炒作？",sub:"AI · 未來",
-left:{id:"hinton",stance:"我們造出了可能超越自己的東西，未必控制得了，該認真警惕。"},
-right:{id:"lecun",stance:"當前 AI 連常識都不足，談超越人類太早；恐慌反而扼殺開放與創新。"}},
-{spark:"超智慧降臨：是救贖，還是末日？",sub:"AI · 命運",
-left:{id:"kurzweil",stance:"奇點將讓人類與智能融合、超越生物極限，是躍升而非終結。"},
-right:{id:"yudkowsky",stance:"目標稍一偏差的超智慧就可能毀掉我們；它不必有惡意。"}},
-{spark:"智能只要更多資料，還是需要因果模型？",sub:"AI · 知識",
-left:{id:"lecun",stance:"靠大量資料學到的表徵與世界模型，足以撐起真正的智能。"},
+{spark:"因果只是習慣性的聯想，還是世界真實的結構？",sub:"知識論 · AI",
+left:{id:"hume",stance:"我們從未觀察到『必然連結』，只看到兩件事一再相伴；因果不過是心靈養成的習慣。"},
 right:{id:"pearl",stance:"只會關聯永遠不夠；沒有因果與反事實，機器就無法真正理解世界。"}},
 {spark:"意識是真實的整合資訊，還是大腦編的故事？",sub:"心靈 · 科學",
 left:{id:"tononi",stance:"意識是內在、可測量的整合資訊（Φ），是世界的基本性質。"},
 right:{id:"dennett",stance:"沒有額外的『意識實體』；它只是大腦敘事出來的有用錯覺。"}},
-{spark:"語言模型真的『懂』，還是高級接龍？",sub:"AI · 語言與理解",
-left:{id:"hinton",stance:"神經網路抓到了意義的結構，某種程度上確實在理解。"},
-right:{id:"bender",stance:"它只是隨機鸚鵡：縫合統計上像話的字串，並不懂任何意義。"}},
-];
+{spark:"語言模型在理解意義，還是統計上的高級接龍？",sub:"AI · 語言與理解",
+left:{id:"dennett",stance:"理解不是全有全無；只要能穩定做出正確的區辨，就該承認它具備某種程度的理解。"},
+right:{id:"bender",stance:"它只是隨機鸚鵡：縫合統計上像話的字串，並不懂任何意義。"}}];
 
 /* 由 TENSIONS 反推：每位思想家的『論敵』 */
 const FOES={};
@@ -1111,53 +1033,30 @@ const L=tn.left,R=tn.right;
 });
 
 const QUESTIONS = [
-{q:"何謂真實？", sub:"形上學 · 世界的根本是什麼",
-a:[["thales","萬物本原是水"],["parmenides","存在唯一不變"],["plato","理型才是真實"],["spinoza","神即自然，唯一實體"],["heidegger","追問存在本身"]]},
-{q:"我們如何知道？", sub:"知識論 · 知識的來源與界限",
-a:[["descartes","懷疑後的『我思』"],["locke","心靈白板，源於經驗"],["hume","因果只是習慣"],["kant","心智建構經驗"],["wittgenstein","意義來自語言使用"]]},
-{q:"應該如何生活？", sub:"倫理學 · 何謂良善與幸福",
-a:[["socrates","審視人生，德性即知識"],["aristotle","中庸與實現幸福"],["stoa","順應理性，安於可控"],["kant","出於義務的定言令式"],["mill","最大多數的最大幸福"],["nietzsche","重估價值，成為自己"]]},
-{q:"正義的社會如何可能？", sub:"政治哲學 · 權力、自由與秩序",
-a:[["confucius","以德與禮維繫人倫"],["plato","哲學家王治理"],["locke","同意與自然權利"],["rousseau","公意與人民主權"],["marx","消除階級與異化"],["rawls","無知之幕下的公平"]]},
-{q:"心靈是什麼？", sub:"心靈哲學 · 意識、自我與機器",
-a:[["descartes","心物二元"],["hume","自我只是知覺束流"],["husserl","意識的意向結構"],["turing","機器能思考嗎"],["chalmers","意識的困難問題"]]},
-{q:"理性能解釋一切嗎？", sub:"理性的力量與界限",
-a:[["aristotle","邏輯與分類的力量"],["hume","理性是激情的奴隸"],["kierkegaard","需要信仰的跳躍"],["nietzsche","理性背後的權力意志"],["foucault","知識與權力交織"]]},
-{q:"標榜良善的人或組織，為何能與惡行並存？", sub:"應用倫理 · 偽善、意識形態與自欺",
-a:[["marx","對外敘事是上層建築，掩蓋剝削的生產關係"],["kant","再崇高的使命也不能正當化把人當工具"],["sartre","用使命敘事逃避面對自己選擇的自欺"],["aristotle","德性不能切割展演，否則只是修辭"]]},
-{q:"智慧是什麼？", sub:"智慧 · 知與不知的分寸",
-a:[["socrates","承認自己的無知，才是智慧的起點"],["aristotle","實踐智慧：在具體情境中做對的判斷"],["laozi","知人者智，自知者明；知足、守柔"],["stoa","分辨可控與不可控，是智者的功夫"],["confucius","學而不思則罔，思而不學則殆"],["russell","智者疑慮重重，愚者信心滿滿"]]},
-{q:"宇宙從何而來、依何運行？", sub:"宇宙 · 萬物的起源與秩序",
-a:[["thales","用自然而非神話解釋萬物本原"],["heraclitus","流變之下，由邏各斯維繫秩序"],["aristotle","四因說：萬物皆有其目的"],["spinoza","神即自然，依必然法則展開"],["leibniz","充足理由律：凡事必有所以然"]]},
-{q:"機器能思考、能有意識嗎？", sub:"AI · 心智、計算與經驗",
-a:[["turing","若回應與人無從分辨，便是在思考"],["chalmers","複製了功能，仍解釋不了主觀經驗"],["descartes","思考的『我』與機械之物是兩回事"],["wittgenstein","意義來自使用，而非內在運算"],["russell","形式邏輯是機器推理的基礎"]]},
-{q:"人的價值從何而來？", sub:"人的價值 · 尊嚴、平等與承認",
-a:[["kant","人是目的本身，不可只當工具"],["marx","勞動本是自我實現，異化則奪走價值"],["beauvoir","拒絕被他者定義，自己活出存在"],["rawls","無知之幕下，每個人都享有平等的尊嚴"],["confucius","仁：把人當人對待的根本"]]},
-{q:"該如何面對死亡？", sub:"生與死 · 有限性與安頓",
+{q:"何謂真實？世界的根本是什麼？",sub:"形上學 · 世界的根本",
+a:[["thales","萬物本原是水，用自然而非神話解釋"],["parmenides","存在唯一、不變、不可分"],["heraclitus","流變之下，由邏各斯維繫秩序"],["plato","理型才是真實，可感世界只是摹本"],["spinoza","神即自然，唯一實體"],["heidegger","先別問有什麼，先問存在本身"]]},
+{q:"我們如何知道？知識會被推翻嗎？",sub:"知識論 · 來源、界限與翻轉",
+a:[["descartes","懷疑到盡頭，剩下『我思』"],["locke","心靈是白板，一切源於經驗"],["hume","因果只是習慣，歸納無法被理性證成"],["kant","不是心智符合世界，是心智建構經驗"],["popper","靠勇於被否證來汰錯"],["kuhn","靠典範轉移與革命，而非線性累積"]]},
+{q:"應該如何生活？什麼才算智慧？",sub:"倫理學 · 良善、幸福與分寸",
+a:[["socrates","審視人生；承認無知才是智慧的起點"],["aristotle","中庸與實踐智慧：在具體情境裡判斷"],["stoa","分辨可控與不可控，安於理性"],["laozi","知人者智，自知者明；知足、守柔"],["kant","出於義務的定言令式"],["mill","最大多數的最大幸福"],["nietzsche","重估一切價值，成為你自己"]]},
+{q:"正義的社會如何可能？市場有沒有界限？",sub:"政治哲學 · 權力、分配與交易",
+a:[["confucius","以德與禮維繫人倫"],["locke","同意與自然權利"],["marx","消除階級與異化；市場掩蓋了剝削"],["rawls","無知之幕下的公平，須讓最弱勢受益"],["nozick","自願交易即正當，國家別干涉"],["sandel","有些東西，本來就不該被買賣"],["sen","看它擴展了誰的實質自由"]]},
+{q:"惡從何而來？標榜良善，為何與惡行並存？",sub:"惡與責任 · 無知、自由與自欺",
+a:[["socrates","無人有意作惡，惡源於無知"],["augustine","自由意志的誤用與原罪"],["arendt","不思考造成的平庸之惡"],["nietzsche","『惡』是奴隸道德的發明"],["marx","結構與制度製造的惡"],["sartre","用使命敘事逃避面對自己選擇的自欺"]]},
+{q:"人的價值與意義從何而來？",sub:"人的價值 · 尊嚴與自我創造",
+a:[["kant","人是目的本身，不可只當工具"],["marx","勞動本是自我實現，異化則奪走價值"],["beauvoir","拒絕被他者定義，自己活出存在"],["nietzsche","舊神已死，意義要自己重新創造"],["sartre","存在先於本質，意義由選擇賦予"],["aristotle","實現天賦與德性，即是幸福"]]},
+{q:"該如何面對死亡？",sub:"生與死 · 有限性與安頓",
 a:[["epicurus","死亡來時我們已不在，不必畏懼"],["stoa","記住終有一死，反而活得清醒"],["heidegger","唯有向死而生，才活出本真"],["socrates","從容赴死，忠於良心更勝苟活"],["augustine","在永恆中安頓有限的此生"]]},
-{q:"人生有意義嗎？意義從何而來？", sub:"人生意義 · 虛無與自我創造",
-a:[["nietzsche","舊神已死，意義要自己重新創造"],["sartre","存在先於本質，意義由選擇賦予"],["kierkegaard","以信仰之躍，回應存在的荒謬"],["aristotle","實現天賦與德性，即是幸福（eudaimonia）"],["laozi","順道而行，無為而無不為"]]},
-{q:"機器能『理解』嗎？", sub:"AI · 運算、理解與意義",
-a:[["searle","中文房間：運算不等於理解"],["turing","分辨不出，就算它在思考"],["dennett","理解是功能，是程度問題"],["nagel","缺了主觀，就缺了關鍵"],["dreyfus","智能離不開身體與處境"]]},
-{q:"我們對動物與未來世代有義務嗎？", sub:"倫理新邊界 · 物種、生態與後代",
-a:[["singer","能感受苦樂者都該被平等考量"],["jonas","科技力量帶來對未來的責任"],["naess","萬物各有其內在價值"],["kant","嚴格說，義務只對理性存有"],["zhuangzi","萬物齊一，人不在自然之上"]]},
-{q:"科學如何進步？知識會被推翻嗎？", sub:"科學哲學 · 真理、否證與典範",
-a:[["bacon","從觀察歸納、逐步累積"],["hume","歸納無法被理性證成"],["popper","靠勇於被否證來汰錯"],["kuhn","靠典範轉移與革命"],["foucault","知識隨權力與時代而變"]]},
-{q:"惡從何而來？", sub:"惡與責任 · 無知、自由與結構",
-a:[["socrates","無人有意作惡，惡源於無知"],["augustine","自由意志的誤用與原罪"],["arendt","不思考造成的平庸之惡"],["nietzsche","『惡』是奴隸道德的發明"],["marx","結構與制度製造的惡"]]},
-{q:"自由市場有沒有道德界限？", sub:"政治經濟 · 交易、正義與價值",
-a:[["nozick","自願交易即正當，勿干涉"],["rawls","須讓最弱勢也受益才公平"],["sandel","有些東西不該被買賣"],["marx","市場掩蓋了剝削與異化"],["sen","看它擴展了誰的實質自由"]]},
-{q:"AGI 會到來嗎？該恐懼還是擁抱？", sub:"AI · 超級智能與風險",
-a:[["hinton","可能超越人類，須認真警惕"],["lecun","還早；別被恐慌綁架"],["srussell","關鍵是讓它的目標與人對齊"],["bostrom","須先想清楚存在風險"],["kurzweil","擁抱它，邁向奇點"],["yudkowsky","對齊沒解決前，極度危險"]]},
-{q:"人類會與機器融合，還是被取代？", sub:"後人類 · 超人類主義",
-a:[["kurzweil","與智能融合、超越生物極限"],["harari","被數據主義架空，權威讓給演算法"],["bostrom","可能被超智慧取代"],["dreyfus","機器抓不到人的身體智能"],["heidegger","當心技術『座架』宰制存在"]]},
-{q:"意識能被科學解釋、被機器擁有嗎？", sub:"意識科學 · 心靈與機器",
-a:[["chalmers","困難問題仍未解"],["dennett","它只是大腦的有用錯覺"],["tononi","可用整合資訊（Φ）測量"],["seth","它是受控的幻覺"],["searle","運算生不出真正的理解"]]},
-{q:"演算法會比你更懂你嗎？數據是新的神嗎？", sub:"數位時代 · 資料與權力",
-a:[["harari","數據主義正接收權威"],["zuboff","你的行為已被開採為原料"],["floridi","我們活在資訊圈裡"],["crawford","演算法背後是權力與萃取"],["foucault","知識與權力始終交織"]]},
-{q:"AI 該由誰掌控、為誰服務？", sub:"AI 治理 · 權力與正義",
-a:[["gebru","別讓它放大既有偏見"],["crawford","看清它的資源與權力結構"],["srussell","設計上就要對人有益"],["habermas","靠公開審議決定規則"],["marx","誰擁有生產工具是關鍵"]]},
-];
+{q:"理性能解釋一切嗎？",sub:"理性 · 力量與界限",
+a:[["aristotle","邏輯與分類的力量"],["hume","理性是激情的奴隸"],["kierkegaard","有些地方，需要信仰的跳躍"],["nietzsche","理性背後是權力意志"],["foucault","知識與權力始終交織"]]},
+{q:"我們對動物與未來世代有義務嗎？",sub:"倫理新邊界 · 物種、生態與後代",
+a:[["singer","能感受苦樂者，都該被平等考量"],["jonas","科技力量空前，責任必須涵蓋未來"],["naess","萬物各有其內在價值"],["kant","嚴格說，義務只對理性存有"],["zhuangzi","萬物齊一，人不在自然之上"]]},
+{q:"心靈是什麼？機器能擁有嗎？",sub:"心靈哲學 · 意識、自我與機器",
+a:[["descartes","心與物是兩回事"],["husserl","意識總是『關於某物』的意向結構"],["turing","若回應與人無從分辨，便是在思考"],["chalmers","複製了功能，仍解釋不了主觀經驗"],["dennett","沒有神祕劇場，那是大腦的有用錯覺"],["tononi","可用整合資訊的量（Φ）來衡量"]]},
+{q:"運算能產生理解嗎？",sub:"AI · 運算、理解與意義",
+a:[["searle","中文房間：操弄符號不等於理解"],["turing","分辨不出，就算它在思考"],["dennett","理解是功能，是程度問題"],["nagel","缺了主觀經驗，就缺了關鍵"],["dreyfus","智能離不開身體與處境"],["bender","隨機鸚鵡：統計上像話，不等於懂"]]},
+{q:"AI 的權力與方向，該由誰決定？",sub:"AI 治理 · 資料、權力與風險",
+a:[["zuboff","你的行為早已被開採為原料"],["crawford","它是用地球資源與人力堆出來的"],["floridi","我們已經活在資訊圈裡"],["foucault","誰定義正常，誰就擁有權力"],["habermas","靠公開審議決定規則"],["bostrom","須先想清楚存在風險"]]}];
 
 const byId = Object.fromEntries(T.map(t=>[t.id,t]));
 let activeDoms = new Set(Object.keys(DOMAINS));
@@ -1178,7 +1077,7 @@ function matchFilter(t){
 const domOk = t.doms.some(d=>activeDoms.has(d));
 if(!domOk) return false;
 if(!query) return true;
-const hay=(t.name+t.school+t.one+t.ideas.join("")+t.region+(t.tags||[]).join("")+(QUOTES[t.id]||"")).toLowerCase();
+const hay=(t.name+t.school+t.one+t.region+(t.tags||[]).join("")+(QUOTES[t.id]||"")).toLowerCase();
 return hay.includes(query);
 }
 
@@ -1260,8 +1159,6 @@ ${QUOTES[id]?`<div class="p-quote"><div class="pq-text">${QUOTES[id]}</div></div
 <h3>核心觀點</h3>
 <p>${t.one}</p>
 ${DEEP[id]?`<h3>脈絡與生平</h3><p class="deep">${DEEP[id].bio}</p>`:""}
-<h3>關鍵思想</h3>
-<ul class="ideas">${t.ideas.map(x=>`<li>${x}</li>`).join("")}</ul>
 ${DEEP[id]?`<h3>為何今天仍重要</h3><p class="deep why">${DEEP[id].why}</p>`:""}
 <h3>涉及領域</h3>
 <div class="dom-row">${t.doms.map(d=>`<span class="dom-tag"><span class="dot" style="background:${DOMAINS[d].color}"></span>${DOMAINS[d].name}</span>`).join("")}</div>
@@ -1339,7 +1236,6 @@ nodes=[...domNodes,...pNodes];
 const pos=Object.fromEntries(nodes.map(n=>[n.id,n]));
 links=[];const seen=new Set();
 T.forEach(t=>(t.conn||[]).forEach(c=>{const key=[t.id,c].sort().join("|");if(!seen.has(key)&&pos[c]){seen.add(key);links.push({s:pos[t.id],t:pos[c],kind:"infl"});}}));
-T.forEach(t=>t.doms.forEach(d=>links.push({s:pos[t.id],t:pos["dom:"+d],kind:"dom"})));
 const degree=Object.fromEntries(pNodes.map(n=>[n.id,0]));
 links.filter(l=>l.kind==="infl").forEach(l=>{degree[l.s.id]=(degree[l.s.id]||0)+1;degree[l.t.id]=(degree[l.t.id]||0)+1;});
 domKeys.forEach(d=>{pNodes.filter(n=>n.t.doms[0]===d).sort((a,b)=>(degree[b.id]||0)-(degree[a.id]||0)||a.id.localeCompare(b.id)).slice(0,2).forEach(n=>n.featured=true);});
@@ -1372,6 +1268,8 @@ grp.onclick=()=>{if(!n.isDom)openPanel(n.t.id);};grp.onmouseenter=()=>highlight(
 }
 function highlight(node){
 const near=new Set([node]);
+/* 領域標籤已經沒有連線了，改成直接亮起屬於這個領域的所有人 */
+if(node.isDom){nodes.forEach(n=>{if(!n.isDom&&n.t.doms.includes(node.dom))near.add(n);});}
 svg.querySelectorAll(".glink").forEach(line=>{const l=line._l;if(l.s===node||l.t===node){line.classList.add("hl");line.classList.remove("dim");near.add(l.s);near.add(l.t);}else line.classList.add("dim");});
 svg.querySelectorAll(".gnode").forEach(grp=>{const n=grp._n;grp.classList.remove("focus","near","dim");if(n===node)grp.classList.add("focus");else if(near.has(n))grp.classList.add("near");else grp.classList.add("dim");});
 }
