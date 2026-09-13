@@ -4,6 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HW 哲學探索地圖 · 用兩千五百年的哲學，看懂今天的 AI</title>
+<meta name="description" content="用兩千五百年的哲學，看懂今天的 AI 爭論。67 位思想家、22 組對立、12 道大哉問。">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://huawei522-commits.github.io/hw-lab/philo/">
+<meta property="og:title" content="HW 哲學探索地圖 · The Map of Philosophy">
+<meta property="og:description" content="Reading today's arguments about AI through 2,500 years of philosophy. 67 thinkers, 22 disputes, 12 questions that won't go away.">
+<meta property="og:image" content="https://huawei522-commits.github.io/hw-lab/og-cover.jpg">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
 <style>
 :root{
 color-scheme: light;
@@ -234,6 +243,12 @@ padding:7px 13px;border-radius:9px;font-size:12.5px}
 ::-webkit-scrollbar-track{background:transparent}
 .count{font-size:11.5px;color:var(--muted);font-variant-numeric:tabular-nums}
 /* 中英對照：英文一律是次要層，小一級、淡一點、義式斜體 */
+.spark-en{font-family:'EB Garamond',Georgia,serif;font-style:italic;font-size:13.5px;
+color:var(--muted);line-height:1.45;margin-top:4px}
+.q-en{font-family:'EB Garamond',Georgia,serif;font-style:italic;font-size:13.5px;
+color:var(--muted);line-height:1.45;margin-top:5px}
+.tn-side h5{flex-wrap:wrap}
+.tn-side h5 .lat{display:block;width:100%;margin-left:17px;font-size:.78em}
 .lat{display:block;font-style:italic;font-weight:400;letter-spacing:.03em;
 color:var(--muted);font-size:.72em;line-height:1.35;margin-top:1px}
 .chip .lat{display:inline;margin-left:5px;font-size:.85em}
@@ -972,70 +987,70 @@ tononi:{bio:"托諾尼是神經科學家，提出『整合資訊理論』（IIT�
 
 /* 思想交鋒：兩端對立 */
 const TENSIONS = [
-{spark:"世界的本質是流變，還是不變？",sub:"形上學",
+{spark:"世界的本質是流變，還是不變？",en:"Is reality flux, or permanence?",sub:"形上學",
 left:{id:"heraclitus",stance:"萬物流轉，變化才是唯一的真實；連『存在』本身也是過程。"},
 right:{id:"parmenides",stance:"變化是感官的幻覺；以純粹邏輯推論，存在唯一、不可分、永恆不動。"}},
-{spark:"真實在天上的理型，還是在事物之中？",sub:"形上學 · 知識論",
+{spark:"真實在天上的理型，還是在事物之中？",en:"Is the real in the Forms, or in things themselves?",sub:"形上學 · 知識論",
 left:{id:"plato",stance:"可感世界只是摹本，真實是超越時空、永恆不變的理型。"},
 right:{id:"aristotle",stance:"形式不在彼岸，就內在於具體事物；認識世界要從觀察與經驗開始。"}},
-{spark:"治世該有為制禮，還是無為順自然？",sub:"政治 · 倫理",
+{spark:"治世該有為制禮，還是無為順自然？",en:"Govern through ritual and effort, or through non-action?",sub:"政治 · 倫理",
 left:{id:"confucius",stance:"以仁與禮主動修身、教化、立序，人倫靠經營而非放任。"},
 right:{id:"laozi",stance:"治大國若烹小鮮；愈強求愈失序，順勢無為反而成全萬物。"}},
-{spark:"美好人生是追求快樂，還是修養德性？",sub:"倫理 · 幸福",
+{spark:"美好人生是追求快樂，還是修養德性？",en:"Is the good life pleasure, or virtue?",sub:"倫理 · 幸福",
 left:{id:"epicurus",stance:"幸福是身體無痛、心靈無擾的寧靜；快樂是衡量善的尺度。"},
 right:{id:"stoa",stance:"美德是唯一的善；分辨可控與不可控，安於理性與命運。"}},
-{spark:"知識來自理性，還是來自經驗？",sub:"知識論",
+{spark:"知識來自理性，還是來自經驗？",en:"Does knowledge come from reason, or from experience?",sub:"知識論",
 left:{id:"descartes",stance:"感官會騙人；唯有理性的清晰觀念才是確定知識的地基。"},
 right:{id:"hume",stance:"一切觀念都源於印象；連因果與自我，都不過是經驗中的習慣。"}},
-{spark:"道德該看動機，還是看結果？",sub:"倫理 · 規範",
+{spark:"道德該看動機，還是看結果？",en:"Judge an act by its motive, or by its consequences?",sub:"倫理 · 規範",
 left:{id:"kant",stance:"善惡在於意志與義務；再好的結果也不能正當化把人當工具。"},
 right:{id:"mill",stance:"行為的對錯取決於後果；能帶來最大多數人最大幸福者為善。"}},
-{spark:"歷史的動力是精神，還是物質？",sub:"歷史 · 政治",
+{spark:"歷史的動力是精神，還是物質？",en:"Does history move by spirit, or by matter?",sub:"歷史 · 政治",
 left:{id:"hegel",stance:"歷史是精神（Geist）透過辯證自我實現、邁向自由的過程。"},
 right:{id:"marx",stance:"把黑格爾倒過來：是物質生產與階級鬥爭，決定了觀念與制度。"}},
-{spark:"人有固定的本質嗎？",sub:"存在 · 自由",
+{spark:"人有固定的本質嗎？",en:"Do human beings have a fixed nature?",sub:"存在 · 自由",
 left:{id:"sartre",stance:"存在先於本質；人沒有預設的本質，是自己選擇所成為的樣子。"},
 right:{id:"aristotle",stance:"萬物皆有目的與本性（telos），人的善就在於實現其本質。"}},
-{spark:"上帝死後，價值從哪裡來？",sub:"倫理 · 虛無",
+{spark:"上帝死後，價值從哪裡來？",en:"After God, where do values come from?",sub:"倫理 · 虛無",
 left:{id:"nietzsche",stance:"舊價值已崩塌；唯有重估一切、以權力意志為自己立法。"},
 right:{id:"kant",stance:"道德無需神也能成立——它奠基於理性自身的普遍律令。"}},
-{spark:"理性能抵達信仰，還是需要縱身一躍？",sub:"宗教 · 知識",
+{spark:"理性能抵達信仰，還是需要縱身一躍？",en:"Can reason reach faith, or does it take a leap?",sub:"宗教 · 知識",
 left:{id:"aquinas",stance:"理性與信仰並行不悖，理性甚至能推論上帝的存在。"},
 right:{id:"kierkegaard",stance:"信仰超越理性的計算，是孤獨個體面對荒謬的縱身一躍。"}},
-{spark:"心靈不過是運算，還是另有其物？",sub:"心靈 · 科技",
+{spark:"心靈不過是運算，還是另有其物？",en:"Is mind only computation, or something more?",sub:"心靈 · 科技",
 left:{id:"turing",stance:"若機器的回應與人無從分辨，便沒有理由否認它在思考。"},
 right:{id:"chalmers",stance:"就算複製了所有功能，仍解釋不了『為何會有主觀經驗』。"}},
-{spark:"自我是自由的主體，還是被結構塑造？",sub:"主體 · 權力",
+{spark:"自我是自由的主體，還是被結構塑造？",en:"Is the self free, or shaped by structures?",sub:"主體 · 權力",
 left:{id:"sartre",stance:"人是絕對自由的；把選擇推給處境，是一種自欺。"},
 right:{id:"foucault",stance:"所謂主體，是被知識與權力的話語建構出來的產物。"}},
-{spark:"機器是真懂，還是只是照規則運算？",sub:"AI · 心靈",
+{spark:"機器是真懂，還是只是照規則運算？",en:"Does a machine understand, or only follow rules?",sub:"AI · 心靈",
 left:{id:"turing",stance:"若它的回應與人無從分辨，就沒有理由說它不思考、不理解。"},
 right:{id:"searle",stance:"中文房間：再流暢地操弄符號，也生不出半點真正的理解與意義。"}},
-{spark:"國家可以為了平等而重分配嗎？",sub:"政治 · 正義",
+{spark:"國家可以為了平等而重分配嗎？",en:"May the state redistribute in the name of equality?",sub:"政治 · 正義",
 left:{id:"rawls",stance:"為了最弱勢者，不平等必須被矯正，財富可以正當地重分配。"},
 right:{id:"nozick",stance:"只要持有來得正當，課稅劫富濟貧就是侵犯個人不可逾越的權利。"}},
-{spark:"科學靠否證累進，還是靠典範斷裂？",sub:"科學哲學",
+{spark:"科學靠否證累進，還是靠典範斷裂？",en:"Does science advance by falsification, or by rupture?",sub:"科學哲學",
 left:{id:"popper",stance:"科學理性地以否證汰除錯誤，穩定地逼近真理。"},
 right:{id:"kuhn",stance:"科學革命是世界觀的整體更替，新舊典範往往難以共量。"}},
-{spark:"意識的『難題』是真問題嗎？",sub:"心靈",
+{spark:"意識的『難題』是真問題嗎？",en:"Is the hard problem of consciousness a real problem?",sub:"心靈",
 left:{id:"chalmers",stance:"就算說盡了所有功能，仍漏掉了『為何會有主觀感受』。"},
 right:{id:"dennett",stance:"所謂難題只是直覺的錯覺；意識可由功能與演化說盡。"}},
-{spark:"理性對話能解放，還是它本身就是權力？",sub:"政治 · 知識",
+{spark:"理性對話能解放，還是它本身就是權力？",en:"Does rational dialogue liberate, or is it itself power?",sub:"政治 · 知識",
 left:{id:"habermas",stance:"在沒有宰制的對話中，理性能達成正當的共識。"},
 right:{id:"foucault",stance:"沒有外於權力的理性；每一套『真理』都是權力的產物。"}},
-{spark:"道德只屬於人嗎？",sub:"倫理 · 動物",
+{spark:"道德只屬於人嗎？",en:"Does morality extend beyond human beings?",sub:"倫理 · 動物",
 left:{id:"kant",stance:"道德地位繫於理性自律，動物沒有理性，只能是手段。"},
 right:{id:"singer",stance:"該問的是能否感受苦樂；把界線畫在『人』，是物種歧視。"}},
-{spark:"性別是被塑造的處境，還是不斷操演的行動？",sub:"性別 · 主體",
+{spark:"性別是被塑造的處境，還是不斷操演的行動？",en:"Is gender a situation imposed, or an act performed?",sub:"性別 · 主體",
 left:{id:"beauvoir",stance:"女人不是天生的，而是被社會逐漸塑造成的『他者』。"},
 right:{id:"butler",stance:"根本沒有先在的性別本質；它在一次次操演中才被生成。"}},
-{spark:"因果只是習慣性的聯想，還是世界真實的結構？",sub:"知識論 · AI",
+{spark:"因果只是習慣性的聯想，還是世界真實的結構？",en:"Is causation a habit of mind, or a real structure?",sub:"知識論 · AI",
 left:{id:"hume",stance:"我們從未觀察到『必然連結』，只看到兩件事一再相伴；因果不過是心靈養成的習慣。"},
 right:{id:"pearl",stance:"只會關聯永遠不夠；沒有因果與反事實，機器就無法真正理解世界。"}},
-{spark:"意識是真實的整合資訊，還是大腦編的故事？",sub:"心靈 · 科學",
+{spark:"意識是真實的整合資訊，還是大腦編的故事？",en:"Is consciousness integrated information, or a story the brain tells?",sub:"心靈 · 科學",
 left:{id:"tononi",stance:"意識是內在、可測量的整合資訊（Φ），是世界的基本性質。"},
 right:{id:"dennett",stance:"沒有額外的『意識實體』；它只是大腦敘事出來的有用錯覺。"}},
-{spark:"語言模型在理解意義，還是統計上的高級接龍？",sub:"AI · 語言與理解",
+{spark:"語言模型在理解意義，還是統計上的高級接龍？",en:"Do language models understand meaning, or only predict text?",sub:"AI · 語言與理解",
 left:{id:"dennett",stance:"理解不是全有全無；只要能穩定做出正確的區辨，就該承認它具備某種程度的理解。"},
 right:{id:"bender",stance:"它只是隨機鸚鵡：縫合統計上像話的字串，並不懂任何意義。"}}];
 
@@ -1048,29 +1063,29 @@ const L=tn.left,R=tn.right;
 });
 
 const QUESTIONS = [
-{q:"何謂真實？世界的根本是什麼？",sub:"形上學 · 世界的根本",
+{q:"何謂真實？世界的根本是什麼？",en:"What is real? What is the world made of?",sub:"形上學 · 世界的根本",
 a:[["thales","萬物本原是水，用自然而非神話解釋"],["parmenides","存在唯一、不變、不可分"],["heraclitus","流變之下，由邏各斯維繫秩序"],["plato","理型才是真實，可感世界只是摹本"],["spinoza","神即自然，唯一實體"],["heidegger","先別問有什麼，先問存在本身"]]},
-{q:"我們如何知道？知識會被推翻嗎？",sub:"知識論 · 來源、界限與翻轉",
+{q:"我們如何知道？知識會被推翻嗎？",en:"How do we know? Can knowledge be overturned?",sub:"知識論 · 來源、界限與翻轉",
 a:[["descartes","懷疑到盡頭，剩下『我思』"],["locke","心靈是白板，一切源於經驗"],["hume","因果只是習慣，歸納無法被理性證成"],["kant","不是心智符合世界，是心智建構經驗"],["popper","靠勇於被否證來汰錯"],["kuhn","靠典範轉移與革命，而非線性累積"]]},
-{q:"應該如何生活？什麼才算智慧？",sub:"倫理學 · 良善、幸福與分寸",
+{q:"應該如何生活？什麼才算智慧？",en:"How should we live? What counts as wisdom?",sub:"倫理學 · 良善、幸福與分寸",
 a:[["socrates","審視人生；承認無知才是智慧的起點"],["aristotle","中庸與實踐智慧：在具體情境裡判斷"],["stoa","分辨可控與不可控，安於理性"],["laozi","知人者智，自知者明；知足、守柔"],["kant","出於義務的定言令式"],["mill","最大多數的最大幸福"],["nietzsche","重估一切價值，成為你自己"]]},
-{q:"正義的社會如何可能？市場有沒有界限？",sub:"政治哲學 · 權力、分配與交易",
+{q:"正義的社會如何可能？市場有沒有界限？",en:"What makes a society just? Are there limits to the market?",sub:"政治哲學 · 權力、分配與交易",
 a:[["confucius","以德與禮維繫人倫"],["locke","同意與自然權利"],["marx","消除階級與異化；市場掩蓋了剝削"],["rawls","無知之幕下的公平，須讓最弱勢受益"],["nozick","自願交易即正當，國家別干涉"],["sandel","有些東西，本來就不該被買賣"],["sen","看它擴展了誰的實質自由"]]},
-{q:"惡從何而來？標榜良善，為何與惡行並存？",sub:"惡與責任 · 無知、自由與自欺",
+{q:"惡從何而來？標榜良善，為何與惡行並存？",en:"Where does evil come from? Why does it coexist with professed good?",sub:"惡與責任 · 無知、自由與自欺",
 a:[["socrates","無人有意作惡，惡源於無知"],["augustine","自由意志的誤用與原罪"],["arendt","不思考造成的平庸之惡"],["nietzsche","『惡』是奴隸道德的發明"],["marx","結構與制度製造的惡"],["sartre","用使命敘事逃避面對自己選擇的自欺"]]},
-{q:"人的價值與意義從何而來？",sub:"人的價值 · 尊嚴與自我創造",
+{q:"人的價值與意義從何而來？",en:"Where do human worth and meaning come from?",sub:"人的價值 · 尊嚴與自我創造",
 a:[["kant","人是目的本身，不可只當工具"],["marx","勞動本是自我實現，異化則奪走價值"],["beauvoir","拒絕被他者定義，自己活出存在"],["nietzsche","舊神已死，意義要自己重新創造"],["sartre","存在先於本質，意義由選擇賦予"],["aristotle","實現天賦與德性，即是幸福"]]},
-{q:"該如何面對死亡？",sub:"生與死 · 有限性與安頓",
+{q:"該如何面對死亡？",en:"How should we face death?",sub:"生與死 · 有限性與安頓",
 a:[["epicurus","死亡來時我們已不在，不必畏懼"],["stoa","記住終有一死，反而活得清醒"],["heidegger","唯有向死而生，才活出本真"],["socrates","從容赴死，忠於良心更勝苟活"],["augustine","在永恆中安頓有限的此生"]]},
-{q:"理性能解釋一切嗎？",sub:"理性 · 力量與界限",
+{q:"理性能解釋一切嗎？",en:"Can reason explain everything?",sub:"理性 · 力量與界限",
 a:[["aristotle","邏輯與分類的力量"],["hume","理性是激情的奴隸"],["kierkegaard","有些地方，需要信仰的跳躍"],["nietzsche","理性背後是權力意志"],["foucault","知識與權力始終交織"]]},
-{q:"我們對動物與未來世代有義務嗎？",sub:"倫理新邊界 · 物種、生態與後代",
+{q:"我們對動物與未來世代有義務嗎？",en:"Do we owe anything to animals and future generations?",sub:"倫理新邊界 · 物種、生態與後代",
 a:[["singer","能感受苦樂者，都該被平等考量"],["jonas","科技力量空前，責任必須涵蓋未來"],["naess","萬物各有其內在價值"],["kant","嚴格說，義務只對理性存有"],["zhuangzi","萬物齊一，人不在自然之上"]]},
-{q:"心靈是什麼？機器能擁有嗎？",sub:"心靈哲學 · 意識、自我與機器",
+{q:"心靈是什麼？機器能擁有嗎？",en:"What is mind? Can a machine have one?",sub:"心靈哲學 · 意識、自我與機器",
 a:[["descartes","心與物是兩回事"],["husserl","意識總是『關於某物』的意向結構"],["turing","若回應與人無從分辨，便是在思考"],["chalmers","複製了功能，仍解釋不了主觀經驗"],["dennett","沒有神祕劇場，那是大腦的有用錯覺"],["tononi","可用整合資訊的量（Φ）來衡量"]]},
-{q:"運算能產生理解嗎？",sub:"AI · 運算、理解與意義",
+{q:"運算能產生理解嗎？",en:"Can computation produce understanding?",sub:"AI · 運算、理解與意義",
 a:[["searle","中文房間：操弄符號不等於理解"],["turing","分辨不出，就算它在思考"],["dennett","理解是功能，是程度問題"],["nagel","缺了主觀經驗，就缺了關鍵"],["dreyfus","智能離不開身體與處境"],["bender","隨機鸚鵡：統計上像話，不等於懂"]]},
-{q:"AI 的權力與方向，該由誰決定？",sub:"AI 治理 · 資料、權力與風險",
+{q:"AI 的權力與方向，該由誰決定？",en:"Who decides the power and direction of AI?",sub:"AI 治理 · 資料、權力與風險",
 a:[["zuboff","你的行為早已被開採為原料"],["crawford","它是用地球資源與人力堆出來的"],["floridi","我們已經活在資訊圈裡"],["foucault","誰定義正常，誰就擁有權力"],["habermas","靠公開審議決定規則"],["bostrom","須先想清楚存在風險"]]}];
 
 /* 這些條目不是逐字引文，是觀點摘要——呈現時不加引號、另外標示，
@@ -1209,14 +1224,14 @@ const L=byId[tn.left.id], R=byId[tn.right.id];
 const card=document.createElement("div");
 card.className="tn-card";
 card.innerHTML=`
-<div class="tn-axis"><div class="spark">${tn.spark}</div><div class="sub">${tn.sub}</div></div>
+<div class="tn-axis"><div class="spark">${tn.spark}</div>${tn.en?`<div class="spark-en">${tn.en}</div>`:""}<div class="sub">${tn.sub}</div></div>
 <div class="tn-body">
 <div class="tn-side left" data-go="${tn.left.id}">
-<h5><span class="dot" style="width:9px;height:9px;border-radius:50%;background:${DOMAINS[L.doms[0]].color};display:inline-block"></span>${L.name}</h5>
+<h5><span class="dot" style="width:9px;height:9px;border-radius:50%;background:${DOMAINS[L.doms[0]].color};display:inline-block"></span>${L.name}<i class="lat">${L.en||""}</i></h5>
 <div class="stance">${tn.left.stance}</div></div>
 <div class="tn-vs"><span>vs</span></div>
 <div class="tn-side right" data-go="${tn.right.id}">
-<h5><span class="dot" style="width:9px;height:9px;border-radius:50%;background:${DOMAINS[R.doms[0]].color};display:inline-block"></span>${R.name}</h5>
+<h5><span class="dot" style="width:9px;height:9px;border-radius:50%;background:${DOMAINS[R.doms[0]].color};display:inline-block"></span>${R.name}<i class="lat">${R.en||""}</i></h5>
 <div class="stance">${tn.right.stance}</div></div>
 </div>`;
 card.querySelectorAll("[data-go]").forEach(el=>el.onclick=()=>openPanel(el.dataset.go));
@@ -1230,7 +1245,7 @@ qgrid.innerHTML="";
 QUESTIONS.forEach(Q=>{
 const card=document.createElement("div");
 card.className="qcard";
-card.innerHTML=`<h3>${Q.q}</h3><div class="q-sub">${Q.sub}</div><ul></ul>`;
+card.innerHTML=`<h3>${Q.q}</h3>${Q.en?`<div class="q-en">${Q.en}</div>`:""}<div class="q-sub">${Q.sub}</div><ul></ul>`;
 const ul=card.querySelector("ul");
 Q.a.forEach(([id,ans])=>{
 const li=document.createElement("li");
