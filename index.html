@@ -26,8 +26,8 @@ main{max-width:720px;width:100%;margin:auto;}
 
 /* 語言切換 */
 .langbar{display:flex;gap:2px;justify-content:flex-end;margin-bottom:22px;}
-.langbar button{font-family:'Space Mono',monospace;font-size:.66rem;letter-spacing:.14em;
-  background:none;border:1px solid var(--hair);color:var(--slate);padding:5px 12px;
+.langbar button{font-family:'Space Mono',monospace;font-size:.8rem;letter-spacing:.14em;
+  background:rgba(255,255,255,.45);border:1px solid var(--slate);color:var(--ink);padding:9px 18px;
   cursor:pointer;transition:.18s;}
 .langbar button+button{border-left:none;}
 .langbar button[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink);}
@@ -48,6 +48,18 @@ ul.index a:hover .name{color:var(--c2);}
 .name{font-size:1.12rem;font-weight:600;transition:color .25s ease;}
 .en{font-family:'Space Mono',monospace;font-size:.7rem;letter-spacing:.12em;color:var(--slate);}
 .desc{flex-basis:100%;font-size:.86rem;color:var(--slate);line-height:1.8;}
+.en-invite{display:inline-flex;align-items:center;gap:12px;margin-top:24px;
+  padding:12px 18px;text-decoration:none;border:1px solid var(--c2);
+  background:rgba(138,111,78,.06);color:var(--c2);
+  font-family:'Cormorant Garamond',Georgia,serif;font-size:1.06rem;
+  transition:background .2s ease,color .2s ease;}
+.en-invite:hover{background:var(--c2);color:var(--paper);}
+.en-invite:hover .flag{background:var(--paper);color:var(--c2);border-color:var(--paper);}
+.en-invite:focus-visible{outline:2px solid var(--c2);outline-offset:3px;}
+.en-invite .flag{font-family:'Space Mono',monospace;font-size:.64rem;letter-spacing:.12em;
+  border:1px solid var(--c2);padding:2px 7px;transition:.2s;}
+.en-invite b{font-weight:400;}
+
 footer{margin-top:44px;font-family:'Space Mono',monospace;font-size:.68rem;
        letter-spacing:.1em;color:var(--slate);opacity:.8;}
 
@@ -105,6 +117,11 @@ ol.disputes li .q{color:var(--slate);}
     <div class="kicker">HW Lab</div>
     <h1>做出來，<em>才看得懂</em></h1>
     <p class="lede">哲學、景觀、教學。把想清楚的事情，做成可以動手走一遍的東西。</p>
+
+    <a class="en-invite" href="#en">
+      <span class="flag">EN</span>
+      <span>Read the project statement in English<b> →</b></span>
+    </a>
 
     <ul class="index">
       <li>
